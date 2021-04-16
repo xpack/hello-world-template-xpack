@@ -1,0 +1,30 @@
+{
+  "name": "@xpack/hello-world-template",
+  "version": "0.1.0",
+  "description": "A source xPack / npm package with a template to generate Hello World projects",
+  "main": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xpack/hello-world-template-xpack.git"
+  },
+  "bugs": {
+    "url": "https://github.com/xpack/hello-world-template-xpack/issues/"
+  },
+  "homepage": "https://github.com/xpack/hello-world-template-xpack/",
+  "keywords": [
+    "xpack"
+  ],
+  "author": {
+    "name": "Liviu Ionescu",
+    "email": "ilg@livius.net",
+    "url": "https://github.com/ilg-ul/"
+  },
+  "license": "MIT",
+  "config": {},
+  "dependencies": {},
+  "devDependencies": {},
+  "xpack": {}
+}
