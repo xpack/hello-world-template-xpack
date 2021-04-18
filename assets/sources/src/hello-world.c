@@ -1,0 +1,34 @@
+/*
+ * This file is part of the xPack project (http://xpack.github.io).
+ * Copyright (c) 2021 Liviu Ionescu. All rights reserved.
+ *
+ * This Source Code File is subject to the MIT License terms.
+ * If a copy of the license was not distributed with this file, it can
+ * be obtained from https://opensource.org/licenses/MIT/.
+ */
+
+// ----------------------------------------------------------------------------
+
+#include "hello-world.h"
+
+#include <stdio.h>
+
+int
+main(int argc, char* argv[])
+{
+  printf("%s\n", HELLO_WORLD_MESSAGE);
+
+#if defined(DEBUG)
+  printf("%s\n", "(in debug mode)");
+#else
+  printf("%s\n", "(in release mode)");
+#endif
+
+#if defined(NDEBUG)
+printf("%s\n", "(no asserts)");
+#endif
+
+  return 0;
+}
+
+// ----------------------------------------------------------------------------

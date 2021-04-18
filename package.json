@@ -2,9 +2,14 @@
   "name": "@xpack/hello-world-template",
   "version": "0.1.0",
   "description": "A source xPack / npm package with a template to generate Hello World projects",
-  "main": "",
+  "main": "./index.js",
+  "bin": {
+    "xpm-init-hello-world": "bin/xpm-init-hello-world.js"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "fix": "standard --fix",
+    "test": "node ./test/test.js",
+    "git-log": "git log --pretty='%cd * %h %s' --date=short"
   },
   "repository": {
     "type": "git",
@@ -15,7 +20,11 @@
   },
   "homepage": "https://github.com/xpack/hello-world-template-xpack/",
   "keywords": [
-    "xpack"
+    "xpack",
+    "template",
+    "c++",
+    "cmake",
+    "meson"
   ],
   "author": {
     "name": "Liviu Ionescu",
@@ -24,7 +33,17 @@
   },
   "license": "MIT",
   "config": {},
-  "dependencies": {},
-  "devDependencies": {},
-  "xpack": {}
+  "dependencies": {
+    "@ilg/cli-start-options": "^0.6.1",
+    "liquidjs": "^9.23.3",
+    "readline-sync": "^1.4.10",
+    "shelljs": "^0.8.4"
+  },
+  "devDependencies": {
+    "standard": "^16.0.3",
+    "xpm": "^0.9.1"
+  },
+  "xpack": {
+    "minimumXpmRequired": "0.9.1"
+  }
 }

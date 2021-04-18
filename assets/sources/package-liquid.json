@@ -1,0 +1,115 @@
+{
+  "name": "@your-scope/{{ projectName }}",
+  "version": "0.1.0",
+  "description": "A source xPack with a Hello World application",
+  "main": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-id/{{ projectName }}.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-id/{{ projectName }}/issues/"
+  },
+  "homepage": "https://github.com/your-id/{{ projectName }}/",
+  "keywords": [
+    "xpack"
+  ],
+  "author": {
+    "name": "{{ author.name }}",
+    "email": "{{ author.email }}",
+    "url": "{{ author.url }}"
+  },
+  "contributors": [
+    {
+      "name": "Liviu Ionescu",
+      "email": "ilg@livius.net",
+      "url": "https://github.com/ilg-ul/"
+    }
+  ],
+  "license": "MIT",
+  "config": {},
+  "dependencies": {},
+  "devDependencies": {
+{% if buildGenerator == "cmake" -%}
+    "@xpack-dev-tools/cmake": "3.19.2-2.1",
+{% elsif buildGenerator == "meson" -%}
+    "@xpack-dev-tools/meson-build": "0.56.2-1.1",
+{% endif -%}
+    "@xpack-dev-tools/ninja-build": "1.10.2-2.1"
+  },
+  "xpack": {
+    "properties": { 
+      {% raw %}"buildFolderRelativePath": "build{% if os.platform == 'win32' %}\\{% else %}/{% endif %}{{ configuration.name | downcase }}",{% endraw %}
+{% if buildGenerator == "cmake" -%}
+      {% raw %}"commandGenerate": "cmake -S meta -B {{ properties.buildFolderRelativePath }} -G Ninja -D CMAKE_BUILD_TYPE={{ properties.buildType }} -D CMAKE_EXPORT_COMPILE_COMMANDS=ON",
+      "commandBuild": "cmake --build {{ properties.buildFolderRelativePath }}",
+      "commandClean": "cmake --build {{ properties.buildFolderRelativePath }} --target clean",
+      "commandExecuteHello": "{{ properties.buildFolderRelativePath }}{% if os.platform == 'win32' %}\\{% else %}/{% endif %}hello-world"{% endraw %}
+{% elsif buildGenerator == "meson" -%}
+      {% raw %}"commandGenerate": "meson -S meta -B {{ properties.buildFolderRelativePath }} -G Ninja -D CMAKE_BUILD_TYPE={{ properties.buildType }} -D CMAKE_EXPORT_COMPILE_COMMANDS=ON",
+      "commandBuild": "meson --build {{ properties.buildFolderRelativePath }}",
+      "commandClean": "meson --build {{ properties.buildFolderRelativePath }} --target clean",
+      "commandExecuteHello": "{{ properties.buildFolderRelativePath }}{% if os.platform == 'win32' %}\\{% else %}/{% endif %}hello-world"{% endraw %}
+{% endif -%}
+    },
+    "actions": {
+      "generate-all": [
+        "xpm run generate --config Debug",
+        "xpm run generate --config Release"
+      ],
+      "build-all": [
+        "xpm run build --config Debug",
+        "xpm run build --config Release"
+      ],
+      "clean-all": [
+        "xpm run clean --config Debug",
+        "xpm run clean --config Release"
+      ],
+      "execute-all": [
+        "xpm run execute --config Debug",
+        "xpm run execute --config Release"
+      ],
+      "test": [
+        "xpm run build-all",
+        "xpm run execute-all"
+      ]{% if buildGenerator == "cmake" -%},
+      "deep-clean": "cmake -E rm -rf build xpacks"
+{% elsif buildGenerator == "meson" -%},
+      "deep-clean": "meson -E rm -rf build xpacks"
+{% endif -%}
+    },
+    {% raw %}"buildConfigurations": {
+      "Debug": {
+        "properties": {
+          "buildType": "Debug"
+        },
+        "actions": {
+          "generate": "{{ properties.commandGenerate }}",
+          "build": [
+            "{{ properties.commandGenerate }}",
+            "{{ properties.commandBuild }}"
+          ],
+          "clean": "{{ properties.commandClean }}",
+          "execute": "{{ properties.commandExecuteHello }}"
+        }
+      },
+      "Release": {
+        "properties": {
+          "buildType": "Release"
+        },
+        "actions": {
+          "generate": "{{ properties.commandGenerate }}",
+          "build": [
+            "{{ properties.commandGenerate }}",
+            "{{ properties.commandBuild }}"
+          ],
+          "clean": "{{ properties.commandClean }}",
+          "execute": "{{ properties.commandExecuteHello }}"
+        }
+      }
+    }{% endraw %}
+  }
+}
