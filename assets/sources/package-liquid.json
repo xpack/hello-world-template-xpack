@@ -44,21 +44,21 @@
     "properties": { 
       {% raw %}"buildFolderRelativePath": "build{% if os.platform == 'win32' %}\\{% else %}/{% endif %}{{ configuration.name | downcase }}",{% endraw %}
 {% if buildGenerator == "cmake" -%}
-      {% raw %}"commandGenerate": "cmake -S meta -B {{ properties.buildFolderRelativePath }} -G Ninja -D CMAKE_BUILD_TYPE={{ properties.buildType }} -D CMAKE_EXPORT_COMPILE_COMMANDS=ON",
+      {% raw %}"commandPrepare": "cmake -S meta -B {{ properties.buildFolderRelativePath }} -G Ninja -D CMAKE_BUILD_TYPE={{ properties.buildType }} -D CMAKE_EXPORT_COMPILE_COMMANDS=ON",
       "commandBuild": "cmake --build {{ properties.buildFolderRelativePath }}",
       "commandClean": "cmake --build {{ properties.buildFolderRelativePath }} --target clean",
       "commandExecuteHello": "{{ properties.buildFolderRelativePath }}{% if os.platform == 'win32' %}\\{% else %}/{% endif %}hello-world"{% endraw %}
 {% elsif buildGenerator == "meson" -%}
-      {% raw %}"commandGenerate": "meson -S meta -B {{ properties.buildFolderRelativePath }} -G Ninja -D CMAKE_BUILD_TYPE={{ properties.buildType }} -D CMAKE_EXPORT_COMPILE_COMMANDS=ON",
+      {% raw %}"commandPrepare": "meson -S meta -B {{ properties.buildFolderRelativePath }} -G Ninja -D CMAKE_BUILD_TYPE={{ properties.buildType }} -D CMAKE_EXPORT_COMPILE_COMMANDS=ON",
       "commandBuild": "meson --build {{ properties.buildFolderRelativePath }}",
       "commandClean": "meson --build {{ properties.buildFolderRelativePath }} --target clean",
       "commandExecuteHello": "{{ properties.buildFolderRelativePath }}{% if os.platform == 'win32' %}\\{% else %}/{% endif %}hello-world"{% endraw %}
 {% endif -%}
     },
     "actions": {
-      "generate-all": [
-        "xpm run generate --config Debug",
-        "xpm run generate --config Release"
+      "prepare-all": [
+        "xpm run prepare --config Debug",
+        "xpm run prepare --config Release"
       ],
       "build-all": [
         "xpm run build --config Debug",
@@ -87,9 +87,9 @@
           "buildType": "Debug"
         },
         "actions": {
-          "generate": "{{ properties.commandGenerate }}",
+          "prepare": "{{ properties.commandPrepare }}",
           "build": [
-            "{{ properties.commandGenerate }}",
+            "{{ properties.commandPrepare }}",
             "{{ properties.commandBuild }}"
           ],
           "clean": "{{ properties.commandClean }}",
@@ -101,9 +101,9 @@
           "buildType": "Release"
         },
         "actions": {
-          "generate": "{{ properties.commandGenerate }}",
+          "prepare": "{{ properties.commandPrepare }}",
           "build": [
-            "{{ properties.commandGenerate }}",
+            "{{ properties.commandPrepare }}",
             "{{ properties.commandBuild }}"
           ],
           "clean": "{{ properties.commandClean }}",
