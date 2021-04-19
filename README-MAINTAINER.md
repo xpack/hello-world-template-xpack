@@ -1,18 +1,17 @@
-[![license](https://img.shields.io/github/license/xpack/hello-world-template)](https://github.com/xpack/hello-world-template/blob/xpack/LICENSE)
-[![CI on Push](https://github.com/xpack/hello-world-template/workflows/CI%20on%20Push/badge.svg)](https://github.com/xpack/hello-world-template/actions?query=workflow%3A%22CI+on+Push%22)
+[![license](https://img.shields.io/github/license/xpack/hello-world-template-xpack)](https://github.com/xpack/hello-world-template-xpack/blob/xpack/LICENSE)
+[![Node.js CI on Push](https://github.com/xpack/hello-world-template-xpack/actions/workflows/CI.yml/badge.svg)](https://github.com/xpack/hello-world-template-xpack/actions/workflows/CI.yml)
 [![GitHub issues](https://img.shields.io/github/issues/xpack/hello-world-template-xpack.svg)](https://github.com/xpack/hello-world-template-xpack/issues/)
 [![GitHub pulls](https://img.shields.io/github/issues-pr/xpack/hello-world-template-xpack.svg)](https://github.com/xpack/hello-world-template-xpack/pulls/)
 
 # Maintainer info
 
-The package is both an xPack (used by `xpm`) and a Node.js module (for
-running tests).
+This file documents the procedure used to make releases.
 
 ## Project repository
 
 The project is hosted on GitHub:
 
-- https://github.com/xpack/hello-world-template-xpack.git
+- <https://github.com/xpack/hello-world-template-xpack.git>
 
 To clone it:
 
@@ -25,6 +24,48 @@ git clone https://github.com/xpack/hello-world-template-xpack.git hello-world-te
 A recent [xpm](https://xpack.github.io/xpm/), which is a portable
 [Node.js](https://nodejs.org/) command line application.
 
+## Prepare the release
+
+Before making the release, perform some checks and tweaks.
+
+### Update npm packages
+
+- `npm outdated`
+- `npm update`
+- repeat and possibly manually edit `package.json` until everything is
+  up to date
+
+### Check Git
+
+In this Git repo:
+
+- in the `develop` branch
+- push everything
+- if needed, merge the `master` branch
+
+### Determine the next version
+
+Use the semantic versioning semantics.
+
+### Fix possible open issues
+
+Check GitHub issues and pull requests:
+
+- <https://github.com/xpack/hello-world-template-xpack/issues/>
+
+### Update Release Notes in `README.md`
+
+- add a new entry in the Release Notes section
+- check the rest of the file and update if needed, to reflect the new features
+- update version in `README-MAINTAINER.md`
+
+## Update `CHANGELOG.md`
+
+- check the latest commits `npm run git-log`
+- open the `CHANGELOG.md` file
+- check if all previous fixed issues are in
+- commit with a message like _prepare v0.1.1_
+
 ## Prepare a new blog post
 
 In the `xpack/web-jekyll` GitHub repo:
@@ -32,7 +73,7 @@ In the `xpack/web-jekyll` GitHub repo:
 - select the `develop` branch
 - add a new file to `_posts/hello-world-template-xpack/releases`
 - name the file like `2020-12-19-hello-world-template-xpack-v0-1-0-released.md`
-- name the post like: **xPack hello-world-template-xpack v0.1.0 released**
+- name the post like: **xPack hello-world-template-xpack v0.1.1 released**
 - update the `date:` field with the current date
 - update the GitHub Actions URLs using the actual test pages
 
@@ -46,10 +87,10 @@ as:
 
 - select the `xpack-develop` branch
 - commit all changes
-- update `CHANGELOG.md`; commit with a message like _CHANGELOG: prepare v0.1.0_
+- update `CHANGELOG.md`; commit with a message like _CHANGELOG: prepare v0.1.1_
 - `npm pack` and check the content of the archive, which should list
-  only the `package.json`, the `README.md`, `LICENSE` and `CHANGELOG.md`;
-  possibly adjust `.npmignore`
+  only the `package.json`, the `README.md`, `LICENSE`, `CHANGELOG.md`
+  and the `assets`; possibly adjust `.npmignore`
 - `npm version patch`, `npm version minor`, `npm version major`
 - push the `xpack-develop` branch to GitHub with `git push origin --tags`
 - `npm publish --tag next` (use `--access public` when publishing for
@@ -57,7 +98,7 @@ as:
 
 The version is visible at:
 
-- https://www.npmjs.com/package/@xpack/hello-world-template-xpack?activeTab=versions
+- <https://www.npmjs.com/package/@xpack/hello-world-template-xpack?activeTab=versions>
 
 ## Testing
 
@@ -91,7 +132,7 @@ When the package is considered stable:
 When the release is considered stable, promote it as `latest`:
 
 - `npm dist-tag ls @xpack/hello-world-template-xpack`
-- `npm dist-tag add @xpack/hello-world-template-xpack@0.1.0 latest`
+- `npm dist-tag add @xpack/hello-world-template-xpack@0.1.1 latest`
 - `npm dist-tag ls @@xpack/hello-world-template-xpack`
 
 ## Announce to the community
@@ -102,7 +143,6 @@ Post an announcement to the forum.
 
 - in a separate browser windows, open [TweetDeck](https://tweetdeck.twitter.com/)
 - using the `@xpack_project` account
-- paste the release name like **xPack hello-world-template-xpack v0.1.0 released**
+- paste the release name like **xPack hello-world-template-xpack v0.1.1 released**
 - paste the link to the Web page release
 - click the **Tweet** button
-
