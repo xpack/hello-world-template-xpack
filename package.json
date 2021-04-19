@@ -9,7 +9,10 @@
   "scripts": {
     "fix": "standard --fix",
     "test": "node ./test/test.js",
-    "git-log": "git log --pretty='%cd * %h %s' --date=short"
+    "git-log": "git log --pretty='%cd * %h %s' --date=short",
+    "pack": "npm pack",
+    "version-patch": "npm version patch",
+    "version-minor": "npm version minor"
   },
   "repository": {
     "type": "git",
