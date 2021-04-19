@@ -3,9 +3,6 @@
   "version": "0.1.2",
   "description": "A source xPack / npm package with a template to generate Hello World projects",
   "main": "./index.js",
-  "bin": {
-    "xpm-init-hello-world": "bin/xpm-init-hello-world.js"
-  },
   "scripts": {
     "fix": "standard --fix",
     "test": "node ./test/test.js",
@@ -38,13 +35,15 @@
   "config": {},
   "dependencies": {
     "@ilg/cli-start-options": "^0.6.1",
+    "cp-file": "^9.0.0",
     "liquidjs": "^9.23.4",
-    "shelljs": "^0.8.4"
+    "make-dir": "^3.1.0"
   },
   "bundledDependencies": [
     "@ilg/cli-start-options",
+    "cp-file",
     "liquidjs",
-    "shelljs"
+    "make-dir"
   ],
   "devDependencies": {
     "standard": "^16.0.3",
