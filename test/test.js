@@ -25,12 +25,6 @@ const properties = require('../lib/template.js').properties
 
 // ----------------------------------------------------------------------------
 
-const nodeBin = process.env.npm_node_execpath || process.env.NODE ||
-  process.execPath
-const executableRelativePath = '../bin/xpm-init-hello-world.js'
-
-// ----------------------------------------------------------------------------
-
 class Test {
   static start () {
     // Instantiate a new test.
@@ -47,50 +41,33 @@ class Test {
   }
 
   run (all = false) {
+    // Uninstall possibly existing global package, to ensure the
+    // test uses the current folder content.
+    const uninstall='xpm uninstall -g @xpack/hello-world-template'
+    shx.echo(`$ ${uninstall}`)
+    shx.exec(uninstall)
+
     this.startTime = Date.now()
     if (all) {
       shx.echo('Testing thoroughly...')
-      for (const boardName of Object.keys(properties.boardName.items)) {
-        for (const content of Object.keys(properties.content.items)) {
-          for (const syscalls of Object.keys(properties.syscalls.items)) {
-            for (const trace of Object.keys(properties.trace.items)) {
-              for (const language of Object.keys(properties.language.items)) {
-                for (const useNano of [false, true]) {
-                  this.runOne({
-                    boardName,
-                    content,
-                    syscalls,
-                    trace,
-                    language,
-                    useSomeWarnings: true,
-                    useMostWarnings: true,
-                    useWerror: true,
-                    useNano
-                  })
-                  this.count++
-                }
-              }
-            }
-          }
+      for (const buildGenerator of
+        Object.keys(properties.buildGenerator.items)) {
+        for (const language of Object.keys(properties.language.items)) {
+          this.runOne({
+            buildGenerator,
+            language
+          })
+          this.count++
         }
       }
     } else {
       shx.echo('Testing selected cases...')
-      for (const boardName of Object.keys(properties.boardName.items)) {
-        for (const language of Object.keys(properties.language.items)) {
-          this.runOne({
-            boardName,
-            content: properties.content.default,
-            syscalls: properties.syscalls.default,
-            trace: properties.trace.default,
-            language,
-            useSomeWarnings: true,
-            useMostWarnings: true,
-            useWerror: true,
-            useNano: true
-          })
-          this.count++
-        }
+      for (const language of Object.keys(properties.language.items)) {
+        this.runOne({
+          buildGenerator: properties.buildGenerator.default,
+          language
+        })
+        this.count++
       }
     }
 
@@ -104,14 +81,14 @@ class Test {
     shx.set('-e') // Exit upon error
 
     const cnt = ('0000' + this.count).slice(-3)
-    const name = `${cnt}-${props.boardName}-${props.content}-` +
-        `${props.syscalls}-${props.trace}-${props.language}`
+    const name = `${cnt}-${props.buildGenerator}-${props.language}`
 
     shx.echo()
     shx.echo(`Testing '${name}'...`)
 
     const tmp = shx.tempdir()
-    const buildFolder = `${tmp}/sifive-templates/${name}`
+    const buildFolder = `${tmp}/hello-templates/${name}`
+    shx.echo(buildFolder)
 
     shx.rm('-rf', buildFolder)
     shx.mkdir('-p', buildFolder)
@@ -120,13 +97,13 @@ class Test {
     shx.pushd(buildFolder)
     shx.config.silent = false
 
-    const executableAbsolutePath = path.join(__dirname, executableRelativePath)
+    const projectFolderPath = path.dirname(__dirname)
 
-    let xpmInit = `"${nodeBin}" "${executableAbsolutePath}" --name ${cnt}`
+    let xpmInit = `xpm init --template "${projectFolderPath}" --name ${cnt}`
     for (const [key, value] of Object.entries(props)) {
       xpmInit += ` --property ${key}=${value}`
     }
-    // shx.echo(`$ ${xpmInit}`)
+    shx.echo(`$ ${xpmInit}`)
     shx.exec(xpmInit)
 
     shx.echo()
@@ -135,7 +112,7 @@ class Test {
     shx.exec(cmd)
 
     shx.echo()
-    cmd = 'xpm run build'
+    cmd = 'xpm run test'
     shx.echo(`$ ${cmd}`)
     shx.exec(cmd)
 
