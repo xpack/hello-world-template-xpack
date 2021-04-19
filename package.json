@@ -42,6 +42,11 @@
     "readline-sync": "^1.4.10",
     "shelljs": "^0.8.4"
   },
+  "bundledDependencies": [
+    "@ilg/cli-start-options",
+    "liquidjs",
+    "shelljs"
+  ],
   "devDependencies": {
     "standard": "^16.0.3",
     "xpm": "^0.9.1"
