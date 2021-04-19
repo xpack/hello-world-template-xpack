@@ -133,9 +133,9 @@ When the package is considered stable:
 
 When the release is considered stable, promote it as `latest`:
 
-- `npm dist-tag ls @xpack/hello-world-template-xpack`
-- `npm dist-tag add @xpack/hello-world-template-xpack@0.1.3 latest`
-- `npm dist-tag ls @@xpack/hello-world-template-xpack`
+- `npm dist-tag ls @xpack/hello-world-template`
+- `npm dist-tag add @xpack/hello-world-template@0.1.3 latest`
+- `npm dist-tag ls @@xpack/hello-world-template`
 
 ## Announce to the community
 
