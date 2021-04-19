@@ -7,7 +7,7 @@ assignees: ''
 
 ---
 
-If you have any other topics that are not bugs or feature requests, 
+If you have any other topics that are not bugs or feature requests,
 they are welcomed in the project forums on
 [Tapatalk](https://www.tapatalk.com/groups/xpack/),
 the **Visual Studio Code Extensions** section.
