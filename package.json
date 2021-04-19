@@ -46,6 +46,7 @@
     "make-dir"
   ],
   "devDependencies": {
+    "shelljs": "^0.8.4",
     "standard": "^16.0.3",
     "xpm": "^0.9.1"
   },
