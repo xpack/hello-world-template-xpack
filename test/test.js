@@ -43,7 +43,7 @@ class Test {
   run (all = false) {
     // Uninstall possibly existing global package, to ensure the
     // test uses the current folder content.
-    const uninstall='xpm uninstall -g @xpack/hello-world-template'
+    const uninstall = 'xpm uninstall -g @xpack/hello-world-template'
     shx.echo(`$ ${uninstall}`)
     shx.exec(uninstall)
 
