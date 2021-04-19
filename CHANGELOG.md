@@ -8,6 +8,9 @@ and close existing issues and pull requests.
 
 ## 2021-04-19
 
+- v0.1.3 released
+- replace shelljs & readlineSync with discrete implementation
+- add bundledDependencies
 - v0.1.2 released
 - v0.1.1 released
 - CMake C/C++ project functional on GitHub Actions
