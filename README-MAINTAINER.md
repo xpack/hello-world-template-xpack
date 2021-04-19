@@ -93,6 +93,7 @@ as:
   and the `assets`; possibly adjust `.npmignore`
 - `npm version patch`, `npm version minor`, `npm version major`
 - push the `xpack-develop` branch to GitHub with `git push origin --tags`
+- wait for CI to finish
 - `npm publish --tag next` (use `--access public` when publishing for
   the first time)
 
