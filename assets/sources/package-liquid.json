@@ -1,5 +1,5 @@
 {
-  "name": "@your-scope/{{ projectName }}",
+  "name": "@my-scope/{{ projectName }}",
   "version": "0.1.0",
   "description": "A source xPack with a Hello World application",
   "main": "",
@@ -8,12 +8,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-id/{{ projectName }}.git"
+    "url": "https://github.com/{{ githubId }}/{{ projectName }}.git"
   },
   "bugs": {
-    "url": "https://github.com/your-id/{{ projectName }}/issues/"
+    "url": "https://github.com/{{ githubId }}/{{ projectName }}/issues/"
   },
-  "homepage": "https://github.com/your-id/{{ projectName }}/",
+  "homepage": "https://github.com/{{ githubId }}/{{ projectName }}/",
   "keywords": [
     "xpack"
   ],
