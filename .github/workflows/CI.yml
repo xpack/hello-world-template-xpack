@@ -1,0 +1,43 @@
+# https://help.github.com/en/actions
+
+# https://github.com/actions
+# https://github.com/actions/checkout
+# https://github.com/actions/setup-node
+
+# No Arm Linux tests yet.
+
+# https://nodejs.org/en/download/releases/
+
+name: Node.js CI on Push
+
+on: [push]
+
+jobs:
+  npm-test:
+
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        # nvm ls-remote --lts
+        node-version: [^10.24.x, ^12.22.x, ^14.16.x]
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Setup Node.js ${{ matrix.node-version }} on ${{ matrix.os }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Show node & npm versions, environment
+      run: |
+        node --version
+        npm --version
+        env
+    - name: Install dependencies
+      run: npm ci
+    - name: Run tests
+      run: npm run test
+      env:
+        CI: true
