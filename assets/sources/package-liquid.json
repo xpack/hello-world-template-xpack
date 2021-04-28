@@ -36,7 +36,7 @@
 {% if buildGenerator == "cmake" -%}
     "@xpack-dev-tools/cmake": "3.19.2-2.1",
 {% elsif buildGenerator == "meson" -%}
-    "@xpack-dev-tools/meson-build": "0.56.2-1.1",
+    "@xpack-dev-tools/meson-build": "0.56.2-2.1",
 {% endif -%}
     "@xpack-dev-tools/ninja-build": "1.10.2-2.1"
   },
@@ -45,15 +45,16 @@
       {% raw %}"buildFolderRelativePath": "build{% if os.platform == 'win32' %}\\{% else %}/{% endif %}{{ configuration.name | downcase }}",{% endraw %}
 {% if buildGenerator == "cmake" -%}
       {% raw %}"commandPrepare": "cmake -S meta -B {{ properties.buildFolderRelativePath }} -G Ninja -D CMAKE_BUILD_TYPE={{ properties.buildType }} -D CMAKE_EXPORT_COMPILE_COMMANDS=ON",
-      "commandBuild": "cmake --build {{ properties.buildFolderRelativePath }}",
-      "commandClean": "cmake --build {{ properties.buildFolderRelativePath }} --target clean",
-      "commandExecuteHello": "{{ properties.buildFolderRelativePath }}{% if os.platform == 'win32' %}\\{% else %}/{% endif %}hello-world"{% endraw %}
+      "commandReconfigure": "{{ properties.commandPrepare }}",
+      "commandBuild": "cmake --build {{ properties.buildFolderRelativePath }} --verbose",
+      "commandClean": "cmake --build {{ properties.buildFolderRelativePath }} --target clean",{% endraw %}
 {% elsif buildGenerator == "meson" -%}
-      {% raw %}"commandPrepare": "meson -S meta -B {{ properties.buildFolderRelativePath }} -G Ninja -D CMAKE_BUILD_TYPE={{ properties.buildType }} -D CMAKE_EXPORT_COMPILE_COMMANDS=ON",
-      "commandBuild": "meson --build {{ properties.buildFolderRelativePath }}",
-      "commandClean": "meson --build {{ properties.buildFolderRelativePath }} --target clean",
-      "commandExecuteHello": "{{ properties.buildFolderRelativePath }}{% if os.platform == 'win32' %}\\{% else %}/{% endif %}hello-world"{% endraw %}
+      {% raw %}"commandPrepare": "meson setup --backend ninja --buildtype {{ properties.buildType }} {{ properties.buildFolderRelativePath }} meta",
+      "commandReconfigure": "meson setup --reconfigure {{ properties.buildFolderRelativePath }} meta",
+      "commandBuild": "meson compile -C {{ properties.buildFolderRelativePath }}",
+      "commandClean": "meson compile -C {{ properties.buildFolderRelativePath }} --clean",{% endraw %}
 {% endif -%}
+      {% raw %}"commandExecuteHello": "{{ properties.buildFolderRelativePath }}{% if os.platform == 'win32' %}\\{% else %}/{% endif %}hello-world"{% endraw %}
     },
     "actions": {
       "prepare-all": [
@@ -73,6 +74,7 @@
         "xpm run execute --config Release"
       ],
       "test": [
+        "xpm run prepare-all",
         "xpm run build-all",
         "xpm run execute-all"
       ]{% if buildGenerator == "cmake" -%},
@@ -81,35 +83,43 @@
       "deep-clean": "meson -E rm -rf build xpacks"
 {% endif -%}
     },
-    {% raw %}"buildConfigurations": {
+    "buildConfigurations": {
       "Debug": {
         "properties": {
+{% if buildGenerator == "cmake" -%}
           "buildType": "Debug"
+{% elsif buildGenerator == "meson" -%}
+          "buildType": "debug"
+{% endif -%}
         },
         "actions": {
-          "prepare": "{{ properties.commandPrepare }}",
+          {% raw %}"prepare": "{{ properties.commandPrepare }}",
           "build": [
-            "{{ properties.commandPrepare }}",
+            "{{ properties.commandReconfigure }}",
             "{{ properties.commandBuild }}"
           ],
           "clean": "{{ properties.commandClean }}",
-          "execute": "{{ properties.commandExecuteHello }}"
+          "execute": "{{ properties.commandExecuteHello }}"{% endraw %}
         }
       },
       "Release": {
         "properties": {
+{% if buildGenerator == "cmake" -%}
           "buildType": "Release"
+{% elsif buildGenerator == "meson" -%}
+          "buildType": "release"
+{% endif -%}
         },
         "actions": {
-          "prepare": "{{ properties.commandPrepare }}",
+          {% raw %}"prepare": "{{ properties.commandPrepare }}",
           "build": [
-            "{{ properties.commandPrepare }}",
+            "{{ properties.commandReconfigure }}",
             "{{ properties.commandBuild }}"
           ],
           "clean": "{{ properties.commandClean }}",
-          "execute": "{{ properties.commandExecuteHello }}"
+          "execute": "{{ properties.commandExecuteHello }}"{% endraw %}
         }
       }
-    }{% endraw %}
+    }
   }
 }

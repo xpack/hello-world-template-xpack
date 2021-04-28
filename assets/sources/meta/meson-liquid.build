@@ -1,0 +1,128 @@
+#
+# This file is part of the xPack project (http://xpack.github.io).
+# Copyright (c) 2021 Liviu Ionescu
+#
+# This Software is provided under the terms of the MIT License.
+# If a copy of the license was not distributed with this file, it can
+# be obtained from https://opensource.org/licenses/MIT/.
+#
+# -----------------------------------------------------------------------------
+
+# https://mesonbuild.com/Reference-manual.html#project
+project('hello-world',
+{% if language == 'cpp' -%}
+  ['c', 'cpp'],
+{% else if language == 'c' -%}
+  ['c'],
+{% endif -%}
+  meson_version: '>= 0.56',
+  version: '1.0.0'
+)
+
+# languages: {c, cpp}
+
+# -----------------------------------------------------------------------------
+
+fs = import('fs')
+compiler = meson.get_compiler('c')
+
+# -----------------------------------------------------------------------------
+
+# A generic way to handle having the metadata files grouped in a folder.
+xpack_project_folder = fs.parent(meson.current_source_dir())
+# xpack_project_folder = meson.current_source_dir()
+
+# -----------------------------------------------------------------------------
+
+# buildtype: {plain, debug, debugoptimized, release, minsize, custom}
+message('Build type: ' + get_option('buildtype'))
+message('Project path: ' + xpack_project_folder)
+
+# -----------------------------------------------------------------------------
+
+# All project source files.
+sourceFiles = files(
+  xpack_project_folder + '/src/hello-world.{{ fileExtension }}'
+)
+
+# All folders with header files.
+includeFolders = [ 
+  xpack_project_folder + '/include'
+]
+
+# Compiler preprocessor definitions.
+compiler_definition = []
+if get_option('buildtype').contains('debug')
+  compiler_definition += ['-DDEBUG']
+endif
+if get_option('buildtype') == 'release'
+  compiler_definition += ['-DNDEBUG']
+endif
+
+# Options for both compilers and linkers. When using -flto all options
+# must also be passed to the linker.
+# https://mesonbuild.com/Reference-tables.html#compiler-ids
+
+common_options = []
+
+if compiler.get_id() == 'gcc' or compiler.get_id().contains('clang')
+  common_options += [
+    '-fmessage-length=0',
+    '-fsigned-char',
+    '-ffunction-sections',
+    '-fdata-sections'
+  ]
+
+  # Optional, comment it out to disable link time optimizations.
+  common_options += [
+    '-flto'
+  ]
+elif compiler.get_id() == 'msvc'
+  common_options += [
+    '/Gy'
+  ]
+endif
+
+c_compiler_options = compiler_definition + common_options
+
+{% if language == 'cpp' -%}
+cpp_compiler_options=compiler_definition + common_options
+
+{% endif -%}
+linker_options = common_options
+
+if compiler.get_id() == 'gcc'
+  linker_options += [
+    '-Wl,--gc-sections'
+  ]
+elif compiler.get_id().contains('clang')
+  linker_options += [
+    '-Wl,-dead_strip'
+  ]
+elif compiler.get_id() == 'msvc'
+  linker_options += [
+    '/LTCG'
+  ]
+endif
+
+# https://mesonbuild.com/Builtin-options.html#compiler-options
+# none, c89, c99, c11, c17, c18, c2x, gnu89, gnu99, gnu11, gnu17, gnu18, gnu2x
+c_std = 'c11' 
+
+{% if language == 'cpp' -%}
+# none, c++98, c++03, c++11, c++14, c++17, c++20 
+# c++2a, c++1z, gnu++03, gnu++11, gnu++14, gnu++17, gnu++1z, 
+# gnu++2a, gnu++20, vc++14, vc++17, vc++latest
+cpp_std = 'gnu++17'
+
+{% endif -%}
+# https://mesonbuild.com/Reference-manual.html#executable
+application = executable(meson.project_name(), 
+  sources: sourceFiles,
+  include_directories: includeFolders,
+  c_args: c_compiler_options,
+{% if language == 'cpp' -%}
+  cpp_args: cpp_compiler_options,
+{% endif -%}
+  link_args: linker_options
+)
