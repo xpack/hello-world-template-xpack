@@ -20,18 +20,23 @@ endif()
 # -----------------------------------------------------------------------------
 
 enable_language(C)
+{% if language == 'cpp' -%}
 enable_language(CXX)
+{% endif -%}
 enable_language(ASM)
 
-# Specify the C/C++ standards.
+# Specify the C standard.
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS ON)
 
+{% if language == 'cpp' -%}
+# Specify the C++ standard.
 set(CMAKE_CXX_STANDARD 17) # 11, 13, 17, 20
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS ON)
 
+{% endif -%}
 message(STATUS "Compiler: ${CMAKE_C_COMPILER_ID} ${CMAKE_C_COMPILER_VERSION}")
 
 # Generate the compile_commands.json file to feed the indexer.
@@ -59,6 +64,8 @@ project(
 
 # -----------------------------------------------------------------------------
 
+# https://cmake.org/cmake/help/v3.19/variable/CMAKE_LANG_COMPILER_ID.html
+
 # Preprocessor definitions.
 add_compile_definitions(
   $<$<STREQUAL:"${CMAKE_BUILD_TYPE}","Debug">:DEBUG>
@@ -67,7 +74,8 @@ add_compile_definitions(
   # $<$<NOT:$<STREQUAL:"${CMAKE_BUILD_TYPE}","Debug">>:NDEBUG>
 )
 
-# Options passed to the compilers and linker.
+# Options for both compilers and linkers. When using -flto all options
+# must also be passed to the linker.
 set(common_options 
 
   $<$<C_COMPILER_ID:GNU,Clang,AppleClang>:-fmessage-length=0>
@@ -75,6 +83,10 @@ set(common_options
 
   $<$<C_COMPILER_ID:GNU,Clang,AppleClang>:-ffunction-sections>
   $<$<C_COMPILER_ID:GNU,Clang,AppleClang>:-fdata-sections>
+  $<$<C_COMPILER_ID:MSVC>:/Gy>
+
+  # Optional, comment it out to disable link time optimizations.
+  $<$<C_COMPILER_ID:GNU,Clang,AppleClang>:-flto>
 )
 
 add_compile_options(
@@ -88,6 +100,7 @@ add_link_options(
 
   $<$<C_COMPILER_ID:GNU>:-Wl,--gc-sections>
   $<$<C_COMPILER_ID:Clang,AppleClang>:-Wl,-dead_strip>
+  $<$<C_COMPILER_ID:MSVC>:/Gy>
 )
 
 # -----------------------------------------------------------------------------
