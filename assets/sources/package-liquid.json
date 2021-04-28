@@ -38,7 +38,7 @@
 {% elsif buildGenerator == "meson" -%}
     "@xpack-dev-tools/meson-build": "0.56.2-2.1",
 {% endif -%}
-    "@xpack-dev-tools/ninja-build": "1.10.2-1.1"
+    "@xpack-dev-tools/ninja-build": "1.10.2-3.1"
   },
   "xpack": {
     "properties": { 
