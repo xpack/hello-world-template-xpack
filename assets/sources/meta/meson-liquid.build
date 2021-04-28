@@ -79,7 +79,7 @@ if compiler.get_id() == 'gcc' or compiler.get_id().contains('clang')
   ]
 elif compiler.get_id() == 'msvc'
   common_options += [
-    '/Gy'
+    # Add MSVC options here.
   ]
 endif
 
@@ -101,7 +101,7 @@ elif compiler.get_id().contains('clang')
   ]
 elif compiler.get_id() == 'msvc'
   linker_options += [
-    '/LTCG'
+    # Add MSVC options here.
   ]
 endif
 

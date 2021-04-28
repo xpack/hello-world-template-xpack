@@ -83,7 +83,7 @@ set(common_options
 
   $<$<C_COMPILER_ID:GNU,Clang,AppleClang>:-ffunction-sections>
   $<$<C_COMPILER_ID:GNU,Clang,AppleClang>:-fdata-sections>
-  $<$<C_COMPILER_ID:MSVC>:/Gy>
+  # $<$<C_COMPILER_ID:MSVC>:> # Add MSVC options here.
 
   # Optional, comment it out to disable link time optimizations.
   $<$<C_COMPILER_ID:GNU,Clang,AppleClang>:-flto>
@@ -100,7 +100,7 @@ add_link_options(
 
   $<$<C_COMPILER_ID:GNU>:-Wl,--gc-sections>
   $<$<C_COMPILER_ID:Clang,AppleClang>:-Wl,-dead_strip>
-  $<$<C_COMPILER_ID:MSVC>:/Gy>
+  # $<$<C_COMPILER_ID:MSVC>:> # Add MSVC options here.
 )
 
 # -----------------------------------------------------------------------------
