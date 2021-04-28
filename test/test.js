@@ -62,12 +62,15 @@ class Test {
       }
     } else {
       shx.echo('Testing selected cases...')
-      for (const language of Object.keys(properties.language.items)) {
-        this.runOne({
-          buildGenerator: properties.buildGenerator.default,
-          language
-        })
-        this.count++
+      for (const buildGenerator of
+        Object.keys(properties.buildGenerator.items)) {
+        for (const language of Object.keys(properties.language.items)) {
+          this.runOne({
+            buildGenerator,
+            language
+          })
+          this.count++
+        }
       }
     }
 
