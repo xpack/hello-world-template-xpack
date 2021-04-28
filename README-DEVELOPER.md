@@ -2,6 +2,33 @@
 
 This file provides some details useful during development.
 
+## Project repository
+
+The project is hosted on GitHub:
+
+- <https://github.com/xpack/hello-world-template-xpack.git>
+
+To clone it:
+
+```sh
+cd ${HOME}/Work
+git clone https://github.com/xpack/hello-world-template-xpack.git \
+  hello-world-template-xpack.git
+```
+
+To clone the development branch:
+
+```sh
+git clone --branch xpack-develop \
+  https://github.com/xpack/hello-world-template-xpack.git \
+  hello-world-template-xpack.git
+```
+
+## Prerequisites
+
+A recent [xpm](https://xpack.github.io/xpm/), which is a portable
+[Node.js](https://nodejs.org/) command line application.
+
 ## Basic info
 
 The package is both an xPack (used by `xpm`) and a Node.js module (for

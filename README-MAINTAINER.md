@@ -7,23 +7,6 @@
 
 This file documents the procedure used to make releases.
 
-## Project repository
-
-The project is hosted on GitHub:
-
-- <https://github.com/xpack/hello-world-template-xpack.git>
-
-To clone it:
-
-```sh
-git clone https://github.com/xpack/hello-world-template-xpack.git hello-world-template-xpack.git
-```
-
-## Prerequisites
-
-A recent [xpm](https://xpack.github.io/xpm/), which is a portable
-[Node.js](https://nodejs.org/) command line application.
-
 ## Prepare the release
 
 Before making the release, perform some checks and tweaks.
