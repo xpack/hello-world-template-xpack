@@ -60,8 +60,8 @@
 {% elsif buildGenerator == "autotools" -%}
       {% raw %}"commandPrepare": "cmake -E make_directory {{ properties.buildFolderRelativePath }} && cd {{ properties.buildFolderRelativePath }} && sh {% if os.platform == 'win32' %}..\\..\\meta\\configure ../..{% else %}../../meta/configure ../..{% endif %}",
       "commandReconfigure": "{{ properties.commandPrepare }}",
-      "commandBuild": "cd {{ properties.buildFolderRelativePath }}; make all BUILD_TYPE={{ properties.buildType }}",
-      "commandClean": "cd {{ properties.buildFolderRelativePath }}; make clean BUILD_TYPE={{ properties.buildType }}",{% endraw %}
+      "commandBuild": "cd {{ properties.buildFolderRelativePath }} && make all BUILD_TYPE={{ properties.buildType }}",
+      "commandClean": "cd {{ properties.buildFolderRelativePath }} && make clean BUILD_TYPE={{ properties.buildType }}",{% endraw %}
 {% endif -%}
       {% raw %}"commandExecuteHello": "{{ properties.buildFolderRelativePath }}{% if os.platform == 'win32' %}\\{% else %}/{% endif %}hello-world"{% endraw %}
     },
