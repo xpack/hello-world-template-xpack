@@ -35,10 +35,13 @@
   "devDependencies": {
 {% if buildGenerator == "cmake" -%}
     "@xpack-dev-tools/cmake": "3.19.2-2.1",
+    "@xpack-dev-tools/ninja-build": "1.10.2-3.1"
 {% elsif buildGenerator == "meson" -%}
     "@xpack-dev-tools/meson-build": "0.56.2-2.1",
-{% endif -%}
     "@xpack-dev-tools/ninja-build": "1.10.2-3.1"
+{% elsif buildGenerator == "autotools" -%}
+    "@xpack-dev-tools/windows-build-tools": "@4.2.1-2.1"
+{% endif -%}
   },
   "xpack": {
     "properties": { 
@@ -53,6 +56,11 @@
       "commandReconfigure": "meson setup --reconfigure {{ properties.buildFolderRelativePath }} meta",
       "commandBuild": "meson compile -C {{ properties.buildFolderRelativePath }} -v",
       "commandClean": "meson compile -C {{ properties.buildFolderRelativePath }} --clean",{% endraw %}
+{% elsif buildGenerator == "autotools" -%}
+      {% raw %}"commandPrepare": "mkdir -p {{ properties.buildFolderRelativePath }}; cd {{ properties.buildFolderRelativePath }}; sh ../../meta/configure ../..",
+      "commandReconfigure": "{{ properties.commandPrepare }}",
+      "commandBuild": "cd {{ properties.buildFolderRelativePath }}; make all BUILD_TYPE={{ properties.buildType }}",
+      "commandClean": "cd {{ properties.buildFolderRelativePath }}; make clean BUILD_TYPE={{ properties.buildType }}",{% endraw %}
 {% endif -%}
       {% raw %}"commandExecuteHello": "{{ properties.buildFolderRelativePath }}{% if os.platform == 'win32' %}\\{% else %}/{% endif %}hello-world"{% endraw %}
     },
@@ -80,7 +88,9 @@
       ]{% if buildGenerator == "cmake" -%},
       "deep-clean": "cmake -E rm -rf build xpacks"
 {% elsif buildGenerator == "meson" -%},
-      "deep-clean": "meson -E rm -rf build xpacks"
+      "deep-clean": "echo Not implemented"
+{% elsif buildGenerator == "autotools" -%},
+      "deep-clean": "rm -rf build xpacks"
 {% endif -%}
     },
     "buildConfigurations": {
@@ -89,6 +99,8 @@
 {% if buildGenerator == "cmake" -%}
           "buildType": "Debug"
 {% elsif buildGenerator == "meson" -%}
+          "buildType": "debug"
+{% elsif buildGenerator == "autotools" -%}
           "buildType": "debug"
 {% endif -%}
         },
@@ -107,6 +119,8 @@
 {% if buildGenerator == "cmake" -%}
           "buildType": "Release"
 {% elsif buildGenerator == "meson" -%}
+          "buildType": "release"
+{% elsif buildGenerator == "autotools" -%}
           "buildType": "release"
 {% endif -%}
         },
