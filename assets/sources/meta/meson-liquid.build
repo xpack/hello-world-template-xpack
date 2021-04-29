@@ -40,14 +40,19 @@ message('Project path: ' + xpack_project_folder)
 
 # -----------------------------------------------------------------------------
 
+# Monolithic build, no libraries; all sources are compiled in the same
+# context, with all headers and definitions.
+
 # All project source files.
 sourceFiles = files(
-  xpack_project_folder + '/src/hello-world.{{ fileExtension }}'
+  xpack_project_folder + '/src/hello-world.{{ fileExtension }}',
+  xpack_project_folder + '/libs/adder/src/add.c'
 )
 
 # All folders with header files.
 includeFolders = [ 
-  xpack_project_folder + '/include'
+  xpack_project_folder + '/include',
+  xpack_project_folder + '/libs/adder/include'
 ]
 
 # Compiler preprocessor definitions.
@@ -115,6 +120,9 @@ c_std = 'c11'
 # gnu++2a, gnu++20, vc++14, vc++17, vc++latest
 cpp_std = 'gnu++17'
 
+# -----------------------------------------------------------------------------
+
+# Create the application.
 {% endif -%}
 # https://mesonbuild.com/Reference-manual.html#executable
 application = executable(meson.project_name(), 
@@ -126,3 +134,5 @@ application = executable(meson.project_name(),
 {% endif -%}
   link_args: linker_options
 )
+
+# -----------------------------------------------------------------------------

@@ -10,23 +10,26 @@
 // ----------------------------------------------------------------------------
 
 #include "hello-world.h"
+#include "add/add.h"
 
 #include <stdio.h>
 
 int
-main(int argc, char* argv[])
+main (int argc, char* argv[])
 {
-  printf("%s\n", HELLO_WORLD_MESSAGE);
+  printf ("%s\n", HELLO_WORLD_MESSAGE);
 
 #if defined(DEBUG)
-  printf("%s\n", "(in debug mode)");
+  printf ("%s\n", "(in debug mode)");
 #else
-  printf("%s\n", "(in release mode)");
+  printf ("%s\n", "(in release mode)");
 #endif
 
 #if defined(NDEBUG)
-printf("%s\n", "(no asserts)");
+  printf ("%s\n", "(no asserts)");
 #endif
+
+  printf ("Check adder lib: 41 + 1 = %d\n", add (41, 1));
 
   return 0;
 }

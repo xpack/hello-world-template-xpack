@@ -51,7 +51,7 @@
 {% elsif buildGenerator == "meson" -%}
       {% raw %}"commandPrepare": "meson setup --backend ninja --buildtype {{ properties.buildType }} {{ properties.buildFolderRelativePath }} meta",
       "commandReconfigure": "meson setup --reconfigure {{ properties.buildFolderRelativePath }} meta",
-      "commandBuild": "meson compile -C {{ properties.buildFolderRelativePath }}",
+      "commandBuild": "meson compile -C {{ properties.buildFolderRelativePath }} -v",
       "commandClean": "meson compile -C {{ properties.buildFolderRelativePath }} --clean",{% endraw %}
 {% endif -%}
       {% raw %}"commandExecuteHello": "{{ properties.buildFolderRelativePath }}{% if os.platform == 'win32' %}\\{% else %}/{% endif %}hello-world"{% endraw %}

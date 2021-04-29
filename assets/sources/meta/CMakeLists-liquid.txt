@@ -106,6 +106,9 @@ add_link_options(
 # -----------------------------------------------------------------------------
 # Create the application.
 
+# Monolithic build, no libraries; all sources are compiled in the same
+# context, with all headers and definitions.
+
 add_executable(application)
 message(STATUS "==> application")
 
@@ -122,6 +125,7 @@ target_sources(
 
   PRIVATE
     ${xpack_project_folder}/src/hello-world.{{ fileExtension }}
+    ${xpack_project_folder}/libs/adder/src/add.c
 )
 
 # Application includes.
@@ -130,6 +134,7 @@ target_include_directories(
 
   PRIVATE
     ${xpack_project_folder}/include
+    ${xpack_project_folder}/libs/adder/include
 )
 
 # -----------------------------------------------------------------------------

@@ -9,29 +9,10 @@
 
 // ----------------------------------------------------------------------------
 
-#include "hello-world.h"
-#include "add/add.h"
-
-#include <iostream>
-
 int
-main (int argc, char* argv[])
+add (int a, int b)
 {
-  std::cout << HELLO_WORLD_MESSAGE << std::endl;
-
-#if defined(DEBUG)
-  std::cout << "(in debug mode)" << std::endl;
-#else
-  std::cout << "(in release mode)" << std::endl;
-#endif
-
-#if defined(NDEBUG)
-  std::cout << "(no asserts)" << std::endl;
-#endif
-
-  std::cout << "Check adder lib: 41 + 1 = " << add (41, 1) << std::endl;
-
-  return 0;
+  return a + b;
 }
 
 // ----------------------------------------------------------------------------

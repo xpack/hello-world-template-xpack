@@ -9,29 +9,25 @@
 
 // ----------------------------------------------------------------------------
 
-#include "hello-world.h"
-#include "add/add.h"
+#ifndef ADD_H_
+#define ADD_H_
 
-#include <iostream>
+#if defined(__cplusplus)
+extern "C"
+{
+#endif // defined(__cplusplus)
+
+// ----------------------------------------------------------------------------
 
 int
-main (int argc, char* argv[])
-{
-  std::cout << HELLO_WORLD_MESSAGE << std::endl;
+add (int a, int b);
 
-#if defined(DEBUG)
-  std::cout << "(in debug mode)" << std::endl;
-#else
-  std::cout << "(in release mode)" << std::endl;
-#endif
+// ----------------------------------------------------------------------------
 
-#if defined(NDEBUG)
-  std::cout << "(no asserts)" << std::endl;
-#endif
-
-  std::cout << "Check adder lib: 41 + 1 = " << add (41, 1) << std::endl;
-
-  return 0;
+#if defined(__cplusplus)
 }
+#endif // defined(__cplusplus)
+
+#endif // ADD_H_
 
 // ----------------------------------------------------------------------------
