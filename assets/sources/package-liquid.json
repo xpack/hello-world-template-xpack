@@ -40,6 +40,7 @@
     "@xpack-dev-tools/meson-build": "0.56.2-2.1",
     "@xpack-dev-tools/ninja-build": "1.10.2-3.1"
 {% elsif buildGenerator == "autotools" -%}
+    "@xpack-dev-tools/cmake": "3.19.2-2.1",
     "@xpack-dev-tools/windows-build-tools": "@4.2.1-2.1"
 {% endif -%}
   },
@@ -57,7 +58,7 @@
       "commandBuild": "meson compile -C {{ properties.buildFolderRelativePath }} -v",
       "commandClean": "meson compile -C {{ properties.buildFolderRelativePath }} --clean",{% endraw %}
 {% elsif buildGenerator == "autotools" -%}
-      {% raw %}"commandPrepare": "mkdir -p {{ properties.buildFolderRelativePath }} && cd {{ properties.buildFolderRelativePath }} && sh {% if os.platform == 'win32' %}..\\..\\meta\\configure ../..{% else %}../../meta/configure ../..{% endif %}",
+      {% raw %}"commandPrepare": "cmake -E make_directory {{ properties.buildFolderRelativePath }} && cd {{ properties.buildFolderRelativePath }} && sh {% if os.platform == 'win32' %}..\\..\\meta\\configure ../..{% else %}../../meta/configure ../..{% endif %}",
       "commandReconfigure": "{{ properties.commandPrepare }}",
       "commandBuild": "cd {{ properties.buildFolderRelativePath }}; make all BUILD_TYPE={{ properties.buildType }}",
       "commandClean": "cd {{ properties.buildFolderRelativePath }}; make clean BUILD_TYPE={{ properties.buildType }}",{% endraw %}
