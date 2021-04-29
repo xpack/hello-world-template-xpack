@@ -59,8 +59,7 @@
 {% elsif buildGenerator == "autotools" -%}
       {% raw %}"commandPrepare": [ 
         "mkdir -p {{ properties.buildFolderRelativePath }}",
-        "cd {{ properties.buildFolderRelativePath }}",
-        "sh {% if os.platform == 'win32' %}..\\..\\meta\\configure ..\\..{% else %}../../meta/configure ../..{% endif %}"
+        "cd {{ properties.buildFolderRelativePath }}; sh {% if os.platform == 'win32' %}..\\..\\meta\\configure ..\\..{% else %}../../meta/configure ../..{% endif %}"
       ],
       "commandReconfigure": "{{ properties.commandPrepare }}",
       "commandBuild": "cd {{ properties.buildFolderRelativePath }}; make all BUILD_TYPE={{ properties.buildType }}",
