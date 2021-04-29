@@ -1,3 +1,4 @@
-# Simple example, normally this should be a real configure script.
+# This is just a simple example, normally this should be a real
+# configure script.
 
 cp -rf $1/meta/make-template/* .
