@@ -45,6 +45,7 @@
 {% endif -%}
   },
   "xpack": {
+    "minimumXpmRequired": "0.9.1",
     "properties": { 
       {% raw %}"buildFolderRelativePath": "build{% if os.platform == 'win32' %}\\{% else %}/{% endif %}{{ configuration.name | downcase }}",{% endraw %}
 {% if buildGenerator == "cmake" -%}

@@ -1,3 +1,5 @@
+[![npm (scoped)](https://img.shields.io/npm/v/@xpack/hello-world-template)](https://www.npmjs.com/package/@xpack/hello-world-template)
+[![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/xpack/hello-world-template-xpack)](https://github.com/xpack/hello-world-template-xpack)
 [![license](https://img.shields.io/github/license/xpack/hello-world-template-xpack)](https://github.com/xpack/hello-world-template-xpack/blob/xpack/LICENSE)
 [![Node.js CI on Push](https://github.com/xpack/hello-world-template-xpack/actions/workflows/CI.yml/badge.svg)](https://github.com/xpack/hello-world-template-xpack/actions/workflows/CI.yml)
 
@@ -7,7 +9,9 @@ Generate simple _Hello World_
 projects to demonstrate the xPack Build framework.
 
 The project is hosted on GitHub as
-[micro-os-plus/hello-world-template-xpack](https://github.com/micro-os-plus/hello-world-template-xpack).
+[xpack/hello-world-template-xpack](https://github.com/xpack/hello-world-template-xpack),
+and is also available from npmjs.com as
+[@xpack/hello-world-template](https://www.npmjs.com/package/@xpack/hello-world-template).
 
 ## Features
 
@@ -15,11 +19,15 @@ This project generates multiple variants of the classical application
 that prints the _Hello World_ message on standard output.
 
 Both C and C++ are supported, with **CMake** and **meson** as system build
-generators.
+generators; it is also possible to create projects that use the legacy
+autotools & make, but only as a configuration demonstrator, for real
+projects the configuration needs further tweaks.
 
-This sub-project is part of [The xPack Project](https://github.com/xpack).
+The `hello-world-template` project is part of
+[The xPack Project](https://github.com/xpack).
 
-It is intended to be invoked by the **VSCode xPack Build extension** to
+It can be invoked in a terminal, but the main intended use was
+to be integrated into the **VS Code xPack Build extension**, to
 generate new projects.
 
 ## Prerequisites
@@ -35,7 +43,7 @@ npm install --global xpm@latest
 
 ### Template instantiation via `xpm init`
 
-Instantiating the template can be done via the `xpm init` command,
+Instantiating the template can be done via the `xpm init --template` command,
 pointing to this xPack.
 
 This command must be invoked in an empty folder, where the project
@@ -56,46 +64,52 @@ interactive mode and the user can manually enter each choice.
 % xpm init --template @xpack/hello-world-template
 
 Checking package @xpack/hello-world-template metadata...
-Processing @xpack/hello-world-template@0.1.3...
+Processing @xpack/hello-world-template@0.2.0...
 
-Programming language? (c, cpp, ?) [c]: 
-Build Generator? (cmake, meson, ?) [cmake]: 
+Programming language? (c, cpp, ?) [cpp]: 
+Build Generator? (cmake, meson, autotools, ?) [cmake]: 
 
-Creating the C project 'my-project'...
-File 'LICENSE' generated.
-File 'package.json' generated.
-File 'README.md' generated.
+Creating the C++ project 'cmake2'...
 File 'include/hello-world.h' copied.
-File 'src/hello-world.c' copied.
+File 'src/hello-world.cpp' copied.
+File 'libs/adder/include/add/add.h' copied.
+File 'libs/adder/src/add.c' copied.
 File 'meta/CMakeLists.txt' generated.
 File '.vscode/tasks.json' copied.
+File '.clang-format' copied.
+File 'README.md' generated.
+File 'LICENSE' generated.
+File 'package.json' generated.
 %
 ```
 
 #### Scriptable mode
 
-When used in scripts, it is possible to pass all required data on the
+When used in non-interractive environments, it is possible to pass
+all required data on the
 command line. The only mandatory property is `language`, all other
 have defaults.
 
 ```console
 % cd my-project
-% xpm init --template @xpack/hello-world-template --property language=c
+% xpm init --template @xpack/hello-world-template --property language=cpp
 
 Checking package @xpack/hello-world-template metadata...
-Processing @xpack/hello-world-template@0.1.3...
+Processing @xpack/hello-world-template@0.2.0...
 
 Creating the C project 'my-project'...
 - BuildGenerator=cmake
 
-Creating the C project 'my-project'...
-File 'LICENSE' generated.
-File 'package.json' generated.
-File 'README.md' generated.
 File 'include/hello-world.h' copied.
 File 'src/hello-world.c' copied.
+File 'libs/adder/include/add/add.h' copied.
+File 'libs/adder/src/add.c' copied.
 File 'meta/CMakeLists.txt' generated.
 File '.vscode/tasks.json' copied.
+File '.clang-format' copied.
+File 'README.md' generated.
+File 'LICENSE' generated.
+File 'package.json' generated.
 %
 ```
 
@@ -126,13 +140,13 @@ This is done by issuing the `xpm install` command in the project folder:
 
 The generated project includes dependencies to all build tools, except
 the toolchain, which must be available in a system location, such that
-CMake can find it.
+the system build generator can find it.
 
 ```console
 % cd my-project
 % xpm run test
-> xpm run build-all
-> xpm run build --config Debug
+> xpm run prepare-all
+> xpm run prepare --config Debug
 > cmake -S meta -B build/debug -G Ninja -D CMAKE_BUILD_TYPE=Debug -D CMAKE_EXPORT_COMPILE_COMMANDS=ON
 -- CMake version: 3.19.2-g60a09ee
 -- The C compiler identification is AppleClang 12.0.0.12000032
@@ -151,15 +165,13 @@ CMake can find it.
 -- Found assembler: /Library/Developer/CommandLineTools/usr/bin/cc
 -- Compiler: AppleClang 12.0.0.12000032
 -- Build type: Debug
--- Project path: /Users/ilg/my-project
--- PATH: /Users/ilg/my-project/xpacks/.bin:/Users/ilg/my-project/xpacks/.bin:/Users/ilg/my-project/xpacks/.bin:/Users/ilg/Library/Python/3.7/bin:/Library/Frameworks/Python.framework/Versions/3.7/bin:/Users/ilg/.nvm/versions/node/v14.16.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+-- Project path: /Users/ilg/tmp/my-project
+-- PATH: /Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/Library/Python/3.7/bin:/Library/Frameworks/Python.framework/Versions/3.7/bin:/Users/ilg/.nvm/versions/node/v14.16.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 -- ==> application
 -- Configuring done
 -- Generating done
--- Build files have been written to: /Users/ilg/my-project/build/debug
-> cmake --build build/debug
-[2/2] Linking C executable hello-world
-> xpm run build --config Release
+-- Build files have been written to: /Users/ilg/tmp/my-project/build/debug
+> xpm run prepare --config Release
 > cmake -S meta -B build/release -G Ninja -D CMAKE_BUILD_TYPE=Release -D CMAKE_EXPORT_COMPILE_COMMANDS=ON
 -- CMake version: 3.19.2-g60a09ee
 -- The C compiler identification is AppleClang 12.0.0.12000032
@@ -178,24 +190,55 @@ CMake can find it.
 -- Found assembler: /Library/Developer/CommandLineTools/usr/bin/cc
 -- Compiler: AppleClang 12.0.0.12000032
 -- Build type: Release
--- Project path: /Users/ilg/my-project
--- PATH: /Users/ilg/my-project/xpacks/.bin:/Users/ilg/my-project/xpacks/.bin:/Users/ilg/my-project/xpacks/.bin:/Users/ilg/Library/Python/3.7/bin:/Library/Frameworks/Python.framework/Versions/3.7/bin:/Users/ilg/.nvm/versions/node/v14.16.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+-- Project path: /Users/ilg/tmp/my-project
+-- PATH: /Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/Library/Python/3.7/bin:/Library/Frameworks/Python.framework/Versions/3.7/bin:/Users/ilg/.nvm/versions/node/v14.16.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 -- ==> application
 -- Configuring done
 -- Generating done
--- Build files have been written to: /Users/ilg/my-project/build/release
-> cmake --build build/release
-[2/2] Linking C executable hello-world
+-- Build files have been written to: /Users/ilg/tmp/my-project/build/release
+> xpm run build-all
+> xpm run build --config Debug
+> cmake -S meta -B build/debug -G Ninja -D CMAKE_BUILD_TYPE=Debug -D CMAKE_EXPORT_COMPILE_COMMANDS=ON
+-- CMake version: 3.19.2-g60a09ee
+-- Compiler: AppleClang 12.0.0.12000032
+-- Build type: Debug
+-- Project path: /Users/ilg/tmp/my-project
+-- PATH: /Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/Library/Python/3.7/bin:/Library/Frameworks/Python.framework/Versions/3.7/bin:/Users/ilg/.nvm/versions/node/v14.16.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+-- ==> application
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /Users/ilg/tmp/my-project/build/debug
+> cmake --build build/debug --verbose
+[1/3] /Library/Developer/CommandLineTools/usr/bin/cc -DDEBUG -I/Users/ilg/tmp/my-project/include -I/Users/ilg/tmp/my-project/libs/adder/include -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -flto -std=gnu11 -MD -MT CMakeFiles/application.dir/Users/ilg/tmp/my-project/libs/adder/src/add.c.o -MF CMakeFiles/application.dir/Users/ilg/tmp/my-project/libs/adder/src/add.c.o.d -o CMakeFiles/application.dir/Users/ilg/tmp/my-project/libs/adder/src/add.c.o -c /Users/ilg/tmp/my-project/libs/adder/src/add.c
+[2/3] /Library/Developer/CommandLineTools/usr/bin/c++ -DDEBUG -I/Users/ilg/tmp/my-project/include -I/Users/ilg/tmp/my-project/libs/adder/include -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -flto -std=gnu++17 -MD -MT CMakeFiles/application.dir/Users/ilg/tmp/my-project/src/hello-world.cpp.o -MF CMakeFiles/application.dir/Users/ilg/tmp/my-project/src/hello-world.cpp.o.d -o CMakeFiles/application.dir/Users/ilg/tmp/my-project/src/hello-world.cpp.o -c /Users/ilg/tmp/my-project/src/hello-world.cpp
+[3/3] : && /Library/Developer/CommandLineTools/usr/bin/c++ -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names -Wl,-dead_strip CMakeFiles/application.dir/Users/ilg/tmp/my-project/src/hello-world.cpp.o CMakeFiles/application.dir/Users/ilg/tmp/my-project/libs/adder/src/add.c.o -o hello-world   && :
+> xpm run build --config Release
+> cmake -S meta -B build/release -G Ninja -D CMAKE_BUILD_TYPE=Release -D CMAKE_EXPORT_COMPILE_COMMANDS=ON
+-- CMake version: 3.19.2-g60a09ee
+-- Compiler: AppleClang 12.0.0.12000032
+-- Build type: Release
+-- Project path: /Users/ilg/tmp/my-project
+-- PATH: /Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/Library/Python/3.7/bin:/Library/Frameworks/Python.framework/Versions/3.7/bin:/Users/ilg/.nvm/versions/node/v14.16.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+-- ==> application
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /Users/ilg/tmp/my-project/build/release
+> cmake --build build/release --verbose
+[1/3] /Library/Developer/CommandLineTools/usr/bin/cc  -I/Users/ilg/tmp/my-project/include -I/Users/ilg/tmp/my-project/libs/adder/include -O3 -DNDEBUG -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -flto -std=gnu11 -MD -MT CMakeFiles/application.dir/Users/ilg/tmp/my-project/libs/adder/src/add.c.o -MF CMakeFiles/application.dir/Users/ilg/tmp/my-project/libs/adder/src/add.c.o.d -o CMakeFiles/application.dir/Users/ilg/tmp/my-project/libs/adder/src/add.c.o -c /Users/ilg/tmp/my-project/libs/adder/src/add.c
+[2/3] /Library/Developer/CommandLineTools/usr/bin/c++  -I/Users/ilg/tmp/my-project/include -I/Users/ilg/tmp/my-project/libs/adder/include -O3 -DNDEBUG -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -flto -std=gnu++17 -MD -MT CMakeFiles/application.dir/Users/ilg/tmp/my-project/src/hello-world.cpp.o -MF CMakeFiles/application.dir/Users/ilg/tmp/my-project/src/hello-world.cpp.o.d -o CMakeFiles/application.dir/Users/ilg/tmp/my-project/src/hello-world.cpp.o -c /Users/ilg/tmp/my-project/src/hello-world.cpp
+[3/3] : && /Library/Developer/CommandLineTools/usr/bin/c++ -O3 -DNDEBUG -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names -Wl,-dead_strip CMakeFiles/application.dir/Users/ilg/tmp/my-project/src/hello-world.cpp.o CMakeFiles/application.dir/Users/ilg/tmp/my-project/libs/adder/src/add.c.o -o hello-world   && :
 > xpm run execute-all
 > xpm run execute --config Debug
 > build/debug/hello-world
 Hello World!
 (in debug mode)
+Check adder lib: 41 + 1 = 42
 > xpm run execute --config Release
 > build/release/hello-world
 Hello World!
 (in release mode)
 (no asserts)
+Check adder lib: 41 + 1 = 42
 %
 ```
 

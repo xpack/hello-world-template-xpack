@@ -6,6 +6,13 @@ Please check
 [GitHub](https://github.com/xpack/hello-world-template-xpack/issues/)
 and close existing issues and pull requests.
 
+## 2021-04-30
+
+- v0.2.0 released
+- add autotools & make support
+- add simple adder library
+- add meson support
+
 ## 2021-04-19
 
 - v0.1.3 released
