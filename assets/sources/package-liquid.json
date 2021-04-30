@@ -86,13 +86,7 @@
         "xpm run prepare-all",
         "xpm run build-all",
         "xpm run execute-all"
-      ]{% if buildGenerator == "cmake" -%},
-      "deep-clean": "cmake -E rm -rf build xpacks"
-{% elsif buildGenerator == "meson" -%},
-      "deep-clean": "echo Not implemented"
-{% elsif buildGenerator == "autotools" -%},
-      "deep-clean": "rm -rf build xpacks"
-{% endif -%}
+      ]
     },
     "buildConfigurations": {
       "Debug": {
