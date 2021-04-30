@@ -1,0 +1,27 @@
+{
+  "configurations": [
+    {
+      "name": "Debug",
+      "configurationProvider": "ms-vscode.makefile-tools",
+      "includePath": [
+        "${workspaceFolder}/include",
+        "${workspaceFolder}/libs/adder/include"
+      ],
+      "defines": [
+        "DEBUG"
+      ]
+    },
+    {
+      "name": "Release",
+      "configurationProvider": "ms-vscode.makefile-tools",
+      "includePath": [
+        "${workspaceFolder}/include",
+        "${workspaceFolder}/libs/adder/include"
+      ],
+      "defines": [
+        "NDEBUG"
+      ]
+    }
+  ],
+  "version": 4
+}
