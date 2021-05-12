@@ -83,7 +83,7 @@ npm run test
 ## Continuous Integration
 
 All available tests are also performed on GitHub Actions, as the
-[Node.js CI on Push](https://github.com/xpack/hello-world-template-xpack/actions/workflows/CI.yml)
+[CI on Push](https://github.com/xpack/hello-world-template-xpack/actions/workflows/CI.yml)
 workflow.
 
 ## Standard compliance
