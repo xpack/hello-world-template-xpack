@@ -47,37 +47,23 @@ Check GitHub issues and pull requests:
 - check the latest commits `npm run git-log`
 - open the `CHANGELOG.md` file
 - check if all previous fixed issues are in
-- commit with a message like _prepare v0.2.0_
-
-## Prepare a new blog post
-
-In the `xpack/web-jekyll` GitHub repo:
-
-- select the `develop` branch
-- add a new file to `_posts/hello-world-template-xpack/releases`
-- name the file like `2020-12-19-hello-world-template-xpack-v0-2-0-released.md`
-- name the post like: **hello-world-template-xpack v0.2.0 released**
-- update the `date:` field with the current date
-- update the GitHub Actions URLs using the actual test pages
-
-If any, refer to closed
-[issues](https://github.com/xpack/hello-world-template-xpack/issues/)
-as:
-
-- **[Issue:\[#1\]\(...\)]**.
+- commit with a message like _prepare v0.3.0_
 
 ## Publish on the npmjs.com server
 
 - select the `xpack-develop` branch
+- commit everything
+- `npm run fix`
 - commit all changes
-- update `CHANGELOG.md`; commit with a message like _CHANGELOG: prepare v0.2.0_
-- `npm pack` and check the content of the archive, which should list
+- `npm run test-coverage`
+- check the latest commits `npm run git-log`
+- `npm run pack`; check the content of the archive, which should list
   only the `package.json`, the `README.md`, `LICENSE`, `CHANGELOG.md`
   and the `assets`; possibly adjust `.npmignore`
 - `npm version patch`, `npm version minor`, `npm version major`
-- push the `xpack-develop` branch to GitHub
-- push the new tag, `git push origin --tags`
-- wait for CI to finish
+- push all changes to GitHub; this should trigger CI
+- **wait for CI tests to complete**
+- check <https://github.com/xpack/hello-world-template-xpack/actions/>
 - `npm publish --tag next` (use `--access public` when publishing for
   the first time)
 
@@ -117,7 +103,7 @@ When the package is considered stable:
 When the release is considered stable, promote it as `latest`:
 
 - `npm dist-tag ls @xpack/hello-world-template`
-- `npm dist-tag add @xpack/hello-world-template@0.2.0 latest`
+- `npm dist-tag add @xpack/hello-world-template@0.3.0 latest`
 - `npm dist-tag ls @@xpack/hello-world-template`
 
 ## Announce to the community
@@ -128,6 +114,6 @@ Post an announcement to the forum.
 
 - in a separate browser windows, open [TweetDeck](https://tweetdeck.twitter.com/)
 - using the `@xpack_project` account
-- paste the release name like **hello-world-template-xpack v0.2.0 released**
+- paste the release name like **hello-world-template-xpack v0.3.0 released**
 - paste the link to the Web page release
 - click the **Tweet** button

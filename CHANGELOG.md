@@ -6,6 +6,11 @@ Please check
 [GitHub](https://github.com/xpack/hello-world-template-xpack/issues/)
 and close existing issues and pull requests.
 
+## 2021-05-12
+
+- v0.3.0 released
+- update messages to use Build System
+
 ## 2021-04-30
 
 - v0.2.0 released

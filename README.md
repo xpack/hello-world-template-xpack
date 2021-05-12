@@ -18,7 +18,7 @@ and is also available from npmjs.com as
 This project generates multiple variants of the classical application
 that prints the _Hello World_ message on standard output.
 
-Both C and C++ are supported, with **CMake** and **meson** as system build
+Both C and C++ are supported, with **CMake** and **meson** as build system
 generators; it is also possible to create projects that use the legacy
 autotools & make, but only as a configuration demonstrator, for real
 projects the configuration needs further tweaks.
@@ -64,7 +64,7 @@ interactive mode and the user can manually enter each choice.
 % xpm init --template @xpack/hello-world-template
 
 Checking package @xpack/hello-world-template metadata...
-Processing @xpack/hello-world-template@0.2.0...
+Processing @xpack/hello-world-template@0.3.0...
 
 Programming language? (c, cpp, ?) [cpp]: 
 Build Generator? (cmake, meson, autotools, ?) [cmake]: 
@@ -95,7 +95,7 @@ have defaults.
 % xpm init --template @xpack/hello-world-template --property language=cpp
 
 Checking package @xpack/hello-world-template metadata...
-Processing @xpack/hello-world-template@0.2.0...
+Processing @xpack/hello-world-template@0.3.0...
 
 Creating the C project 'my-project'...
 - BuildGenerator=cmake
@@ -140,7 +140,7 @@ This is done by issuing the `xpm install` command in the project folder:
 
 The generated project includes dependencies to all build tools, except
 the toolchain, which must be available in a system location, such that
-the system build generator can find it.
+the build system generator can find it.
 
 ```console
 % cd my-project
