@@ -33,6 +33,7 @@
   "config": {},
   "dependencies": {},
   "devDependencies": {
+    "@xpack-dev-tools/gcc": "8.5.0-1.1",
 {% if buildGenerator == "cmake" -%}
     "@xpack-dev-tools/cmake": "3.19.2-2.1",
     "@xpack-dev-tools/ninja-build": "1.10.2-3.1"
