@@ -106,10 +106,6 @@ When the release is considered stable, promote it as `latest`:
 - `npm dist-tag add @xpack/hello-world-template@0.3.0 latest`
 - `npm dist-tag ls @@xpack/hello-world-template`
 
-## Announce to the community
-
-Post an announcement to the forum.
-
 ## Share on Twitter
 
 - in a separate browser windows, open [TweetDeck](https://tweetdeck.twitter.com/)
