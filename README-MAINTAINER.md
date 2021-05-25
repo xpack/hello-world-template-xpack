@@ -55,7 +55,7 @@ Check GitHub issues and pull requests:
 - commit everything
 - `npm run fix`
 - commit all changes
-- `npm run test-coverage`
+- `npm run test`
 - check the latest commits `npm run git-log`
 - `npm run pack`; check the content of the archive, which should list
   only the `package.json`, the `README.md`, `LICENSE`, `CHANGELOG.md`
