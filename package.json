@@ -1,6 +1,6 @@
 {
   "name": "@xpack/hello-world-template",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "A source xPack / npm package with a template to generate Hello World projects",
   "main": "./index.js",
   "scripts": {
