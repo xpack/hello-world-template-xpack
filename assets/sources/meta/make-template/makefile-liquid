@@ -15,6 +15,13 @@ LD := $(CC)
 LD := $(CXX)
 {% endif %}
 
+ifeq ($(OS),Windows_NT)
+    uname_s := Windows
+else
+    # Darwin, Linux
+    uname_s := $(shell uname -s)
+endif
+
 PROJECT_NAME := hello-world
 
 CPPFLAGS := -I"../../include" -I"../../libs/adder/include"
@@ -32,7 +39,15 @@ CFLAGS := $(COMMON_FLAGS)
 CXXFLAGS := $(COMMON_FLAGS)
 
 LDFLAGS := $(COMMON_FLAGS)
-# Add -Wl,--gc-sections for GCC or -Wl,-dead_strip for clang
+
+ifeq ($(uname_s), Darwin)
+  # macOS always uses the Apple linker, regarless of the compiler.
+  LDFLAGS += -Wl,-dead_strip
+else
+  # TODO: adjust for Microsoft cl
+  LDFLAGS += -Wl,-gc-sections
+endif
+
 
 # -----------------------------------------------------------------------------
 

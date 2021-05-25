@@ -96,18 +96,22 @@ cpp_compiler_options=compiler_definition + common_options
 {% endif -%}
 linker_options = common_options
 
-if compiler.get_id() == 'gcc'
-  linker_options += [
-    '-Wl,--gc-sections'
-  ]
-elif compiler.get_id().contains('clang')
+# https://mesonbuild.com/Reference-tables.html#operating-system-names
+if build_machine.system() == 'darwin'
+  # macOS always uses the Apple linker, regarless of the compiler.
   linker_options += [
     '-Wl,-dead_strip'
   ]
-elif compiler.get_id() == 'msvc'
-  linker_options += [
-    # Add MSVC options here.
-  ]
+else
+  if compiler.get_id() == 'gcc'
+    linker_options += [
+      '-Wl,--gc-sections'
+    ]
+  elif compiler.get_id() == 'msvc'
+    linker_options += [
+      # Add MSVC options here.
+    ]
+  endif
 endif
 
 # https://mesonbuild.com/Builtin-options.html#compiler-options

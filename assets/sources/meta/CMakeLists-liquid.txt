@@ -50,6 +50,7 @@ get_filename_component(xpack_project_folder ${CMAKE_SOURCE_DIR} DIRECTORY)
 
 # -----------------------------------------------------------------------------
 
+# message(STATUS "Host system name: ${CMAKE_HOST_SYSTEM_NAME}")
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 message(STATUS "Project path: ${xpack_project_folder}")
 # message(STATUS "Prefix path: ${CMAKE_PREFIX_PATH}")
@@ -96,12 +97,20 @@ add_compile_options(
 
 add_link_options(
 
-  ${common_cpu_options}
-
-  $<$<C_COMPILER_ID:GNU>:-Wl,--gc-sections>
-  $<$<C_COMPILER_ID:Clang,AppleClang>:-Wl,-dead_strip>
-  # $<$<C_COMPILER_ID:MSVC>:> # Add MSVC options here.
+  ${common_options}
 )
+
+if("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "Darwin")
+  # macOS always uses the Apple linker, regarless of the compiler.
+  add_link_options(
+    -Wl,-dead_strip
+  )
+else()
+  add_link_options(
+    $<$<C_COMPILER_ID:GNU>:-Wl,--gc-sections>
+    # $<$<C_COMPILER_ID:MSVC>:> # Add MSVC options here.
+  )
+endif()
 
 # -----------------------------------------------------------------------------
 # Create the application.
