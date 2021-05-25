@@ -42,7 +42,7 @@ npm install --global xpm@latest
 If installing over a previous version fails, uninstall first:
 
 ```sh
-npm uninstall --global xpm@latest
+npm uninstall --global xpm
 npm install --global xpm@latest
 ```
 
