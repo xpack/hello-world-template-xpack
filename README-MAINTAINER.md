@@ -47,7 +47,7 @@ Check GitHub issues and pull requests:
 - check the latest commits `npm run git-log`
 - open the `CHANGELOG.md` file
 - check if all previous fixed issues are in
-- commit with a message like _prepare v0.3.0_
+- commit with a message like _prepare v0.4.0_
 
 ## Publish on the npmjs.com server
 
@@ -103,13 +103,13 @@ When the package is considered stable:
 When the release is considered stable, promote it as `latest`:
 
 - `npm dist-tag ls @xpack/hello-world-template`
-- `npm dist-tag add @xpack/hello-world-template@0.3.0 latest`
+- `npm dist-tag add @xpack/hello-world-template@0.4.0 latest`
 - `npm dist-tag ls @@xpack/hello-world-template`
 
 ## Share on Twitter
 
 - in a separate browser windows, open [TweetDeck](https://tweetdeck.twitter.com/)
 - using the `@xpack_project` account
-- paste the release name like **hello-world-template-xpack v0.3.0 released**
+- paste the release name like **hello-world-template-xpack v0.4.0 released**
 - paste the link to the Web page release
 - click the **Tweet** button

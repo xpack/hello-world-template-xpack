@@ -6,6 +6,12 @@ Please check
 [GitHub](https://github.com/xpack/hello-world-template-xpack/issues/)
 and close existing issues and pull requests.
 
+## 2021-05-25
+
+- v0.4.0 released
+- [#4] add support for xPack GCC
+- [#3] fix linker options on macOS
+
 ## 2021-05-12
 
 - v0.3.0 released
