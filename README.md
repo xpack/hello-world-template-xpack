@@ -39,6 +39,13 @@ A recent [xpm](https://xpack.github.io/xpm/), which is a portable
 npm install --global xpm@latest
 ```
 
+If installing over a previous version fails, uninstall first:
+
+```sh
+npm uninstall --global xpm@latest
+npm install --global xpm@latest
+```
+
 ## User info
 
 ### Template instantiation via `xpm init`
