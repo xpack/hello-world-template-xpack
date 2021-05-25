@@ -50,18 +50,33 @@
     "properties": { 
       {% raw %}"buildFolderRelativePath": "build{% if os.platform == 'win32' %}\\{% else %}/{% endif %}{{ configuration.name | downcase }}",{% endraw %}
 {% if buildGenerator == "cmake" -%}
-      {% raw %}"commandPrepare": "cmake -S meta -B {{ properties.buildFolderRelativePath }} -G Ninja -D CMAKE_BUILD_TYPE={{ properties.buildType }} -D CMAKE_EXPORT_COMPILE_COMMANDS=ON",
-      "commandReconfigure": "{{ properties.commandPrepare }}",
+{% if toolchain == "gcc" -%}
+      "toolchainFileName": "toolchain-gcc.cmake",
+{% endif -%}
+      {% raw %}"commandPrepare": "cmake -S meta -B {{ properties.buildFolderRelativePath }} -G Ninja -D CMAKE_BUILD_TYPE={{ properties.buildType }} -D CMAKE_EXPORT_COMPILE_COMMANDS=ON",{% endraw %}
+{% if toolchain == "gcc" -%}
+      {% raw %}"commandPrepareWithToolchain": "{{ properties.commandPrepare }} -D CMAKE_TOOLCHAIN_FILE={{ properties.toolchainFileName }}",{% endraw %}
+{% endif -%}
+      {% raw %}"commandReconfigure": "{{ properties.commandPrepare }}",
       "commandBuild": "cmake --build {{ properties.buildFolderRelativePath }} --verbose",
       "commandClean": "cmake --build {{ properties.buildFolderRelativePath }} --target clean",{% endraw %}
 {% elsif buildGenerator == "meson" -%}
-      {% raw %}"commandPrepare": "meson setup --backend ninja --buildtype {{ properties.buildType }} {{ properties.buildFolderRelativePath }} meta",
-      "commandReconfigure": "meson setup --reconfigure {{ properties.buildFolderRelativePath }} meta",
+{% if toolchain == "gcc" -%}
+      "toolchainFileName": "toolchain-gcc-meson.ini",
+{% endif -%}
+      {% raw %}"commandPrepare": "meson setup --backend ninja --buildtype {{ properties.buildType }} {{ properties.buildFolderRelativePath }} meta",{% endraw %}
+{% if toolchain == "gcc" -%}
+      {% raw %}"commandPrepareWithToolchain": "{{ properties.commandPrepare }} --native-file meta/{{ properties.toolchainFileName }}",{% endraw %}
+{% endif -%}
+      {% raw %}"commandReconfigure": "meson setup --reconfigure {{ properties.buildFolderRelativePath }} meta",
       "commandBuild": "meson compile -C {{ properties.buildFolderRelativePath }} -v",
       "commandClean": "meson compile -C {{ properties.buildFolderRelativePath }} --clean",{% endraw %}
 {% elsif buildGenerator == "autotools" -%}
-      {% raw %}"commandPrepare": "cmake -E make_directory {{ properties.buildFolderRelativePath }} && cd {{ properties.buildFolderRelativePath }} && sh {% if os.platform == 'win32' %}..\\..\\meta\\configure{% else %}../../meta/configure{% endif %} ../..",
-      "commandReconfigure": "{{ properties.commandPrepare }}",
+      {% raw %}"commandPrepare": "cmake -E make_directory {{ properties.buildFolderRelativePath }} && cd {{ properties.buildFolderRelativePath }} && sh {% if os.platform == 'win32' %}..\\..\\meta\\configure{% else %}../../meta/configure{% endif %} ../..",{% endraw %}
+{% if toolchain == "gcc" -%}
+      {% raw %}"commandPrepareWithToolchain": "{{ properties.commandPrepare }}",{% endraw %}
+{% endif -%}
+      {% raw %}"commandReconfigure": "{{ properties.commandPrepare }}",
       "commandBuild": "cd {{ properties.buildFolderRelativePath }} && make all BUILD_TYPE={{ properties.buildType }}",
       "commandClean": "cd {{ properties.buildFolderRelativePath }} && make clean BUILD_TYPE={{ properties.buildType }}",{% endraw %}
 {% endif -%}
@@ -102,8 +117,12 @@
 {% endif -%}
         },
         "actions": {
-          {% raw %}"prepare": "{{ properties.commandPrepare }}",
-          "build": [
+{% if toolchain == "gcc" -%}
+          {% raw %}"prepare": "{{ properties.commandPrepareWithToolchain }}",{% endraw %}
+{% else -%}
+          {% raw %}"prepare": "{{ properties.commandPrepare }}",{% endraw %}
+{% endif -%}
+          {% raw %}"build": [
             "{{ properties.commandReconfigure }}",
             "{{ properties.commandBuild }}"
           ],
@@ -122,8 +141,12 @@
 {% endif -%}
         },
         "actions": {
-          {% raw %}"prepare": "{{ properties.commandPrepare }}",
-          "build": [
+{% if toolchain == "gcc" -%}
+          {% raw %}"prepare": "{{ properties.commandPrepareWithToolchain }}",{% endraw %}
+{% else -%}
+          {% raw %}"prepare": "{{ properties.commandPrepare }}",{% endraw %}
+{% endif -%}
+          {% raw %}"build": [
             "{{ properties.commandReconfigure }}",
             "{{ properties.commandBuild }}"
           ],
