@@ -73,9 +73,20 @@ The version is visible at:
 
 ## Testing
 
-The project includes unit tests.
+The first test is via `xpm init`
 
-To run them, run:
+```sh
+mkdir -p ~/tmp/test-hello
+cd ~/tmp/test-hello
+xpm init --template @xpack/hello-world-template@next --property language=cpp
+xpm install
+xpm run test
+```
+
+The project also includes unit tests, which create multiple projects,
+with combinations of properties.
+
+To run them, use:
 
 ```sh
 cd hello-world-template-xpack.git
