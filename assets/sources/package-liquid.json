@@ -35,13 +35,13 @@
   "devDependencies": {
     "@xpack-dev-tools/gcc": "8.5.0-1.1",
 {% if buildGenerator == "cmake" -%}
-    "@xpack-dev-tools/cmake": "3.19.2-2.1",
+    "@xpack-dev-tools/cmake": "3.19.8-1.1",
     "@xpack-dev-tools/ninja-build": "1.10.2-3.1"
 {% elsif buildGenerator == "meson" -%}
     "@xpack-dev-tools/meson-build": "0.56.2-2.1",
     "@xpack-dev-tools/ninja-build": "1.10.2-3.1"
 {% elsif buildGenerator == "autotools" -%}
-    "@xpack-dev-tools/cmake": "3.19.2-2.1",
+    "@xpack-dev-tools/cmake": "3.19.8-1.1",
     "@xpack-dev-tools/windows-build-tools": "4.2.1-2.1"
 {% endif -%}
   },
