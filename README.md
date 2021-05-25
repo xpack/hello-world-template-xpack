@@ -67,21 +67,24 @@ Starting the tool without defining the programming language will select the
 interactive mode and the user can manually enter each choice.
 
 ```console
+% mkdir my-project
 % cd my-project
-% xpm init --template @xpack/hello-world-template
+% xpm init --template @xpack/hello-world-template@latest
 
-Checking package @xpack/hello-world-template metadata...
+Checking package @xpack/hello-world-template@latest metadata...
+Installing @xpack/hello-world-template@0.4.0...
 Processing @xpack/hello-world-template@0.4.0...
 
 Programming language? (c, cpp, ?) [cpp]: 
-Build Generator? (cmake, meson, autotools, ?) [cmake]: 
-
-Creating the C++ project 'cmake2'...
+Build System? (cmake, meson, autotools, ?) [cmake]: 
+Toolchain? (gcc, system, ?) [gcc]: 
+Creating the C++ project 'my-project'...
 File 'include/hello-world.h' copied.
 File 'src/hello-world.cpp' copied.
 File 'libs/adder/include/add/add.h' copied.
 File 'libs/adder/src/add.c' copied.
 File 'meta/CMakeLists.txt' generated.
+File 'meta/toolchain-gcc.cmake' copied.
 File '.vscode/tasks.json' copied.
 File '.clang-format' copied.
 File 'README.md' generated.
@@ -99,19 +102,21 @@ have defaults.
 
 ```console
 % cd my-project
-% xpm init --template @xpack/hello-world-template --property language=cpp
+% xpm init --template @xpack/hello-world-template@latest --property language=cpp
 
-Checking package @xpack/hello-world-template metadata...
+Installing @xpack/hello-world-template@0.4.0...
 Processing @xpack/hello-world-template@0.4.0...
 
-Creating the C project 'my-project'...
-- BuildGenerator=cmake
+Creating the C++ project 'my-project'...
+- buildGenerator=cmake
+- toolchain=gcc
 
 File 'include/hello-world.h' copied.
-File 'src/hello-world.c' copied.
+File 'src/hello-world.cpp' copied.
 File 'libs/adder/include/add/add.h' copied.
 File 'libs/adder/src/add.c' copied.
 File 'meta/CMakeLists.txt' generated.
+File 'meta/toolchain-gcc.cmake' copied.
 File '.vscode/tasks.json' copied.
 File '.clang-format' copied.
 File 'README.md' generated.
@@ -131,19 +136,29 @@ This is done by issuing the `xpm install` command in the project folder:
 % cd my-project
 % xpm install
 @my-scope/my-project...
-+ @xpack-dev-tools/cmake@3.19.2-2.1
-+ @xpack-dev-tools/ninja-build@1.10.2-2.1
-'xpacks/xpack-dev-tools-cmake' -> '/Users/ilg/Library/xPacks/@xpack-dev-tools/cmake/3.19.2-2.1'
-'xpacks/xpack-dev-tools-ninja-build' -> '/Users/ilg/Library/xPacks/@xpack-dev-tools/ninja-build/1.10.2-2.1'
++ @xpack-dev-tools/cmake@3.19.8-1.1
++ @xpack-dev-tools/gcc@8.5.0-1.1
++ @xpack-dev-tools/ninja-build@1.10.2-3.1
+'xpacks/xpack-dev-tools-cmake' -> '/Users/ilg/Library/xPacks/@xpack-dev-tools/cmake/3.19.8-1.1'
+'xpacks/xpack-dev-tools-gcc' -> '/Users/ilg/Library/xPacks/@xpack-dev-tools/gcc/8.5.0-1.1'
+'xpacks/xpack-dev-tools-ninja-build' -> '/Users/ilg/Library/xPacks/@xpack-dev-tools/ninja-build/1.10.2-3.1'
 'xpacks/.bin/ccmake' -> '../xpack-dev-tools-cmake/.content/bin/ccmake'
 'xpacks/.bin/ninja' -> '../xpack-dev-tools-ninja-build/.content/bin/ninja'
 'xpacks/.bin/cmake' -> '../xpack-dev-tools-cmake/.content/bin/cmake'
+'xpacks/.bin/c++' -> '../xpack-dev-tools-gcc/.content/bin/c++'
 'xpacks/.bin/cpack' -> '../xpack-dev-tools-cmake/.content/bin/cpack'
 'xpacks/.bin/ctest' -> '../xpack-dev-tools-cmake/.content/bin/ctest'
+'xpacks/.bin/cpp' -> '../xpack-dev-tools-gcc/.content/bin/cpp'
+'xpacks/.bin/g++' -> '../xpack-dev-tools-gcc/.content/bin/g++'
+'xpacks/.bin/gcc' -> '../xpack-dev-tools-gcc/.content/bin/gcc'
+'xpacks/.bin/gcov' -> '../xpack-dev-tools-gcc/.content/bin/gcov'
+'xpacks/.bin/gcov-dump' -> '../xpack-dev-tools-gcc/.content/bin/gcov-dump'
+'xpacks/.bin/gcov-tool' -> '../xpack-dev-tools-gcc/.content/bin/gcov-tool'
+'xpacks/.bin/gfortran' -> '../xpack-dev-tools-gcc/.content/bin/gfortran'
 % 
 ```
 
-## Build and test
+### Build and test
 
 The generated project includes dependencies to all build tools, except
 the toolchain, which must be available in a system location, such that
@@ -154,23 +169,23 @@ the build system generator can find it.
 % xpm run test
 > xpm run prepare-all
 > xpm run prepare --config Debug
-> cmake -S meta -B build/debug -G Ninja -D CMAKE_BUILD_TYPE=Debug -D CMAKE_EXPORT_COMPILE_COMMANDS=ON
--- CMake version: 3.19.2-g60a09ee
--- The C compiler identification is AppleClang 12.0.0.12000032
+> cmake -S meta -B build/debug -G Ninja -D CMAKE_BUILD_TYPE=Debug -D CMAKE_EXPORT_COMPILE_COMMANDS=ON -D CMAKE_TOOLCHAIN_FILE=toolchain-gcc.cmake
+-- CMake version: 3.19.8-g290a19d
+-- The C compiler identification is GNU 8.5.0
 -- Detecting C compiler ABI info
 -- Detecting C compiler ABI info - done
--- Check for working C compiler: /Library/Developer/CommandLineTools/usr/bin/cc - skipped
+-- Check for working C compiler: /Users/ilg/tmp/my-project/xpacks/.bin/gcc - skipped
 -- Detecting C compile features
 -- Detecting C compile features - done
--- The CXX compiler identification is AppleClang 12.0.0.12000032
+-- The CXX compiler identification is GNU 8.5.0
 -- Detecting CXX compiler ABI info
 -- Detecting CXX compiler ABI info - done
--- Check for working CXX compiler: /Library/Developer/CommandLineTools/usr/bin/c++ - skipped
+-- Check for working CXX compiler: /Users/ilg/tmp/my-project/xpacks/.bin/g++ - skipped
 -- Detecting CXX compile features
 -- Detecting CXX compile features - done
--- The ASM compiler identification is Clang
--- Found assembler: /Library/Developer/CommandLineTools/usr/bin/cc
--- Compiler: AppleClang 12.0.0.12000032
+-- The ASM compiler identification is GNU
+-- Found assembler: /Users/ilg/tmp/my-project/xpacks/.bin/gcc
+-- Compiler: GNU 8.5.0
 -- Build type: Debug
 -- Project path: /Users/ilg/tmp/my-project
 -- PATH: /Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/Library/Python/3.7/bin:/Library/Frameworks/Python.framework/Versions/3.7/bin:/Users/ilg/.nvm/versions/node/v14.16.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
@@ -179,23 +194,23 @@ the build system generator can find it.
 -- Generating done
 -- Build files have been written to: /Users/ilg/tmp/my-project/build/debug
 > xpm run prepare --config Release
-> cmake -S meta -B build/release -G Ninja -D CMAKE_BUILD_TYPE=Release -D CMAKE_EXPORT_COMPILE_COMMANDS=ON
--- CMake version: 3.19.2-g60a09ee
--- The C compiler identification is AppleClang 12.0.0.12000032
+> cmake -S meta -B build/release -G Ninja -D CMAKE_BUILD_TYPE=Release -D CMAKE_EXPORT_COMPILE_COMMANDS=ON -D CMAKE_TOOLCHAIN_FILE=toolchain-gcc.cmake
+-- CMake version: 3.19.8-g290a19d
+-- The C compiler identification is GNU 8.5.0
 -- Detecting C compiler ABI info
 -- Detecting C compiler ABI info - done
--- Check for working C compiler: /Library/Developer/CommandLineTools/usr/bin/cc - skipped
+-- Check for working C compiler: /Users/ilg/tmp/my-project/xpacks/.bin/gcc - skipped
 -- Detecting C compile features
 -- Detecting C compile features - done
--- The CXX compiler identification is AppleClang 12.0.0.12000032
+-- The CXX compiler identification is GNU 8.5.0
 -- Detecting CXX compiler ABI info
 -- Detecting CXX compiler ABI info - done
--- Check for working CXX compiler: /Library/Developer/CommandLineTools/usr/bin/c++ - skipped
+-- Check for working CXX compiler: /Users/ilg/tmp/my-project/xpacks/.bin/g++ - skipped
 -- Detecting CXX compile features
 -- Detecting CXX compile features - done
--- The ASM compiler identification is Clang
--- Found assembler: /Library/Developer/CommandLineTools/usr/bin/cc
--- Compiler: AppleClang 12.0.0.12000032
+-- The ASM compiler identification is GNU
+-- Found assembler: /Users/ilg/tmp/my-project/xpacks/.bin/gcc
+-- Compiler: GNU 8.5.0
 -- Build type: Release
 -- Project path: /Users/ilg/tmp/my-project
 -- PATH: /Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/Library/Python/3.7/bin:/Library/Frameworks/Python.framework/Versions/3.7/bin:/Users/ilg/.nvm/versions/node/v14.16.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
@@ -206,8 +221,8 @@ the build system generator can find it.
 > xpm run build-all
 > xpm run build --config Debug
 > cmake -S meta -B build/debug -G Ninja -D CMAKE_BUILD_TYPE=Debug -D CMAKE_EXPORT_COMPILE_COMMANDS=ON
--- CMake version: 3.19.2-g60a09ee
--- Compiler: AppleClang 12.0.0.12000032
+-- CMake version: 3.19.8-g290a19d
+-- Compiler: GNU 8.5.0
 -- Build type: Debug
 -- Project path: /Users/ilg/tmp/my-project
 -- PATH: /Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/Library/Python/3.7/bin:/Library/Frameworks/Python.framework/Versions/3.7/bin:/Users/ilg/.nvm/versions/node/v14.16.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
@@ -216,13 +231,13 @@ the build system generator can find it.
 -- Generating done
 -- Build files have been written to: /Users/ilg/tmp/my-project/build/debug
 > cmake --build build/debug --verbose
-[1/3] /Library/Developer/CommandLineTools/usr/bin/cc -DDEBUG -I/Users/ilg/tmp/my-project/include -I/Users/ilg/tmp/my-project/libs/adder/include -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -flto -std=gnu11 -MD -MT CMakeFiles/application.dir/Users/ilg/tmp/my-project/libs/adder/src/add.c.o -MF CMakeFiles/application.dir/Users/ilg/tmp/my-project/libs/adder/src/add.c.o.d -o CMakeFiles/application.dir/Users/ilg/tmp/my-project/libs/adder/src/add.c.o -c /Users/ilg/tmp/my-project/libs/adder/src/add.c
-[2/3] /Library/Developer/CommandLineTools/usr/bin/c++ -DDEBUG -I/Users/ilg/tmp/my-project/include -I/Users/ilg/tmp/my-project/libs/adder/include -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -flto -std=gnu++17 -MD -MT CMakeFiles/application.dir/Users/ilg/tmp/my-project/src/hello-world.cpp.o -MF CMakeFiles/application.dir/Users/ilg/tmp/my-project/src/hello-world.cpp.o.d -o CMakeFiles/application.dir/Users/ilg/tmp/my-project/src/hello-world.cpp.o -c /Users/ilg/tmp/my-project/src/hello-world.cpp
-[3/3] : && /Library/Developer/CommandLineTools/usr/bin/c++ -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names -Wl,-dead_strip CMakeFiles/application.dir/Users/ilg/tmp/my-project/src/hello-world.cpp.o CMakeFiles/application.dir/Users/ilg/tmp/my-project/libs/adder/src/add.c.o -o hello-world   && :
+[1/3] /Users/ilg/tmp/my-project/xpacks/.bin/gcc -DDEBUG -I/Users/ilg/tmp/my-project/include -I/Users/ilg/tmp/my-project/libs/adder/include -O0 -g3 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -flto -std=gnu11 -MD -MT CMakeFiles/application.dir/Users/ilg/tmp/my-project/libs/adder/src/add.c.obj -MF CMakeFiles/application.dir/Users/ilg/tmp/my-project/libs/adder/src/add.c.obj.d -o CMakeFiles/application.dir/Users/ilg/tmp/my-project/libs/adder/src/add.c.obj -c /Users/ilg/tmp/my-project/libs/adder/src/add.c
+[2/3] /Users/ilg/tmp/my-project/xpacks/.bin/g++ -DDEBUG -I/Users/ilg/tmp/my-project/include -I/Users/ilg/tmp/my-project/libs/adder/include -O0 -g3 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -flto -std=gnu++17 -MD -MT CMakeFiles/application.dir/Users/ilg/tmp/my-project/src/hello-world.cpp.obj -MF CMakeFiles/application.dir/Users/ilg/tmp/my-project/src/hello-world.cpp.obj.d -o CMakeFiles/application.dir/Users/ilg/tmp/my-project/src/hello-world.cpp.obj -c /Users/ilg/tmp/my-project/src/hello-world.cpp
+[3/3] : && /Users/ilg/tmp/my-project/xpacks/.bin/g++ -O0 -g3 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -flto -Wl,-dead_strip CMakeFiles/application.dir/Users/ilg/tmp/my-project/src/hello-world.cpp.obj CMakeFiles/application.dir/Users/ilg/tmp/my-project/libs/adder/src/add.c.obj -o hello-world   && :
 > xpm run build --config Release
 > cmake -S meta -B build/release -G Ninja -D CMAKE_BUILD_TYPE=Release -D CMAKE_EXPORT_COMPILE_COMMANDS=ON
--- CMake version: 3.19.2-g60a09ee
--- Compiler: AppleClang 12.0.0.12000032
+-- CMake version: 3.19.8-g290a19d
+-- Compiler: GNU 8.5.0
 -- Build type: Release
 -- Project path: /Users/ilg/tmp/my-project
 -- PATH: /Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/Library/Python/3.7/bin:/Library/Frameworks/Python.framework/Versions/3.7/bin:/Users/ilg/.nvm/versions/node/v14.16.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
@@ -231,9 +246,9 @@ the build system generator can find it.
 -- Generating done
 -- Build files have been written to: /Users/ilg/tmp/my-project/build/release
 > cmake --build build/release --verbose
-[1/3] /Library/Developer/CommandLineTools/usr/bin/cc  -I/Users/ilg/tmp/my-project/include -I/Users/ilg/tmp/my-project/libs/adder/include -O3 -DNDEBUG -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -flto -std=gnu11 -MD -MT CMakeFiles/application.dir/Users/ilg/tmp/my-project/libs/adder/src/add.c.o -MF CMakeFiles/application.dir/Users/ilg/tmp/my-project/libs/adder/src/add.c.o.d -o CMakeFiles/application.dir/Users/ilg/tmp/my-project/libs/adder/src/add.c.o -c /Users/ilg/tmp/my-project/libs/adder/src/add.c
-[2/3] /Library/Developer/CommandLineTools/usr/bin/c++  -I/Users/ilg/tmp/my-project/include -I/Users/ilg/tmp/my-project/libs/adder/include -O3 -DNDEBUG -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -flto -std=gnu++17 -MD -MT CMakeFiles/application.dir/Users/ilg/tmp/my-project/src/hello-world.cpp.o -MF CMakeFiles/application.dir/Users/ilg/tmp/my-project/src/hello-world.cpp.o.d -o CMakeFiles/application.dir/Users/ilg/tmp/my-project/src/hello-world.cpp.o -c /Users/ilg/tmp/my-project/src/hello-world.cpp
-[3/3] : && /Library/Developer/CommandLineTools/usr/bin/c++ -O3 -DNDEBUG -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names -Wl,-dead_strip CMakeFiles/application.dir/Users/ilg/tmp/my-project/src/hello-world.cpp.o CMakeFiles/application.dir/Users/ilg/tmp/my-project/libs/adder/src/add.c.o -o hello-world   && :
+[1/3] /Users/ilg/tmp/my-project/xpacks/.bin/gcc  -I/Users/ilg/tmp/my-project/include -I/Users/ilg/tmp/my-project/libs/adder/include -O3 -DNDEBUG -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -flto -std=gnu11 -MD -MT CMakeFiles/application.dir/Users/ilg/tmp/my-project/libs/adder/src/add.c.obj -MF CMakeFiles/application.dir/Users/ilg/tmp/my-project/libs/adder/src/add.c.obj.d -o CMakeFiles/application.dir/Users/ilg/tmp/my-project/libs/adder/src/add.c.obj -c /Users/ilg/tmp/my-project/libs/adder/src/add.c
+[2/3] /Users/ilg/tmp/my-project/xpacks/.bin/g++  -I/Users/ilg/tmp/my-project/include -I/Users/ilg/tmp/my-project/libs/adder/include -O3 -DNDEBUG -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -flto -std=gnu++17 -MD -MT CMakeFiles/application.dir/Users/ilg/tmp/my-project/src/hello-world.cpp.obj -MF CMakeFiles/application.dir/Users/ilg/tmp/my-project/src/hello-world.cpp.obj.d -o CMakeFiles/application.dir/Users/ilg/tmp/my-project/src/hello-world.cpp.obj -c /Users/ilg/tmp/my-project/src/hello-world.cpp
+[3/3] : && /Users/ilg/tmp/my-project/xpacks/.bin/g++ -O3 -DNDEBUG -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -flto -Wl,-dead_strip CMakeFiles/application.dir/Users/ilg/tmp/my-project/src/hello-world.cpp.obj CMakeFiles/application.dir/Users/ilg/tmp/my-project/libs/adder/src/add.c.obj -o hello-world   && :
 > xpm run execute-all
 > xpm run execute --config Debug
 > build/debug/hello-world
@@ -249,11 +264,19 @@ Check adder lib: 41 + 1 = 42
 %
 ```
 
+### Toolchain
+
+By default, the generated projects use the **xPack GNU Compiler Collection**,
+which is a cross-platform GCC.
+
+It is also possible to use the compiler available in the system.
+
 ### Windows specifics
 
 On Windows the projects generated by the template were tested with:
 
-- the Microsoft C/C++ compiler, installed from the
+- the **xPack GNU Compiler Collection** 8.5.0-1.1
+- the **Microsoft C/C++ compiler**, installed from the
 [Build Tools for Visual Studio 2019](https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2019),
 - GCC, installed with [Chocolatey](https://chocolatey.org), on GitHub Actions
 
