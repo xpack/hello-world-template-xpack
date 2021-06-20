@@ -14,9 +14,8 @@ Before making the release, perform some checks and tweaks.
 ### Update npm packages
 
 - `npm outdated`
-- `npm update`
-- repeat and possibly manually edit `package.json` until everything is
-  up to date
+- edit `package.json`  and `npm install`
+- repeat until everything is up to date
 
 ### Check Git
 
@@ -29,6 +28,8 @@ In this Git repo:
 ### Determine the next version
 
 Use the semantic versioning semantics.
+
+Edit `package.json` to this version suffixed by `-pre`.
 
 ### Fix possible open issues
 
