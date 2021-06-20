@@ -29,8 +29,8 @@ compiler = meson.get_compiler('c')
 # -----------------------------------------------------------------------------
 
 # A generic way to handle having the metadata files grouped in a folder.
-xpack_project_folder = fs.parent(meson.current_source_dir())
-# xpack_project_folder = meson.current_source_dir()
+# xpack_project_folder = fs.parent(meson.current_source_dir())
+xpack_project_folder = meson.current_source_dir()
 
 # -----------------------------------------------------------------------------
 
@@ -45,14 +45,12 @@ message('Project path: ' + xpack_project_folder)
 
 # All project source files.
 sourceFiles = files(
-  xpack_project_folder + '/src/hello-world.{{ fileExtension }}',
-  xpack_project_folder + '/libs/adder/src/add.c'
+  'src/hello-world.{{ fileExtension }}',
 )
 
 # All folders with header files.
 includeFolders = [ 
-  xpack_project_folder + '/include',
-  xpack_project_folder + '/libs/adder/include'
+  'include',
 ]
 
 # Compiler preprocessor definitions.
@@ -73,15 +71,25 @@ common_options = []
 if compiler.get_id() == 'gcc' or compiler.get_id().contains('clang')
   common_options += [
     '-fmessage-length=0',
-    '-fsigned-char',
+    '-fsigned-char'
+  ]
+  # This is used in conjunction with linker `--gc-sections`.
+  common_options += [
     '-ffunction-sections',
     '-fdata-sections'
   ]
 
+  if get_option('buildtype') == 'release' or get_option('buildtype') == 'debugoptimized'
   # Optional, comment it out to disable link time optimizations.
-  common_options += [
-    '-flto'
-  ]
+    common_options += [
+      '-flto'
+    ]
+  endif
+  if get_option('buildtype').contains('debug')
+    common_options += [
+      '-fno-omit-frame-pointer'
+    ]
+  endif
 elif compiler.get_id() == 'msvc'
   common_options += [
     # Add MSVC options here.
@@ -102,8 +110,9 @@ if build_machine.system() == 'darwin'
   linker_options += [
     '-Wl,-dead_strip'
   ]
-else
+else # Linux or Windows
   if compiler.get_id() == 'gcc'
+    # TODO: clang with gold might need it too.
     linker_options += [
       '-Wl,--gc-sections'
     ]
@@ -124,14 +133,21 @@ c_std = 'c11'
 # gnu++2a, gnu++20, vc++14, vc++17, vc++latest
 cpp_std = 'gnu++17'
 
+{% endif -%}
+# -----------------------------------------------------------------------------
+
+# https://mesonbuild.com/Reference-manual.html#subdir
+subdir('libs')
+
 # -----------------------------------------------------------------------------
 
 # Create the application.
-{% endif -%}
 # https://mesonbuild.com/Reference-manual.html#executable
 application = executable(meson.project_name(), 
   sources: sourceFiles,
   include_directories: includeFolders,
+  dependencies: [adderLibraryDependency],
+  link_with: [adderLibrary],
   c_args: c_compiler_options,
 {% if language == 'cpp' -%}
   cpp_args: cpp_compiler_options,

@@ -64,11 +64,11 @@
 {% if toolchain == "gcc" -%}
       "toolchainFileName": "toolchain-gcc-meson.ini",
 {% endif -%}
-      {% raw %}"commandPrepare": "meson setup --backend ninja --buildtype {{ properties.buildType }} {{ properties.buildFolderRelativePath }} meta",{% endraw %}
+      {% raw %}"commandPrepare": "meson setup --backend ninja --buildtype {{ properties.buildType }} {{ properties.buildFolderRelativePath }} .",{% endraw %}
 {% if toolchain == "gcc" -%}
       {% raw %}"commandPrepareWithToolchain": "{{ properties.commandPrepare }} --native-file meta/{{ properties.toolchainFileName }}",{% endraw %}
 {% endif -%}
-      {% raw %}"commandReconfigure": "meson setup --reconfigure {{ properties.buildFolderRelativePath }} meta",
+      {% raw %}"commandReconfigure": "meson setup --reconfigure {{ properties.buildFolderRelativePath }} .",
       "commandBuild": "meson compile -C {{ properties.buildFolderRelativePath }} -v",
       "commandClean": "meson compile -C {{ properties.buildFolderRelativePath }} --clean",{% endraw %}
 {% elsif buildGenerator == "autotools" -%}
