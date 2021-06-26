@@ -48,7 +48,7 @@ Check GitHub issues and pull requests:
 - check the latest commits `npm run git-log`
 - open the `CHANGELOG.md` file
 - check if all previous fixed issues are in
-- commit with a message like _prepare v0.5.0_
+- commit with a message like _prepare v0.5.1_
 
 ## Publish on the npmjs.com server
 
@@ -115,5 +115,5 @@ When the package is considered stable:
 When the release is considered stable, promote it as `latest`:
 
 - `npm dist-tag ls @xpack/hello-world-template`
-- `npm dist-tag add @xpack/hello-world-template@0.5.0 latest`
+- `npm dist-tag add @xpack/hello-world-template@0.5.1 latest`
 - `npm dist-tag ls @@xpack/hello-world-template`

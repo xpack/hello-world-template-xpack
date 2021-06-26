@@ -6,6 +6,11 @@ Please check
 [GitHub](https://github.com/xpack/hello-world-template-xpack/issues/)
 and close existing issues and pull requests.
 
+## 2021-06-26
+
+- v0.5.1 released
+- [#7] - define `-std` properly for meson
+
 ## 2021-06-16
 
 - v0.5.0 prepared
