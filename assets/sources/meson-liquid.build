@@ -12,14 +12,25 @@
 project('hello-world',
 {% if language == 'cpp' -%}
   ['c', 'cpp'],
+  default_options: ['c_std=c11', 'cpp_std=gnu++17'],
 {% else if language == 'c' -%}
   ['c'],
+  default_options: ['c_std=c11'],
 {% endif -%}
   meson_version: '>= 0.56',
   version: '1.0.0'
 )
 
 # languages: {c, cpp}
+
+# https://mesonbuild.com/Builtin-options.html#compiler-options
+# c_std: none, c89, c99, c11, c17, c18, c2x, gnu89, gnu99, gnu11, gnu17, gnu18, gnu2x
+{% if language == 'cpp' -%}
+#
+# cpp_std: none, c++98, c++03, c++11, c++14, c++17, c++20 
+# c++2a, c++1z, gnu++03, gnu++11, gnu++14, gnu++17, gnu++1z, 
+# gnu++2a, gnu++20, vc++14, vc++17, vc++latest
+{% endif -%}
 
 # -----------------------------------------------------------------------------
 
@@ -123,17 +134,6 @@ else # Linux or Windows
   endif
 endif
 
-# https://mesonbuild.com/Builtin-options.html#compiler-options
-# none, c89, c99, c11, c17, c18, c2x, gnu89, gnu99, gnu11, gnu17, gnu18, gnu2x
-c_std = 'c11' 
-
-{% if language == 'cpp' -%}
-# none, c++98, c++03, c++11, c++14, c++17, c++20 
-# c++2a, c++1z, gnu++03, gnu++11, gnu++14, gnu++17, gnu++1z, 
-# gnu++2a, gnu++20, vc++14, vc++17, vc++latest
-cpp_std = 'gnu++17'
-
-{% endif -%}
 # -----------------------------------------------------------------------------
 
 # https://mesonbuild.com/Reference-manual.html#subdir
