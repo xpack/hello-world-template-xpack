@@ -1,6 +1,6 @@
 {
   "name": "@xpack/hello-world-template",
-  "version": "0.5.1",
+  "version": "0.5.2-pre",
   "description": "A source xPack / npm package with a template to generate Hello World projects",
   "main": "./index.js",
   "scripts": {
@@ -36,9 +36,9 @@
   "license": "MIT",
   "config": {},
   "dependencies": {
-    "@ilg/cli-start-options": "^0.6.1",
+    "@ilg/cli-start-options": "^0.6.3",
     "cp-file": "^9.1.0",
-    "liquidjs": "^9.25.1",
+    "liquidjs": "^9.29.0",
     "make-dir": "^3.1.0"
   },
   "bundledDependencies": [
@@ -50,7 +50,7 @@
   "devDependencies": {
     "shelljs": "^0.8.4",
     "standard": "^16.0.3",
-    "xpm": "^0.10.5"
+    "xpm": "^0.10.8"
   },
   "xpack": {
     "minimumXpmRequired": "0.9.1"
