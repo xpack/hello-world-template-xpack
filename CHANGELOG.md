@@ -6,6 +6,12 @@ Please check
 [GitHub](https://github.com/xpack/hello-world-template-xpack/issues/)
 and close existing issues and pull requests.
 
+## 2021-12-13
+
+- v0.5.2 released
+- bump binary xPack versions
+- add CMake hack to use `gcc.cmd` on Windows
+
 ## 2021-06-26
 
 - v0.5.1 released
