@@ -33,21 +33,21 @@
   "config": {},
   "dependencies": {},
   "devDependencies": {
-    "@xpack-dev-tools/gcc": "8.5.0-1.1",
+    "@xpack-dev-tools/gcc": "11.2.0-1.3",
 {% if buildGenerator == "cmake" -%}
-    "@xpack-dev-tools/cmake": "3.19.8-1.1",
-    "@xpack-dev-tools/ninja-build": "1.10.2-3.1"
+    "@xpack-dev-tools/cmake": "3.20.6-2.1",
+    "@xpack-dev-tools/ninja-build": "1.10.2-5.1"
 {% elsif buildGenerator == "meson" -%}
-    "@xpack-dev-tools/meson-build": "0.57.2-1.1",
-    "@xpack-dev-tools/ninja-build": "1.10.2-3.1"
+    "@xpack-dev-tools/meson-build": "0.59.4-1.1",
+    "@xpack-dev-tools/ninja-build": "1.10.2-5.1"
 {% elsif buildGenerator == "autotools" -%}
-    "@xpack-dev-tools/cmake": "3.19.8-1.1",
+    "@xpack-dev-tools/cmake": "3.20.6-2.1",
     "@xpack-dev-tools/windows-build-tools": "4.2.1-2.1"
 {% endif -%}
   },
   "xpack": {
     "minimumXpmRequired": "0.10.2",
-    "properties": { 
+    "properties": {
       {% raw %}"buildFolderRelativePath": "{{ 'build' | path_join: configuration.name | to_filename | downcase }}",{% endraw %}
 {% if buildGenerator == "cmake" -%}
 {% if toolchain == "gcc" -%}
