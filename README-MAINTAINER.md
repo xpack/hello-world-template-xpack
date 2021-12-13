@@ -74,6 +74,7 @@ package.json
 
 - `npm version patch`, `npm version minor`, `npm version major`
 - push all changes to GitHub; this should trigger CI
+- push tag
 - **wait for CI tests to complete**
 - check <https://github.com/xpack/hello-world-template-xpack/actions/>
 - `npm publish --tag next` (use `--access public` when publishing for
