@@ -59,8 +59,19 @@ Check GitHub issues and pull requests:
 - `npm run test`
 - check the latest commits `npm run git-log`
 - `npm run pack`; check the content of the archive, which should list
-  only the `package.json`, the `README.md`, `LICENSE`, `CHANGELOG.md`
-  and the `assets`; possibly adjust `.npmignore`
+  only the followin; possibly adjust `.npmignore`
+
+```console
+CHANGELOG.md
+LICENSE
+README.md
+assets/...
+index.js
+lib/template.js
+package.json
+=== Bundled Dependencies ===
+```
+
 - `npm version patch`, `npm version minor`, `npm version major`
 - push all changes to GitHub; this should trigger CI
 - **wait for CI tests to complete**
