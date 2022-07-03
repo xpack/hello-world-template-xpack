@@ -46,7 +46,7 @@ The template receives via the `context`:
 
 - a log object `log`
 - the new project `config.name`, either given explicitly via
-  `--name` or infered from the folder name
+  `--name` or inferred from the folder name
 - a map of `config.properties`, given explicitly via `--property name=value`
 
 ## Branches

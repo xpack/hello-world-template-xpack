@@ -59,7 +59,7 @@ Check GitHub issues and pull requests:
 - `npm run test`
 - check the latest commits `npm run git-log`
 - `npm run pack`; check the content of the archive, which should list
-  only the followin; possibly adjust `.npmignore`
+  only the following; possibly adjust `.npmignore`
 
 ```console
 CHANGELOG.md
@@ -128,4 +128,4 @@ When the release is considered stable, promote it as `latest`:
 
 - `npm dist-tag ls @xpack/hello-world-template`
 - `npm dist-tag add @xpack/hello-world-template@0.5.2 latest`
-- `npm dist-tag ls @@xpack/hello-world-template`
+- `npm dist-tag ls @xpack/hello-world-template`
