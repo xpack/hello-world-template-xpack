@@ -1,5 +1,29 @@
 {
   "markdownlint.config": {
     "MD041": false
-  }
+  },
+  "cSpell.ignoreWords": [
+    "DDEBUG",
+    "DNDEBUG",
+    "Ionescu",
+    "Liviu",
+    "autotools",
+    "ccmake",
+    "cmake",
+    "cpack",
+    "ctest",
+    "fdata",
+    "ffunction",
+    "flto",
+    "fmessage",
+    "fsigned",
+    "gcov",
+    "gfortran",
+    "liquidjs",
+    "mkdir",
+    "npmjs",
+    "readline",
+    "xpack",
+    "xpacks"
+  ]
 }
