@@ -12,7 +12,7 @@
 project('hello-world',
 {% if language == 'cpp' -%}
   ['c', 'cpp'],
-  default_options: ['c_std=c11', 'cpp_std=gnu++17'],
+  default_options: ['c_std=c11', 'cpp_std=c++20'],
 {% else if language == 'c' -%}
   ['c'],
   default_options: ['c_std=c11'],
@@ -27,8 +27,8 @@ project('hello-world',
 # c_std: none, c89, c99, c11, c17, c18, c2x, gnu89, gnu99, gnu11, gnu17, gnu18, gnu2x
 {% if language == 'cpp' -%}
 #
-# cpp_std: none, c++98, c++03, c++11, c++14, c++17, c++20 
-# c++2a, c++1z, gnu++03, gnu++11, gnu++14, gnu++17, gnu++1z, 
+# cpp_std: none, c++98, c++03, c++11, c++14, c++17, c++20
+# c++2a, c++1z, gnu++03, gnu++11, gnu++14, gnu++17, gnu++1z,
 # gnu++2a, gnu++20, vc++14, vc++17, vc++latest
 {% endif -%}
 
@@ -60,7 +60,7 @@ sourceFiles = files(
 )
 
 # All folders with header files.
-includeFolders = [ 
+includeFolders = [
   'include',
 ]
 
@@ -143,7 +143,7 @@ subdir('libs')
 
 # Create the application.
 # https://mesonbuild.com/Reference-manual.html#executable
-application = executable(meson.project_name(), 
+application = executable(meson.project_name(),
   sources: sourceFiles,
   include_directories: includeFolders,
   dependencies: [adderLibraryDependency],

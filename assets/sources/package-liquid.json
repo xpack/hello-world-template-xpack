@@ -22,6 +22,7 @@
     "email": "{{ author.email }}",
     "url": "{{ author.url }}"
   },
+{% if author.email != "ilg@livius.net" -%}
   "contributors": [
     {
       "name": "Liviu Ionescu",
@@ -29,51 +30,58 @@
       "url": "https://github.com/ilg-ul/"
     }
   ],
+{% endif -%}
   "license": "MIT",
   "config": {},
   "dependencies": {},
   "devDependencies": {
-    "@xpack-dev-tools/gcc": "8.5.0-1.1",
+{% if toolchain == "gcc" -%}
+    "@xpack-dev-tools/gcc": "11.3.0-1.1",
+{% elsif toolchain == "clang" -%}
+    "@xpack-dev-tools/clang": "13.0.1-1.1",
+{% endif -%}
 {% if buildGenerator == "cmake" -%}
-    "@xpack-dev-tools/cmake": "3.20.6-2.1",
-    "@xpack-dev-tools/ninja-build": "1.10.2-5.1"
+    "@xpack-dev-tools/cmake": "3.21.6-1.1",
+    "@xpack-dev-tools/ninja-build": "1.11.0-1.1"
 {% elsif buildGenerator == "meson" -%}
-    "@xpack-dev-tools/meson-build": "0.59.4-1.1",
-    "@xpack-dev-tools/ninja-build": "1.10.2-5.1"
+    "@xpack-dev-tools/meson-build": "0.60.3-1.1",
+    "@xpack-dev-tools/ninja-build": "1.11.0-1.1"
 {% elsif buildGenerator == "autotools" -%}
-    "@xpack-dev-tools/cmake": "3.20.6-2.1",
+    "@xpack-dev-tools/cmake": "3.21.6-1.1",
     "@xpack-dev-tools/windows-build-tools": "4.2.1-2.1"
 {% endif -%}
   },
   "xpack": {
-    "minimumXpmRequired": "0.10.2",
+    "minimumXpmRequired": "0.13.7",
     "properties": {
       {% raw %}"buildFolderRelativePath": "{{ 'build' | path_join: configuration.name | to_filename | downcase }}",{% endraw %}
 {% if buildGenerator == "cmake" -%}
 {% if toolchain == "gcc" -%}
-      "toolchainFileName": "toolchain-gcc.cmake",
+      "toolchainFileName": "gcc.cmake",
+{% elsif toolchain == "clang" -%}
+      "toolchainFileName": "clang.cmake",
 {% endif -%}
-      {% raw %}"commandPrepare": "cmake -S meta -B {{ properties.buildFolderRelativePath }} -G Ninja -D CMAKE_BUILD_TYPE={{ properties.buildType }} -D CMAKE_EXPORT_COMPILE_COMMANDS=ON",{% endraw %}
-{% if toolchain == "gcc" -%}
-      {% raw %}"commandPrepareWithToolchain": "{{ properties.commandPrepare }} -D CMAKE_TOOLCHAIN_FILE={{ properties.toolchainFileName }}",{% endraw %}
-{% endif -%}
+      {% raw %}"commandPrepare": "cmake -S . -B {{ properties.buildFolderRelativePath }} -G Ninja -D CMAKE_BUILD_TYPE={{ properties.buildType }} -D CMAKE_EXPORT_COMPILE_COMMANDS=ON",{% endraw %}
+      {% raw %}"commandPrepareWithToolchain": "{{ properties.commandPrepare }} -D CMAKE_TOOLCHAIN_FILE=cmake/toolchains/{{ properties.toolchainFileName }}",{% endraw %}
       {% raw %}"commandReconfigure": "{{ properties.commandPrepare }}",
       "commandBuild": "cmake --build {{ properties.buildFolderRelativePath }} --verbose",
       "commandClean": "cmake --build {{ properties.buildFolderRelativePath }} --target clean",{% endraw %}
 {% elsif buildGenerator == "meson" -%}
 {% if toolchain == "gcc" -%}
-      "toolchainFileName": "toolchain-gcc-meson.ini",
+      "toolchainFileName": "gcc-{% raw %}{{ os.platform }}{% endraw %}.ini",
+{% elsif toolchain == "clang" -%}
+      "toolchainFileName": "clang-{% raw %}{{ os.platform }}{% endraw %}.ini",
 {% endif -%}
       {% raw %}"commandPrepare": "meson setup --backend ninja --buildtype {{ properties.buildType }} {{ properties.buildFolderRelativePath }} .",{% endraw %}
-{% if toolchain == "gcc" -%}
-      {% raw %}"commandPrepareWithToolchain": "{{ properties.commandPrepare }} --native-file meta/{{ properties.toolchainFileName }}",{% endraw %}
-{% endif -%}
+      {% raw %}"commandPrepareWithToolchain": "{{ properties.commandPrepare }} --native-file meson/toolchains/{{ properties.toolchainFileName }}",{% endraw %}
       {% raw %}"commandReconfigure": "meson setup --reconfigure {{ properties.buildFolderRelativePath }} .",
       "commandBuild": "meson compile -C {{ properties.buildFolderRelativePath }} -v",
       "commandClean": "meson compile -C {{ properties.buildFolderRelativePath }} --clean",{% endraw %}
 {% elsif buildGenerator == "autotools" -%}
-      {% raw %}"commandPrepare": "cmake -E make_directory {{ properties.buildFolderRelativePath }} && cd {{ properties.buildFolderRelativePath }} && sh ..{{ path.sep }}..{{ path.sep }}meta{{ path.sep }}configure ../..",{% endraw %}
+      {% raw %}"commandPrepare": "cmake -E make_directory {{ properties.buildFolderRelativePath }} && cd {{ properties.buildFolderRelativePath }} && sh ..{{ path.sep }}..{{ path.sep }}autotools{{ path.sep }}configure ../..",{% endraw %}
 {% if toolchain == "gcc" -%}
+      {% raw %}"commandPrepareWithToolchain": "{{ properties.commandPrepare }}",{% endraw %}
+{% elsif toolchain == "clang" -%}
       {% raw %}"commandPrepareWithToolchain": "{{ properties.commandPrepare }}",{% endraw %}
 {% endif -%}
       {% raw %}"commandReconfigure": "{{ properties.commandPrepare }}",
@@ -83,30 +91,23 @@
       {% raw %}"commandExecuteHello": "{{ properties.buildFolderRelativePath }}{{ path.sep }}hello-world"{% endraw %}
     },
     "actions": {
-      "prepare-all": [
-        "xpm run prepare --config Debug",
-        "xpm run prepare --config Release"
+      "test-debug": [
+        "xpm run prepare --config debug",
+        "xpm run build --config debug",
+        "xpm run execute --config debug"
       ],
-      "build-all": [
-        "xpm run build --config Debug",
-        "xpm run build --config Release"
+      "test-release": [
+        "xpm run prepare --config release",
+        "xpm run build --config release",
+        "xpm run execute --config release"
       ],
-      "clean-all": [
-        "xpm run clean --config Debug",
-        "xpm run clean --config Release"
-      ],
-      "execute-all": [
-        "xpm run execute --config Debug",
-        "xpm run execute --config Release"
-      ],
-      "test": [
-        "xpm run prepare-all",
-        "xpm run build-all",
-        "xpm run execute-all"
+      "test-all": [
+        "xpm run test-debug",
+        "xpm run test-release"
       ]
     },
     "buildConfigurations": {
-      "Debug": {
+      "debug": {
         "properties": {
 {% if buildGenerator == "cmake" -%}
           "buildType": "Debug"
@@ -119,6 +120,8 @@
         "actions": {
 {% if toolchain == "gcc" -%}
           {% raw %}"prepare": "{{ properties.commandPrepareWithToolchain }}",{% endraw %}
+{% elsif toolchain == "clang" -%}
+          {% raw %}"prepare": "{{ properties.commandPrepareWithToolchain }}",{% endraw %}
 {% else -%}
           {% raw %}"prepare": "{{ properties.commandPrepare }}",{% endraw %}
 {% endif -%}
@@ -130,7 +133,10 @@
           "execute": "{{ properties.commandExecuteHello }}"{% endraw %}
         }
       },
-      "Release": {
+      "release": {
+        "inherit": [
+          "debug"
+        ],
         "properties": {
 {% if buildGenerator == "cmake" -%}
           "buildType": "Release"
@@ -139,19 +145,6 @@
 {% elsif buildGenerator == "autotools" -%}
           "buildType": "release"
 {% endif -%}
-        },
-        "actions": {
-{% if toolchain == "gcc" -%}
-          {% raw %}"prepare": "{{ properties.commandPrepareWithToolchain }}",{% endraw %}
-{% else -%}
-          {% raw %}"prepare": "{{ properties.commandPrepare }}",{% endraw %}
-{% endif -%}
-          {% raw %}"build": [
-            "{{ properties.commandReconfigure }}",
-            "{{ properties.commandBuild }}"
-          ],
-          "clean": "{{ properties.commandClean }}",
-          "execute": "{{ properties.commandExecuteHello }}"{% endraw %}
         }
       }
     }

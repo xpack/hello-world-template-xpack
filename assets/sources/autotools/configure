@@ -1,4 +1,4 @@
 # This is just a simple example, normally this should be a real
 # configure script.
 
-cp -rf $1/meta/make-template/* .
+cp -rf $1/autotools/make-template/* .

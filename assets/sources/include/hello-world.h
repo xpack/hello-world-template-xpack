@@ -13,4 +13,3 @@
 #define HELLO_WORLD_MESSAGE "Hello World!"
 
 #endif // HELLO_WORLD_H_
-

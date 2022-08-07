@@ -1,0 +1,23 @@
+{
+  "editor.rulers": [
+    80
+  ],
+  "cSpell.ignoreWords": [
+    "Ionescu",
+    "Liviu",
+    "cmake",
+    "cmsis",
+    "cortexm",
+    "ctest",
+    "diag",
+    "eabi",
+    "semihosted",
+    "semihosting",
+    "xpack",
+    "xpacks"
+  ],
+  "cmake.ignoreCMakeListsMissing": true,
+  "cmake.configureOnOpen": false,
+  "makefile.configureOnOpen": false,
+  "editor.wordWrap": "on"
+}

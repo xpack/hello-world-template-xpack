@@ -2,11 +2,16 @@
 # and manually updated for this project.
 
 # The build runs in a folder like build/xxx, thus all paths refering
-# to the project must be prefixed with "../../" 
+# to the project must be prefixed with "../../"
 
 RM := rm -rf
+{% if toolchain == 'gcc' -%}
 CC := gcc
 CXX := g++
+{% elsif toolchain == 'clang' -%}
+CC := clang
+CXX := clang++
+{% endif %}
 {% if language == 'c' -%}
 LD := $(CC)
 # LD := $(CXX)
@@ -52,14 +57,14 @@ endif
 # -----------------------------------------------------------------------------
 
 # All of the sources participating in the build will be collected here.
-C_SRCS := 
-C_DEPS := 
-CPP_SRCS := 
-CPP_DEPS := 
-OBJS := 
+C_SRCS :=
+C_DEPS :=
+CPP_SRCS :=
+CPP_DEPS :=
+OBJS :=
 
 # All folders with source files will be collected here.
-SUBDIRS := 
+SUBDIRS :=
 
 -include src/folder.mk
 -include libs/adder/src/folder.mk

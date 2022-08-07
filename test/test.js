@@ -16,81 +16,130 @@
 
 // ----------------------------------------------------------------------------
 
+const fs = require('fs')
+const os = require('os')
 const path = require('path')
 
-// https://www.npmjs.com/package/shx
+// https://www.npmjs.com/package/shelljs
 const shx = require('shelljs')
 
 const properties = require('../lib/template.js').properties
 
 // ----------------------------------------------------------------------------
 
+// During development only.
+const enableXpmLink = false
+
 class Test {
   static start () {
     // Instantiate a new test.
     const test = new Test()
-    if (process.argv.length > 2 && process.argv[2] === 'all') {
-      test.run(true)
-    } else {
-      test.run(false)
-    }
+    process.exitCode = test.run(process.argv.length > 2 ? process.argv[2] : '')
   }
 
   constructor () {
+    const packageJsonPath = path.resolve(__dirname, '..', 'package.json')
+    const packageJsonContent = fs.readFileSync(packageJsonPath)
+    const packageJson = JSON.parse(packageJsonContent.toString())
+
+    this.packageName = packageJson.name
+    this.tmpFolderName = this.packageName.split('/')[1]
+
     this.count = 1
   }
 
-  run (all = false) {
+  run (complexity) {
+    this.complexity = complexity
+
     // Uninstall possibly existing global package, to ensure the
     // test uses the current folder content.
-    const uninstall = 'xpm uninstall -g @xpack/hello-world-template'
+    const uninstall =
+      `xpm uninstall ${this.packageName} --global --ignore-errors`
     shx.echo(`$ ${uninstall}`)
     shx.exec(uninstall)
 
+    let exitCode = 0
+
     this.startTime = Date.now()
-    if (all) {
+    if (complexity === 'all') {
       shx.echo('Testing thoroughly...')
       for (const buildGenerator of
         Object.keys(properties.buildGenerator.items)) {
         for (const language of Object.keys(properties.language.items)) {
-          this.runOne({
-            buildGenerator,
-            language
-          })
-          this.count++
+          for (const toolchain of Object.keys(properties.toolchain.items)) {
+            if (toolchain === 'system' && os.platform() === 'win32') {
+              continue
+            }
+            exitCode = this.runOne({
+              buildGenerator,
+              language,
+              toolchain
+            })
+            if (exitCode !== 0) {
+              return exitCode
+            }
+            this.count++
+          }
         }
       }
-    } else {
-      shx.echo('Testing selected cases...')
+    } else if (complexity === 'ci' || complexity === '') {
+      shx.echo('Testing a selection of cases...')
       for (const buildGenerator of
         Object.keys(properties.buildGenerator.items)) {
         for (const language of Object.keys(properties.language.items)) {
-          this.runOne({
-            buildGenerator,
-            language
-          })
-          this.count++
+          for (const toolchain of Object.keys(properties.toolchain.items)) {
+            if (toolchain === 'system' && os.platform() === 'win32') {
+              continue
+            }
+            exitCode = this.runOne({
+              buildGenerator,
+              language,
+              toolchain
+            })
+            if (exitCode !== 0) {
+              return exitCode
+            }
+            this.count++
+          }
         }
       }
+    } else if (complexity === 'develop') {
+      shx.echo('Testing one development cases...')
+      exitCode = this.runOne({
+        buildGenerator: 'cmake',
+        // buildGenerator: 'meson',
+        // buildGenerator: 'autotools',
+        language: 'cpp',
+        // language: 'c',
+        // toolchain: 'gcc'
+        // toolchain: 'clang'
+        toolchain: 'system'
+      })
     }
 
     const durationString = this.formatDuration(Date.now() - this.startTime)
     shx.echo(`Completed in ${durationString}.`)
   }
 
-  runOne (props) {
+  runOne (properties) {
     // https://www.npmjs.com/package/shelljs
 
     shx.set('-e') // Exit upon error
 
-    const cnt = ('0000' + this.count).slice(-3)
-    const name = `${cnt}-${props.buildGenerator}-${props.language}`
+    const count = ('0000' + this.count).slice(-3)
+    const name = `${count}-${properties.buildGenerator}-` +
+      `${properties.language}-${properties.toolchain}`
 
     shx.echo()
     shx.echo(`Testing '${name}'...`)
 
-    const tmp = shx.tempdir()
-    const buildFolder = `${tmp}/hello-templates/${name}`
+    let buildFolder
+    if (this.complexity === 'ci' && os.platform() === 'win32') {
+      // On CI the path is too long, switch to a temporary folder.
+      buildFolder = `${shx.tempdir()}/${name}`
+    } else {
+      buildFolder = `build/${name}`
+    }
     shx.echo(buildFolder)
 
     shx.rm('-rf', buildFolder)
@@ -102,26 +151,56 @@ class Test {
 
     const projectFolderPath = path.dirname(__dirname)
 
-    let xpmInit = `xpm init --template "${projectFolderPath}" --name ${cnt}`
-    for (const [key, value] of Object.entries(props)) {
-      xpmInit += ` --property ${key}=${value}`
+    let command = `xpm init --template "${projectFolderPath}" --name ${count}`
+    for (const [key, value] of Object.entries(properties)) {
+      command += ` --property ${key}=${value}`
     }
-    shx.echo(`$ ${xpmInit}`)
-    shx.exec(xpmInit)
+    if (this.complexity === 'develop') {
+      command += ' -dd'
+    }
+    shx.echo(`$ ${command}`)
+    shx.exec(command)
 
     shx.echo()
-    let cmd = 'xpm install'
-    shx.echo(`$ ${cmd}`)
-    shx.exec(cmd)
+    command = 'xpm install'
+    if (this.complexity !== 'develop') {
+      command += ' --quiet'
+    }
+    shx.echo(`$ ${command}`)
+    try {
+      shx.exec(command)
+    } catch (err) {
+      shx.echo()
+      return 1
+    }
+
+    if (enableXpmLink) {
+      shx.echo()
+      command = 'xpm run link-deps'
+      shx.echo(`$ ${command}`)
+      try {
+        shx.exec(command)
+      } catch (err) {
+        shx.echo()
+        return 1
+      }
+    }
 
     shx.echo()
-    cmd = 'xpm run test'
-    shx.echo(`$ ${cmd}`)
-    shx.exec(cmd)
+    command = 'xpm run test-all'
+    shx.echo(`$ ${command}`)
+    try {
+      shx.exec(command)
+    } catch (err) {
+      shx.echo()
+      return 1
+    }
 
     shx.config.silent = true
     shx.popd()
     shx.config.silent = false
+
+    return 0
   }
 
   /**

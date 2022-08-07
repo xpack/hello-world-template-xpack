@@ -1,32 +1,42 @@
+# -----------------------------------------------------------------------------
 #
 # This file is part of the µOS++ distribution.
-#   (https://github.com/micro-os-plus)
+#   (https://github.com/micro-os-plus/)
 # Copyright (c) 2021 Liviu Ionescu
 #
-# This Source Code Form is subject to the terms of the MIT License.
+# Permission to use, copy, modify, and/or distribute this software
+# for any purpose is hereby granted, under the terms of the MIT license.
+#
 # If a copy of the license was not distributed with this file, it can
 # be obtained from https://opensource.org/licenses/MIT/.
 #
 # -----------------------------------------------------------------------------
 
-# Cross compiling.
-set(CMAKE_SYSTEM_NAME Generic)
-set(CMAKE_SYSTEM_PROCESSOR arm)
-
 set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY")
 
-set(triple "")
-set(CMAKE_C_COMPILER   "${triple}gcc")
-set(CMAKE_CXX_COMPILER "${triple}g++")
+set(CMAKE_C_COMPILER   "clang")
+set(CMAKE_CXX_COMPILER "clang++")
 
-# Must be explicit, not set by CMake.
-set(CMAKE_SIZE "${triple}size")
+# Some are autodiscovered, some are not, better make them explicit.
+set(CMAKE_ADDR2LINE "llvm-addr2line")
+set(CMAKE_AR "llvm-ar")
+set(CMAKE_ASM_COMPILER "clang")
+set(CMAKE_ASM_COMPILER_AR "llvm-ar")
+set(CMAKE_ASM_COMPILER_RANLIB "llvm-ranlib")
+set(CMAKE_DLLTOOL "llvm-dlltool")
+set(CMAKE_NM "llvm-nm")
+set(CMAKE_OBJCOPY "llvm-objcopy")
+set(CMAKE_OBJDUMP "llvm-objdump")
+set(CMAKE_RANLIB "llvm-ranlib")
+set(CMAKE_READELF "llvm-readelf")
+set(CMAKE_SIZE "llvm-size") # Must be explicit, not set by CMake.
 
 # -----------------------------------------------------------------------------
 
 # TODO: remove workaround once VS Code is fixed.
 # VS Code does not properly identify the shims used by npm/xpm,
 # thus make the extension explicit.
+# https://cmake.org/cmake/help/v3.20/variable/CMAKE_HOST_SYSTEM_NAME.html
 if("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "Windows")
   set(CMAKE_C_COMPILER "${CMAKE_C_COMPILER}.cmd")
   set(CMAKE_CXX_COMPILER "${CMAKE_CXX_COMPILER}.cmd")
