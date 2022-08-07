@@ -16,6 +16,7 @@ Before making the release, perform some checks and tweaks.
 - `npm outdated`
 - edit `package.json` and `npm install`
 - repeat until everything is up to date
+- for cp-file, stick to v9.1.0 as the latest before updating to import
 
 ### Check Git
 
