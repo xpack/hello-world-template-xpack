@@ -36,9 +36,11 @@
   "license": "MIT",
   "config": {},
   "dependencies": {
-    "@ilg/cli-start-options": "^0.6.3",
+    "@ilg/cli-start-options": "^0.6.6",
     "cp-file": "^9.1.0",
     "git-config-path": "^2.0.0",
+    "liquidjs": "^9.39.2",
+    "make-dir": "^3.1.0",
     "parse-git-config": "^3.0.0"
   },
   "bundledDependencies": [
@@ -50,9 +52,9 @@
     "parse-git-config"
   ],
   "devDependencies": {
-    "shelljs": "^0.8.4",
-    "standard": "^16.0.3",
-    "xpm": "^0.10.8"
+    "shelljs": "^0.8.5",
+    "standard": "^17.0.0",
+    "xpm": "^0.13.7"
   },
   "xpack": {
     "minimumXpmRequired": "0.9.1"
