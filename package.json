@@ -6,12 +6,16 @@
   "scripts": {
     "fix": "standard --fix",
     "test": "node ./test/test.js",
+    "test-ci": "node ./test/test.js ci",
+    "test-all": "node ./test/test.js all",
+    "test-develop": "node ./test/test.js develop",
     "git-log": "git log --pretty='%cd * %h %s' --date=short",
     "outdated": "npm outdated",
     "pack": "npm pack",
     "version-patch": "npm version patch",
     "version-minor": "npm version minor",
-    "npm-install": "npm install"
+    "npm-install": "npm install",
+    "clean-build": "rm -rf build"
   },
   "repository": {
     "type": "git",
