@@ -38,14 +38,16 @@
   "dependencies": {
     "@ilg/cli-start-options": "^0.6.3",
     "cp-file": "^9.1.0",
-    "liquidjs": "^9.29.0",
-    "make-dir": "^3.1.0"
+    "git-config-path": "^2.0.0",
+    "parse-git-config": "^3.0.0"
   },
   "bundledDependencies": [
     "@ilg/cli-start-options",
     "cp-file",
+    "git-config-path",
     "liquidjs",
-    "make-dir"
+    "make-dir",
+    "parse-git-config"
   ],
   "devDependencies": {
     "shelljs": "^0.8.4",
