@@ -25,5 +25,12 @@
     "readline",
     "xpack",
     "xpacks"
+  ],
+  "cmake.ignoreCMakeListsMissing": true,
+  "cmake.configureOnOpen": false,
+  "makefile.configureOnOpen": false,
+  "npm.exclude": [
+    "**/build/**",
+    "**/xpacks/**"
   ]
 }
