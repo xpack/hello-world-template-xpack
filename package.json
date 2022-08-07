@@ -57,6 +57,6 @@
     "xpm": "^0.13.7"
   },
   "xpack": {
-    "minimumXpmRequired": "0.9.1"
+    "minimumXpmRequired": "0.13.7"
   }
 }
