@@ -111,9 +111,9 @@ class Test {
         // buildGenerator: 'autotools',
         language: 'cpp',
         // language: 'c',
-        // toolchain: 'gcc'
+        toolchain: 'gcc'
         // toolchain: 'clang'
-        toolchain: 'system'
+        // toolchain: 'system'
       })
     }
 
