@@ -135,6 +135,7 @@ else # Linux or Windows
 endif
 
 if compiler.get_id() == 'gcc'
+  # Required, otherwise system shared libraries are used.
   linker_options += [
     '-static-libgcc',
     '-static-libstdc++',

@@ -32,6 +32,11 @@ PROJECT_NAME := hello-world
 CPPFLAGS := -I"../../include" -I"../../libs/adder/include"
 COMMON_FLAGS := -g3 -Wall -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -flto
 
+ifeq ($(CC),gcc)
+# Required, otherwise system shared libraries are used.
+COMMON_FLAGS += -static-libgcc -static-libstdc++
+endif
+
 ifeq ($(BUILD_TYPE),debug)
 CPPFLAGS += -DDEBUG
 COMMON_FLAGS += -O0
