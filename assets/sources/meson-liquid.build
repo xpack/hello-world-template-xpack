@@ -134,7 +134,7 @@ else # Linux or Windows
   endif
 endif
 
-if c_compiler.get_id() == 'gcc'
+if compiler.get_id() == 'gcc'
   linker_options += [
     '-static-libgcc',
     '-static-libstdc++',
