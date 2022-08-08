@@ -77,6 +77,10 @@ add_compile_definitions(
 # must also be passed to the linker.
 set(common_options
 
+  # Required, otherwise system shared libraries are used.
+  $<$<C_COMPILER_ID:GNU>:-static-libgcc>
+  $<$<C_COMPILER_ID:GNU>:-static-libstdc++>
+
   $<$<C_COMPILER_ID:GNU,Clang,AppleClang>:-fmessage-length=0>
   $<$<C_COMPILER_ID:GNU,Clang,AppleClang>:-fsigned-char>
 
