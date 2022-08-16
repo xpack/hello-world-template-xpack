@@ -34,25 +34,28 @@
   "license": "MIT",
   "config": {},
   "dependencies": {},
-  "devDependencies": {
-{% if toolchain == "gcc" -%}
-    "@xpack-dev-tools/gcc": "11.3.0-1.1",
-{% elsif toolchain == "clang" -%}
-    "@xpack-dev-tools/clang": "13.0.1-1.1",
-{% endif -%}
-{% if buildGenerator == "cmake" -%}
-    "@xpack-dev-tools/cmake": "3.21.6-1.1",
-    "@xpack-dev-tools/ninja-build": "1.11.0-1.1"
-{% elsif buildGenerator == "meson" -%}
-    "@xpack-dev-tools/meson-build": "0.60.3-1.1",
-    "@xpack-dev-tools/ninja-build": "1.11.0-1.1"
-{% elsif buildGenerator == "autotools" -%}
-    "@xpack-dev-tools/cmake": "3.21.6-1.1",
-    "@xpack-dev-tools/windows-build-tools": "4.2.1-2.1"
-{% endif -%}
-  },
+  "bundledDependencies": [],
+  "devDependencies": {},
   "xpack": {
-    "minimumXpmRequired": "0.13.7",
+    "minimumXpmRequired": "0.14.0",
+    "dependencies": {},
+    "devDependencies": {
+      {% if toolchain == "gcc" -%}
+          "@xpack-dev-tools/gcc": "11.3.0-1.1",
+      {% elsif toolchain == "clang" -%}
+          "@xpack-dev-tools/clang": "13.0.1-1.1",
+      {% endif -%}
+      {% if buildGenerator == "cmake" -%}
+          "@xpack-dev-tools/cmake": "3.21.6-1.1",
+          "@xpack-dev-tools/ninja-build": "1.11.0-1.1"
+      {% elsif buildGenerator == "meson" -%}
+          "@xpack-dev-tools/meson-build": "0.60.3-1.1",
+          "@xpack-dev-tools/ninja-build": "1.11.0-1.1"
+      {% elsif buildGenerator == "autotools" -%}
+          "@xpack-dev-tools/cmake": "3.21.6-1.1",
+          "@xpack-dev-tools/windows-build-tools": "4.2.1-2.1"
+      {% endif -%}
+    },
     "properties": {
       {% raw %}"buildFolderRelativePath": "{{ 'build' | path_join: configuration.name | to_filename | downcase }}",{% endraw %}
 {% if buildGenerator == "cmake" -%}
