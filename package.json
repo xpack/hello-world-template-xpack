@@ -9,12 +9,15 @@
     "test-ci": "node ./test/test.js ci",
     "test-all": "node ./test/test.js all",
     "test-develop": "node ./test/test.js develop",
-    "git-log": "git log --pretty='%cd * %h %s' --date=short",
+    "npm-install": "npm install",
     "outdated": "npm outdated",
+    "update": "npm update",
     "pack": "npm pack",
     "version-patch": "npm version patch",
     "version-minor": "npm version minor",
-    "npm-install": "npm install",
+    "npm-audit": "npm audit fix --force",
+    "postversion": "git push origin --all && git push origin --tags",
+    "git-log": "git log --pretty='%cd * %h %s' --date=short",
     "clean-build": "rm -rf build"
   },
   "repository": {
