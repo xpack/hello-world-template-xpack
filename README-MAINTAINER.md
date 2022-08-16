@@ -104,8 +104,8 @@ To run them, use:
 
 ```sh
 cd hello-world-template-xpack.git
-xpm install
-xpm run test
+npm install
+npm run test-all
 ```
 
 ## Continuous Integration
