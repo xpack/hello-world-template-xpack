@@ -55,4 +55,6 @@
 
 /.clang-format
 
+/build/
+
 #end
