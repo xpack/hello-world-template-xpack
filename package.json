@@ -43,7 +43,7 @@
     "@ilg/cli-start-options": "^0.6.6",
     "cp-file": "^9.1.0",
     "git-config-path": "^2.0.0",
-    "liquidjs": "^9.39.2",
+    "liquidjs": "^9.40.0",
     "make-dir": "^3.1.0",
     "parse-git-config": "^3.0.0"
   },
@@ -58,9 +58,9 @@
   "devDependencies": {
     "shelljs": "^0.8.5",
     "standard": "^17.0.0",
-    "xpm": "^0.13.7"
+    "xpm": "^0.14.0"
   },
   "xpack": {
-    "minimumXpmRequired": "0.13.7"
+    "minimumXpmRequired": "0.14.0"
   }
 }
