@@ -21,7 +21,9 @@
     "gfortran",
     "liquidjs",
     "mkdir",
+    "npmignore",
     "npmjs",
+    "postversion",
     "readline",
     "xpack",
     "xpacks"
