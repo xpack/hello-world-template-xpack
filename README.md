@@ -165,18 +165,25 @@ the build system generator can find it.
 
 ```console
 % cd my-project
-% xpm run test
-> xpm run prepare-all
-> xpm run prepare --config Debug
-> cmake -S meta -B build/debug -G Ninja -D CMAKE_BUILD_TYPE=Debug -D CMAKE_EXPORT_COMPILE_COMMANDS=ON -D CMAKE_TOOLCHAIN_FILE=toolchain-gcc.cmake
--- CMake version: 3.19.8-g290a19d
--- The C compiler identification is GNU 8.5.0
+% xpm run test-all
+> xpm run test-debug
+> xpm run prepare --config debug
+> cmake -S . -B build/debug -G Ninja -D CMAKE_BUILD_TYPE=Debug -D CMAKE_EXPORT_COMPILE_COMMANDS=ON -D CMAKE_TOOLCHAIN_FILE=cmake/toolchains/gcc.cmake
+-- The C compiler identification is GNU 11.3.0
+-- The CXX compiler identification is GNU 11.3.0
+-- Checking whether C compiler has -isysroot
+-- Checking whether C compiler has -isysroot - yes
+-- Checking whether C compiler supports OSX deployment target flag
+-- Checking whether C compiler supports OSX deployment target flag - yes
 -- Detecting C compiler ABI info
 -- Detecting C compiler ABI info - done
 -- Check for working C compiler: /Users/ilg/tmp/my-project/xpacks/.bin/gcc - skipped
 -- Detecting C compile features
 -- Detecting C compile features - done
--- The CXX compiler identification is GNU 8.5.0
+-- Checking whether CXX compiler has -isysroot
+-- Checking whether CXX compiler has -isysroot - yes
+-- Checking whether CXX compiler supports OSX deployment target flag
+-- Checking whether CXX compiler supports OSX deployment target flag - yes
 -- Detecting CXX compiler ABI info
 -- Detecting CXX compiler ABI info - done
 -- Check for working CXX compiler: /Users/ilg/tmp/my-project/xpacks/.bin/g++ - skipped
@@ -184,77 +191,89 @@ the build system generator can find it.
 -- Detecting CXX compile features - done
 -- The ASM compiler identification is GNU
 -- Found assembler: /Users/ilg/tmp/my-project/xpacks/.bin/gcc
--- Compiler: GNU 8.5.0
 -- Build type: Debug
 -- Project path: /Users/ilg/tmp/my-project
--- PATH: /Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/Library/Python/3.7/bin:/Library/Frameworks/Python.framework/Versions/3.7/bin:/Users/ilg/.nvm/versions/node/v14.16.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
--- ==> application
+-- PATH: /Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/.nvm/versions/node/v16.18.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+-- CMake version: 3.21.6
+-- Compiler: GNU 11.3.0
+-- A> hello-world
 -- Configuring done
 -- Generating done
 -- Build files have been written to: /Users/ilg/tmp/my-project/build/debug
-> xpm run prepare --config Release
-> cmake -S meta -B build/release -G Ninja -D CMAKE_BUILD_TYPE=Release -D CMAKE_EXPORT_COMPILE_COMMANDS=ON -D CMAKE_TOOLCHAIN_FILE=toolchain-gcc.cmake
--- CMake version: 3.19.8-g290a19d
--- The C compiler identification is GNU 8.5.0
--- Detecting C compiler ABI info
--- Detecting C compiler ABI info - done
--- Check for working C compiler: /Users/ilg/tmp/my-project/xpacks/.bin/gcc - skipped
--- Detecting C compile features
--- Detecting C compile features - done
--- The CXX compiler identification is GNU 8.5.0
--- Detecting CXX compiler ABI info
--- Detecting CXX compiler ABI info - done
--- Check for working CXX compiler: /Users/ilg/tmp/my-project/xpacks/.bin/g++ - skipped
--- Detecting CXX compile features
--- Detecting CXX compile features - done
--- The ASM compiler identification is GNU
--- Found assembler: /Users/ilg/tmp/my-project/xpacks/.bin/gcc
--- Compiler: GNU 8.5.0
--- Build type: Release
--- Project path: /Users/ilg/tmp/my-project
--- PATH: /Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/Library/Python/3.7/bin:/Library/Frameworks/Python.framework/Versions/3.7/bin:/Users/ilg/.nvm/versions/node/v14.16.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
--- ==> application
--- Configuring done
--- Generating done
--- Build files have been written to: /Users/ilg/tmp/my-project/build/release
-> xpm run build-all
-> xpm run build --config Debug
-> cmake -S meta -B build/debug -G Ninja -D CMAKE_BUILD_TYPE=Debug -D CMAKE_EXPORT_COMPILE_COMMANDS=ON
--- CMake version: 3.19.8-g290a19d
--- Compiler: GNU 8.5.0
+> xpm run build --config debug
+> cmake -S . -B build/debug -G Ninja -D CMAKE_BUILD_TYPE=Debug -D CMAKE_EXPORT_COMPILE_COMMANDS=ON
 -- Build type: Debug
 -- Project path: /Users/ilg/tmp/my-project
--- PATH: /Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/Library/Python/3.7/bin:/Library/Frameworks/Python.framework/Versions/3.7/bin:/Users/ilg/.nvm/versions/node/v14.16.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
--- ==> application
+-- PATH: /Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/.nvm/versions/node/v16.18.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+-- CMake version: 3.21.6
+-- Compiler: GNU 11.3.0
+-- A> hello-world
 -- Configuring done
 -- Generating done
 -- Build files have been written to: /Users/ilg/tmp/my-project/build/debug
 > cmake --build build/debug --verbose
-[1/3] /Users/ilg/tmp/my-project/xpacks/.bin/gcc -DDEBUG -I/Users/ilg/tmp/my-project/include -I/Users/ilg/tmp/my-project/libs/adder/include -O0 -g3 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -flto -std=gnu11 -MD -MT CMakeFiles/application.dir/Users/ilg/tmp/my-project/libs/adder/src/add.c.obj -MF CMakeFiles/application.dir/Users/ilg/tmp/my-project/libs/adder/src/add.c.obj.d -o CMakeFiles/application.dir/Users/ilg/tmp/my-project/libs/adder/src/add.c.obj -c /Users/ilg/tmp/my-project/libs/adder/src/add.c
-[2/3] /Users/ilg/tmp/my-project/xpacks/.bin/g++ -DDEBUG -I/Users/ilg/tmp/my-project/include -I/Users/ilg/tmp/my-project/libs/adder/include -O0 -g3 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -flto -std=gnu++17 -MD -MT CMakeFiles/application.dir/Users/ilg/tmp/my-project/src/hello-world.cpp.obj -MF CMakeFiles/application.dir/Users/ilg/tmp/my-project/src/hello-world.cpp.obj.d -o CMakeFiles/application.dir/Users/ilg/tmp/my-project/src/hello-world.cpp.obj -c /Users/ilg/tmp/my-project/src/hello-world.cpp
-[3/3] : && /Users/ilg/tmp/my-project/xpacks/.bin/g++ -O0 -g3 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -flto -Wl,-dead_strip CMakeFiles/application.dir/Users/ilg/tmp/my-project/src/hello-world.cpp.obj CMakeFiles/application.dir/Users/ilg/tmp/my-project/libs/adder/src/add.c.obj -o hello-world   && :
-> xpm run build --config Release
-> cmake -S meta -B build/release -G Ninja -D CMAKE_BUILD_TYPE=Release -D CMAKE_EXPORT_COMPILE_COMMANDS=ON
--- CMake version: 3.19.8-g290a19d
--- Compiler: GNU 8.5.0
--- Build type: Release
--- Project path: /Users/ilg/tmp/my-project
--- PATH: /Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/Library/Python/3.7/bin:/Library/Frameworks/Python.framework/Versions/3.7/bin:/Users/ilg/.nvm/versions/node/v14.16.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
--- ==> application
--- Configuring done
--- Generating done
--- Build files have been written to: /Users/ilg/tmp/my-project/build/release
-> cmake --build build/release --verbose
-[1/3] /Users/ilg/tmp/my-project/xpacks/.bin/gcc  -I/Users/ilg/tmp/my-project/include -I/Users/ilg/tmp/my-project/libs/adder/include -O3 -DNDEBUG -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -flto -std=gnu11 -MD -MT CMakeFiles/application.dir/Users/ilg/tmp/my-project/libs/adder/src/add.c.obj -MF CMakeFiles/application.dir/Users/ilg/tmp/my-project/libs/adder/src/add.c.obj.d -o CMakeFiles/application.dir/Users/ilg/tmp/my-project/libs/adder/src/add.c.obj -c /Users/ilg/tmp/my-project/libs/adder/src/add.c
-[2/3] /Users/ilg/tmp/my-project/xpacks/.bin/g++  -I/Users/ilg/tmp/my-project/include -I/Users/ilg/tmp/my-project/libs/adder/include -O3 -DNDEBUG -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -flto -std=gnu++17 -MD -MT CMakeFiles/application.dir/Users/ilg/tmp/my-project/src/hello-world.cpp.obj -MF CMakeFiles/application.dir/Users/ilg/tmp/my-project/src/hello-world.cpp.obj.d -o CMakeFiles/application.dir/Users/ilg/tmp/my-project/src/hello-world.cpp.obj -c /Users/ilg/tmp/my-project/src/hello-world.cpp
-[3/3] : && /Users/ilg/tmp/my-project/xpacks/.bin/g++ -O3 -DNDEBUG -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -flto -Wl,-dead_strip CMakeFiles/application.dir/Users/ilg/tmp/my-project/src/hello-world.cpp.obj CMakeFiles/application.dir/Users/ilg/tmp/my-project/libs/adder/src/add.c.obj -o hello-world   && :
-> xpm run execute-all
-> xpm run execute --config Debug
+[1/3] /Users/ilg/tmp/my-project/xpacks/.bin/gcc -DDEBUG -I/Users/ilg/tmp/my-project/include -I/Users/ilg/tmp/my-project/libs/adder/include -O0 -g3 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -mmacosx-version-min=12.6 -static-libgcc -static-libstdc++ -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -flto -std=c11 -MD -MT CMakeFiles/hello-world.dir/libs/adder/src/add.c.o -MF CMakeFiles/hello-world.dir/libs/adder/src/add.c.o.d -o CMakeFiles/hello-world.dir/libs/adder/src/add.c.o -c /Users/ilg/tmp/my-project/libs/adder/src/add.c
+[2/3] /Users/ilg/tmp/my-project/xpacks/.bin/g++ -DDEBUG -I/Users/ilg/tmp/my-project/include -I/Users/ilg/tmp/my-project/libs/adder/include -O0 -g3 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -mmacosx-version-min=12.6 -static-libgcc -static-libstdc++ -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -flto -std=c++20 -MD -MT CMakeFiles/hello-world.dir/src/hello-world.cpp.o -MF CMakeFiles/hello-world.dir/src/hello-world.cpp.o.d -o CMakeFiles/hello-world.dir/src/hello-world.cpp.o -c /Users/ilg/tmp/my-project/src/hello-world.cpp
+[3/3] : && /Users/ilg/tmp/my-project/xpacks/.bin/g++ -O0 -g3 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -mmacosx-version-min=12.6 -Wl,-search_paths_first -Wl,-headerpad_max_install_names -static-libgcc -static-libstdc++ -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -flto -Wl,-dead_strip CMakeFiles/hello-world.dir/src/hello-world.cpp.o CMakeFiles/hello-world.dir/libs/adder/src/add.c.o -o hello-world   && :
+ld: warning: direct access in function '__ZnamRKSt9nothrow_t.cold' from file '/Users/ilg/Library/xPacks/@xpack-dev-tools/gcc/11.3.0-1.1/.content/bin/../lib/gcc/x86_64-apple-darwin17.7.0/11.3.0/../../../libstdc++.a(new_opvnt.o)' to global weak symbol '__ZnamRKSt9nothrow_t' from file '/Users/ilg/Library/xPacks/@xpack-dev-tools/gcc/11.3.0-1.1/.content/bin/../lib/gcc/x86_64-apple-darwin17.7.0/11.3.0/../../../libstdc++.a(new_opvnt.o)' means the weak symbol cannot be overridden at runtime. This was likely caused by different translation units being compiled with different visibility settings.
+ld: warning: direct access in function '__ZnamRKSt9nothrow_t.cold' from file '/Users/ilg/Library/xPacks/@xpack-dev-tools/gcc/11.3.0-1.1/.content/bin/../lib/gcc/x86_64-apple-darwin17.7.0/11.3.0/../../../libstdc++.a(new_opvnt.o)' to global weak symbol '__ZnamRKSt9nothrow_t' from file '/Users/ilg/Library/xPacks/@xpack-dev-tools/gcc/11.3.0-1.1/.content/bin/../lib/gcc/x86_64-apple-darwin17.7.0/11.3.0/../../../libstdc++.a(new_opvnt.o)' means the weak symbol cannot be overridden at runtime. This was likely caused by different translation units being compiled with different visibility settings.
+> xpm run execute --config debug
 > build/debug/hello-world
 Hello World!
 (in debug mode)
 Check adder lib: 41 + 1 = 42
-> xpm run execute --config Release
+> xpm run test-release
+> xpm run prepare --config release
+> cmake -S . -B build/release -G Ninja -D CMAKE_BUILD_TYPE=Release -D CMAKE_EXPORT_COMPILE_COMMANDS=ON -D CMAKE_TOOLCHAIN_FILE=cmake/toolchains/gcc.cmake
+-- The C compiler identification is GNU 11.3.0
+-- The CXX compiler identification is GNU 11.3.0
+-- Checking whether C compiler has -isysroot
+-- Checking whether C compiler has -isysroot - yes
+-- Checking whether C compiler supports OSX deployment target flag
+-- Checking whether C compiler supports OSX deployment target flag - yes
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /Users/ilg/tmp/my-project/xpacks/.bin/gcc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Checking whether CXX compiler has -isysroot
+-- Checking whether CXX compiler has -isysroot - yes
+-- Checking whether CXX compiler supports OSX deployment target flag
+-- Checking whether CXX compiler supports OSX deployment target flag - yes
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /Users/ilg/tmp/my-project/xpacks/.bin/g++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- The ASM compiler identification is GNU
+-- Found assembler: /Users/ilg/tmp/my-project/xpacks/.bin/gcc
+-- Build type: Release
+-- Project path: /Users/ilg/tmp/my-project
+-- PATH: /Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/.nvm/versions/node/v16.18.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+-- CMake version: 3.21.6
+-- Compiler: GNU 11.3.0
+-- A> hello-world
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /Users/ilg/tmp/my-project/build/release
+> xpm run build --config release
+> cmake -S . -B build/release -G Ninja -D CMAKE_BUILD_TYPE=Release -D CMAKE_EXPORT_COMPILE_COMMANDS=ON
+-- Build type: Release
+-- Project path: /Users/ilg/tmp/my-project
+-- PATH: /Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/tmp/my-project/xpacks/.bin:/Users/ilg/.nvm/versions/node/v16.18.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+-- CMake version: 3.21.6
+-- Compiler: GNU 11.3.0
+-- A> hello-world
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /Users/ilg/tmp/my-project/build/release
+> cmake --build build/release --verbose
+[1/3] /Users/ilg/tmp/my-project/xpacks/.bin/gcc  -I/Users/ilg/tmp/my-project/include -I/Users/ilg/tmp/my-project/libs/adder/include -O3 -DNDEBUG -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -mmacosx-version-min=12.6 -static-libgcc -static-libstdc++ -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -flto -std=c11 -MD -MT CMakeFiles/hello-world.dir/libs/adder/src/add.c.o -MF CMakeFiles/hello-world.dir/libs/adder/src/add.c.o.d -o CMakeFiles/hello-world.dir/libs/adder/src/add.c.o -c /Users/ilg/tmp/my-project/libs/adder/src/add.c
+[2/3] /Users/ilg/tmp/my-project/xpacks/.bin/g++  -I/Users/ilg/tmp/my-project/include -I/Users/ilg/tmp/my-project/libs/adder/include -O3 -DNDEBUG -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -mmacosx-version-min=12.6 -static-libgcc -static-libstdc++ -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -flto -std=c++20 -MD -MT CMakeFiles/hello-world.dir/src/hello-world.cpp.o -MF CMakeFiles/hello-world.dir/src/hello-world.cpp.o.d -o CMakeFiles/hello-world.dir/src/hello-world.cpp.o -c /Users/ilg/tmp/my-project/src/hello-world.cpp
+[3/3] : && /Users/ilg/tmp/my-project/xpacks/.bin/g++ -O3 -DNDEBUG -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -mmacosx-version-min=12.6 -Wl,-search_paths_first -Wl,-headerpad_max_install_names -static-libgcc -static-libstdc++ -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -flto -Wl,-dead_strip CMakeFiles/hello-world.dir/src/hello-world.cpp.o CMakeFiles/hello-world.dir/libs/adder/src/add.c.o -o hello-world   && :
+ld: warning: direct access in function '__ZnamRKSt9nothrow_t.cold' from file '/Users/ilg/Library/xPacks/@xpack-dev-tools/gcc/11.3.0-1.1/.content/bin/../lib/gcc/x86_64-apple-darwin17.7.0/11.3.0/../../../libstdc++.a(new_opvnt.o)' to global weak symbol '__ZnamRKSt9nothrow_t' from file '/Users/ilg/Library/xPacks/@xpack-dev-tools/gcc/11.3.0-1.1/.content/bin/../lib/gcc/x86_64-apple-darwin17.7.0/11.3.0/../../../libstdc++.a(new_opvnt.o)' means the weak symbol cannot be overridden at runtime. This was likely caused by different translation units being compiled with different visibility settings.
+ld: warning: direct access in function '__ZnamRKSt9nothrow_t.cold' from file '/Users/ilg/Library/xPacks/@xpack-dev-tools/gcc/11.3.0-1.1/.content/bin/../lib/gcc/x86_64-apple-darwin17.7.0/11.3.0/../../../libstdc++.a(new_opvnt.o)' to global weak symbol '__ZnamRKSt9nothrow_t' from file '/Users/ilg/Library/xPacks/@xpack-dev-tools/gcc/11.3.0-1.1/.content/bin/../lib/gcc/x86_64-apple-darwin17.7.0/11.3.0/../../../libstdc++.a(new_opvnt.o)' means the weak symbol cannot be overridden at runtime. This was likely caused by different translation units being compiled with different visibility settings.
+> xpm run execute --config release
 > build/release/hello-world
 Hello World!
 (in release mode)
