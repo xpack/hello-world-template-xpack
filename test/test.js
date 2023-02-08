@@ -51,6 +51,9 @@ class Test {
   run (complexity) {
     this.complexity = complexity
 
+    // shx.echo(`$ xpm --version`)
+    // shx.exec('xpm --version')
+
     // Uninstall possibly existing global package, to ensure the
     // test uses the current folder content.
     const uninstall =
