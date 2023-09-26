@@ -16,16 +16,20 @@
 
 // ----------------------------------------------------------------------------
 
-const fs = require('fs')
-const os = require('os')
-const path = require('path')
+import fs from 'fs'
+import os from 'os'
+import path from 'path'
+import { fileURLToPath } from 'url'
 
 // https://www.npmjs.com/package/shelljs
-const shx = require('shelljs')
+import shx from 'shelljs'
 
-const properties = require('../lib/template.js').properties
+import { properties } from '../lib/template.js'
 
 // ----------------------------------------------------------------------------
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 // During development only.
 const enableXpmLink = false
@@ -220,3 +224,5 @@ class Test {
 }
 
 Test.start()
+
+// ----------------------------------------------------------------------------

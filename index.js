@@ -19,16 +19,10 @@
  * To import classes from this module into Node.js applications, use:
  *
  * ```javascript
- * const { XpmInitTemplate } = require('<module>')
+ * import { XpmInitTemplate } from '<module>'
  * ```
  */
 
-const { XpmInitTemplate } = require('./lib/template.js')
-
-// ----------------------------------------------------------------------------
-// Node.js specific export definitions.
-
-// By default, `module.exports = {}`.
-module.exports.XpmInitTemplate = XpmInitTemplate
+export { XpmInitTemplate } from './lib/template.js'
 
 // ----------------------------------------------------------------------------
