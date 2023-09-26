@@ -3,6 +3,7 @@
   "version": "0.6.0",
   "description": "A source xPack / npm package with a template to generate Hello World projects",
   "main": "./index.js",
+  "type": "module",
   "scripts": {
     "fix": "standard --fix",
     "test": "node ./test/test.js",
