@@ -6,9 +6,38 @@ Please check
 [GitHub](https://github.com/xpack/hello-world-template-xpack/issues/)
 and close existing issues and pull requests.
 
+## 2023-09-26
+
+* prepare v0.6.1
+* 5b76268 .gitignore update
+* 6eb05e7 package-liquid.json: bump deps
+* d1b5076 migrate to ESM
+* 0fd09af package.json: bump deps
+* f8e9d4f package.json: update scripts
+* a06fc9d package.json: engines.node >=16.14.0
+* 2dd911d package.json: type: module
+* 4bde22f rename ci.yml
+* e89f683 ci.yml: bump deps
+
+## 2023-02-08
+
+* 7e6b6e9 test.js: add commented out xpm --version
+
+## 2023-02-02
+
+* f380798 README update test-all example
+
+## 2022-12-23
+
+* 2541088 .vscode/settings.json: ignoreWords
+
 ## 2022-08-16
 
-* v0.6.0
+* 5b183b4 package.json: update scripts
+* 7a8d545 README-MAINTAINER update
+* 04f4ea7 0.6.0
+* a6d78df .npmignore build
+* 075aecb prepare v0.6.0
 * 0241e29 package.json: bump deps and minimumXpmRequired 0.14.0
 * 2a404b3 package-liquid.json: minimumXpmRequired 0.14.0
 
