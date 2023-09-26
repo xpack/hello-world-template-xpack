@@ -2,7 +2,7 @@
 # https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions
 # https://github.com/actions
 
-# https://github.com/micro-os-plus/hello-world-qemu-template-xpack/actions/workflows/CI.yml
+# https://github.com/micro-os-plus/hello-world-qemu-template-xpack/actions/workflows/ci.yml
 name: CI on Push
 
 on:

@@ -1,7 +1,7 @@
 [![npm (scoped)](https://img.shields.io/npm/v/@xpack/hello-world-template)](https://www.npmjs.com/package/@xpack/hello-world-template)
 [![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/xpack/hello-world-template-xpack)](https://github.com/xpack/hello-world-template-xpack)
 [![license](https://img.shields.io/github/license/xpack/hello-world-template-xpack)](https://github.com/xpack/hello-world-template-xpack/blob/xpack/LICENSE)
-[![CI on Push](https://github.com/xpack/hello-world-template-xpack/actions/workflows/CI.yml/badge.svg)](https://github.com/xpack/hello-world-template-xpack/actions/workflows/CI.yml)
+[![CI on Push](https://github.com/xpack/hello-world-template-xpack/actions/workflows/ci.yml/badge.svg)](https://github.com/xpack/hello-world-template-xpack/actions/workflows/ci.yml)
 
 # A source xPack with a template to generate Hello World projects
 
