@@ -1,7 +1,7 @@
 {
   "name": "@my-scope/{{ projectName }}",
   "version": "0.1.0",
-  "description": "A source xPack with a Hello World application",
+  "description": "A source code Hello World application",
   "main": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -33,28 +33,31 @@
 {% endif -%}
   "license": "MIT",
   "config": {},
+  "engines": {
+    "node": " >=16.14.0"
+  },
   "dependencies": {},
   "bundledDependencies": [],
   "devDependencies": {},
   "xpack": {
-    "minimumXpmRequired": "0.14.0",
+    "minimumXpmRequired": "0.16.2",
     "dependencies": {},
     "devDependencies": {
-      {% if toolchain == "gcc" -%}
-          "@xpack-dev-tools/gcc": "11.3.0-1.1",
-      {% elsif toolchain == "clang" -%}
-          "@xpack-dev-tools/clang": "13.0.1-1.1",
-      {% endif -%}
-      {% if buildGenerator == "cmake" -%}
-          "@xpack-dev-tools/cmake": "3.21.6-1.1",
-          "@xpack-dev-tools/ninja-build": "1.11.0-1.1"
-      {% elsif buildGenerator == "meson" -%}
-          "@xpack-dev-tools/meson-build": "0.60.3-1.1",
-          "@xpack-dev-tools/ninja-build": "1.11.0-1.1"
-      {% elsif buildGenerator == "autotools" -%}
-          "@xpack-dev-tools/cmake": "3.21.6-1.1",
-          "@xpack-dev-tools/windows-build-tools": "4.2.1-2.1"
-      {% endif -%}
+{% if toolchain == "gcc" -%}
+      "@xpack-dev-tools/gcc": "13.2.0-1.1",
+{% elsif toolchain == "clang" -%}
+      "@xpack-dev-tools/clang": "16.0.6-1.1",
+{% endif -%}
+{% if buildGenerator == "cmake" -%}
+      "@xpack-dev-tools/cmake": "3.26.5-1.1",
+      "@xpack-dev-tools/ninja-build": "1.11.1-3.1"
+{% elsif buildGenerator == "meson" -%}
+      "@xpack-dev-tools/meson-build": "1.0.2-1.1",
+      "@xpack-dev-tools/ninja-build": "1.11.1-3.1"
+{% elsif buildGenerator == "autotools" -%}
+      "@xpack-dev-tools/cmake": "3.26.5-1.1",
+      "@xpack-dev-tools/windows-build-tools": "4.4.0-1.1"
+{% endif -%}
     },
     "properties": {
       {% raw %}"buildFolderRelativePath": "{{ 'build' | path_join: configuration.name | to_filename | downcase }}",{% endraw %}
