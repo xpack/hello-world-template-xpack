@@ -43,6 +43,9 @@
   },
   "license": "MIT",
   "config": {},
+  "engines": {
+    "node": " >=16.14.0"
+  },
   "dependencies": {
     "@ilg/cli-start-options": "^0.6.6",
     "cp-file": "^9.1.0",
