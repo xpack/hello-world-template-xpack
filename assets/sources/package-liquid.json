@@ -34,29 +34,29 @@
   "license": "MIT",
   "config": {},
   "engines": {
-    "node": " >=16.14.0"
+    "node": " >=18.0.0"
   },
   "dependencies": {},
   "bundledDependencies": [],
   "devDependencies": {},
   "xpack": {
-    "minimumXpmRequired": "0.16.2",
+    "minimumXpmRequired": "0.19.4",
     "dependencies": {},
     "devDependencies": {
 {% if toolchain == "gcc" -%}
-      "@xpack-dev-tools/gcc": "13.2.0-1.1",
+      "@xpack-dev-tools/gcc": "14.2.0-1.1",
 {% elsif toolchain == "clang" -%}
-      "@xpack-dev-tools/clang": "16.0.6-1.1",
+      "@xpack-dev-tools/clang": "18.1.8-2.1",
 {% endif -%}
 {% if buildGenerator == "cmake" -%}
-      "@xpack-dev-tools/cmake": "3.26.5-1.1",
+      "@xpack-dev-tools/cmake": "3.28.6-1.1",
       "@xpack-dev-tools/ninja-build": "1.11.1-3.1"
 {% elsif buildGenerator == "meson" -%}
-      "@xpack-dev-tools/meson-build": "1.0.2-1.1",
+      "@xpack-dev-tools/meson-build": "1.4.2-1.1",
       "@xpack-dev-tools/ninja-build": "1.11.1-3.1"
 {% elsif buildGenerator == "autotools" -%}
-      "@xpack-dev-tools/cmake": "3.26.5-1.1",
-      "@xpack-dev-tools/windows-build-tools": "4.4.0-1.1"
+      "@xpack-dev-tools/cmake": "3.28.6-1.1",
+      "@xpack-dev-tools/windows-build-tools": "4.4.1-3.1"
 {% endif -%}
     },
     "properties": {
