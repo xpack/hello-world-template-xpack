@@ -20,7 +20,7 @@ xpm init --template {{ package.name }}/{{ package.version }}{% for property in p
 
 ## `xpm install`
 
-As usual with npm and xpm projects, to facilitate running the tests
+As usual with **npm** and **xpm** projects, to facilitate running the tests
 on Continuous Integration environments there is a way to automate
 installing the required tools, like build tools, defined as `devDependencies`.
 
