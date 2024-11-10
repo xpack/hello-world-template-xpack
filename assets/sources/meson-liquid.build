@@ -80,25 +80,31 @@ endif
 common_options = []
 
 if compiler.get_id() == 'gcc' or compiler.get_id().contains('clang')
+  if compiler.get_id() == 'gcc'
+    common_options += [
+      '-static-libgcc',
+      '-static-libstdc++',
+    ]
+  endif
   common_options += [
     '-fmessage-length=0',
-    '-fsigned-char'
+    '-fsigned-char',
   ]
   # This is used in conjunction with linker `--gc-sections`.
   common_options += [
     '-ffunction-sections',
-    '-fdata-sections'
+    '-fdata-sections',
   ]
 
   if get_option('buildtype') == 'release' or get_option('buildtype') == 'debugoptimized'
-  # Optional, comment it out to disable link time optimizations.
+    # Optional, comment it out to disable link time optimizations.
     common_options += [
-      '-flto'
+      '-flto',
     ]
   endif
   if get_option('buildtype').contains('debug')
     common_options += [
-      '-fno-omit-frame-pointer'
+      '-fno-omit-frame-pointer',
     ]
   endif
 elif compiler.get_id() == 'msvc'
@@ -119,27 +125,28 @@ linker_options = common_options
 if build_machine.system() == 'darwin'
   # macOS always uses the Apple linker, regarless of the compiler.
   linker_options += [
-    '-Wl,-dead_strip'
+    '-Wl,-dead_strip',
   ]
-else # Linux or Windows
-  if compiler.get_id() == 'gcc'
+elif build_machine.system() == 'windows'
+  if compiler.get_id() == 'gcc' or compiler.get_id().contains('clang')
     # TODO: clang with gold might need it too.
     linker_options += [
-      '-Wl,--gc-sections'
+      '-Wl,--gc-sections',
+
+      '-static',
     ]
   elif compiler.get_id() == 'msvc'
     linker_options += [
       # Add MSVC options here.
     ]
   endif
-endif
-
-if compiler.get_id() == 'gcc'
-  # Required, otherwise system shared libraries are used.
-  linker_options += [
-    '-static-libgcc',
-    '-static-libstdc++',
-  ]
+elif build_machine.system() == 'linux'
+  if compiler.get_id() == 'gcc'
+    # TODO: clang with gold might need it too.
+    linker_options += [
+      '-Wl,--gc-sections',
+    ]
+  endif
 endif
 
 # -----------------------------------------------------------------------------
