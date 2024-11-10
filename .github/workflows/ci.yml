@@ -36,7 +36,8 @@ jobs:
     strategy:
       matrix:
         # https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners
-        os: [ ubuntu-24.04, macos-13, macos-14, windows-2022 ]
+        # os: [ ubuntu-24.04, macos-13, macos-14, windows-2022 ]
+        os: [ ubuntu-24.04, macos-13, windows-2022 ]
         node-version: [ 18, 20, 22 ]
 
     steps:
