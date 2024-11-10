@@ -8,6 +8,18 @@ and close existing issues and pull requests.
 
 ## 2024-11-10
 
+* c3a0981 0.6.1
+* 40c3275 autotools updates
+* 7b816ce cmake & meson updates
+* 971cda2 package-liquid.json: -D CMAKE_MAKE_PROGRAM=ninja.cmd in cmake
+* a24c58d package-liquid.json: ninja.cmd in cmake
+* cf98476 package-liquid.json: revert to gcc 14.2.0-1.1
+* 848ee44 ci.yml: skip macos-14
+* 568c769 package-liquid.json: revert to gcc 14.2.0
+* 12e071a package-liquid.json: try gcc 12.2.0
+* 9a9ef03 package-liquid.json: try gcc 13.2.0
+* 66b5cea package-liquid.json: try gcc 13.3.0
+* c9968c8 prepare v0.6.2
 * 23878c0 README-liquid update
 * f594f06 package-liquid.json: bump deps
 * 46e18e0 ci.yml bump deps
