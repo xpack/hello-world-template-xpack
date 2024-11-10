@@ -31,7 +31,6 @@ endif()
 
 # -----------------------------------------------------------------------------
 
-# TODO: remove workaround once VS Code is fixed.
 # VS Code does not properly identify the shims used by npm/xpm,
 # thus make the extension explicit.
 if("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "Windows")
