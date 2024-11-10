@@ -53,11 +53,13 @@ LDFLAGS := $(COMMON_FLAGS)
 ifeq ($(uname_s), Darwin)
   # macOS always uses the Apple linker, regarless of the compiler.
   LDFLAGS += -Wl,-dead_strip
-else
-  # TODO: adjust for Microsoft cl
+else ifeq ($(uname_s), Linux)
+  # macOS always uses the Apple linker, regarless of the compiler.
   LDFLAGS += -Wl,-gc-sections
+else
+  # TODO: eventually add support for Microsoft cl
+  LDFLAGS += -Wl,-gc-sections -static
 endif
-
 
 # -----------------------------------------------------------------------------
 
