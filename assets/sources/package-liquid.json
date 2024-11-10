@@ -67,7 +67,7 @@
 {% elsif toolchain == "clang" -%}
       "toolchainFileName": "clang.cmake",
 {% endif -%}
-      {% raw %}"commandPrepare": "cmake -S . -B {{ properties.buildFolderRelativePath }} -G Ninja -D CMAKE_MAKE_PROGRAM=ninja{% if os.platform == 'win32' %}.cmd{% endif %} -D CMAKE_BUILD_TYPE={{ properties.buildType }} -D CMAKE_EXPORT_COMPILE_COMMANDS=ON",{% endraw %}
+      {% raw %}"commandPrepare": "cmake -S . -B {{ properties.buildFolderRelativePath }} -G Ninja {% if os.platform == 'win32' %}-D CMAKE_MAKE_PROGRAM=ninja.cmd{% endif %} -D CMAKE_BUILD_TYPE={{ properties.buildType }} -D CMAKE_EXPORT_COMPILE_COMMANDS=ON",{% endraw %}
       {% raw %}"commandPrepareWithToolchain": "{{ properties.commandPrepare }} -D CMAKE_TOOLCHAIN_FILE=cmake/toolchains/{{ properties.toolchainFileName }}",{% endraw %}
       {% raw %}"commandReconfigure": "{{ properties.commandPrepare }}",
       "commandBuild": "cmake --build {{ properties.buildFolderRelativePath }} --verbose",
