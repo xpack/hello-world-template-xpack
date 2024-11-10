@@ -48,17 +48,17 @@ Check GitHub issues and pull requests:
 - check the latest commits `npm run git-log`
 - open the `CHANGELOG.md` file
 - check if all previous fixed issues are in
-- commit with a message like _prepare v0.6.1_
+- commit with a message like _prepare v0.6.2_
 
 ## Publish on the npmjs.com server
 
-- select the `xpack-develop` branch
+- select the `xpack-development` branch
 - commit everything
 - `npm run fix`
 - commit all changes
 - `npm run test-all`
 - check the latest commits `npm run git-log`
-- `npm run pack`; check the content of the archive, which should list
+- `npm run npm-pack`; check the content of the archive, which should list
   only the following; possibly adjust `.npmignore`
 
 ```console
@@ -118,14 +118,14 @@ workflow.
 When the package is considered stable:
 
 - with Sourcetree
-- merge `xpack-develop` into `xpack`
+- merge `xpack-development` into `xpack`
 - push to GitHub
-- select `xpack-develop`
+- select `xpack-development`
 
 ## Tag the npm package as `latest`
 
 When the release is considered stable, promote it as `latest`:
 
 - `npm dist-tag ls @xpack/hello-world-template`
-- `npm dist-tag add @xpack/hello-world-template@0.6.1 latest`
+- `npm dist-tag add @xpack/hello-world-template@0.6.2 latest`
 - `npm dist-tag ls @xpack/hello-world-template`

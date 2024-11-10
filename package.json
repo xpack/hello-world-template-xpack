@@ -1,6 +1,6 @@
 {
   "name": "@xpack/hello-world-template",
-  "version": "0.6.0",
+  "version": "0.6.1-pre",
   "description": "A template to generate Hello World projects",
   "main": "./index.js",
   "type": "module",
@@ -12,11 +12,11 @@
     "test-all": "node ./test/test.js all",
     "test-develop": "node ./test/test.js develop",
     "npm-install": "npm install",
-    "outdated": "npm outdated",
-    "update": "npm update",
-    "pack": "npm pack",
-    "version-patch": "npm version patch",
-    "version-minor": "npm version minor",
+    "npm-outdated": "npm outdated",
+    "npm-update": "npm update",
+    "npm-pack": "npm pack",
+    "npm-version-patch": "npm version patch",
+    "npm-version-minor": "npm version minor",
     "npm-audit": "npm audit fix --force",
     "postversion": "git push origin --all && git push origin --tags",
     "git-log": "git log --pretty='%cd * %h %s' --date=short",
@@ -52,7 +52,7 @@
     "@ilg/cli-start-options": "^0.6.6",
     "cp-file": "^10.0.0",
     "git-config-path": "^2.0.0",
-    "liquidjs": "^10.9.2",
+    "liquidjs": "^10.18.0",
     "make-dir": "^4.0.0",
     "parse-git-config": "^3.0.0"
   },
@@ -65,12 +65,12 @@
     "parse-git-config"
   ],
   "devDependencies": {
-    "del-cli": "^5.1.0",
+    "del-cli": "^6.0.0",
     "shelljs": "^0.8.5",
-    "standard": "^17.1.0",
-    "xpm": "^0.17.0"
+    "standard": "^17.1.2",
+    "xpm": "^0.19.4"
   },
   "xpack": {
-    "minimumXpmRequired": "0.16.2"
+    "minimumXpmRequired": "0.19.4"
   }
 }

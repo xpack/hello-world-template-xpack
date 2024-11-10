@@ -6,9 +6,19 @@ Please check
 [GitHub](https://github.com/xpack/hello-world-template-xpack/issues/)
 and close existing issues and pull requests.
 
+## 2024-11-10
+
+* 23878c0 README-liquid update
+* f594f06 package-liquid.json: bump deps
+* 46e18e0 ci.yml bump deps
+* 42f4fa4 meson-liquid.build: fix if syntax
+* 2940592 cosmetics
+* 3212f8f add "All rights reserved."
+
 ## 2023-09-26
 
-* prepare v0.6.1
+* caf6116 ci.yml: bump node
+* a0cc410 prepare v0.6.1
 * 5b76268 .gitignore update
 * 6eb05e7 package-liquid.json: bump deps
 * d1b5076 migrate to ESM

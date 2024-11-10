@@ -3,7 +3,7 @@
 [![license](https://img.shields.io/github/license/xpack/hello-world-template-xpack)](https://github.com/xpack/hello-world-template-xpack/blob/xpack/LICENSE)
 [![CI on Push](https://github.com/xpack/hello-world-template-xpack/actions/workflows/ci.yml/badge.svg)](https://github.com/xpack/hello-world-template-xpack/actions/workflows/ci.yml)
 
-# A source xPack with a template to generate Hello World projects
+# An xpm template to generate Hello World projects
 
 Generate simple _Hello World_
 projects to demonstrate the xPack Build framework.

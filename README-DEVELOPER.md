@@ -19,7 +19,7 @@ git clone https://github.com/xpack/hello-world-template-xpack.git \
 To clone the development branch:
 
 ```sh
-git clone --branch xpack-develop \
+git clone --branch xpack-development \
   https://github.com/xpack/hello-world-template-xpack.git \
   hello-world-template-xpack.git
 ```
@@ -54,12 +54,12 @@ The template receives via the `context`:
 Apart from the unused `master` branch, there are two active branches:
 
 - `xpack`, with the latest stable version
-- `xpack-develop`, with the current development version
+- `xpack-development`, with the current development version
 
-All development is done in the `xpack-develop` branch, and contributions via
+All development is done in the `xpack-development` branch, and contributions via
 Pull Requests should be directed to this branch.
 
-When new releases are published, the `xpack-develop` branch is merged
+When new releases are published, the `xpack-development` branch is merged
 into `xpack`.
 
 ## Testing
