@@ -44,7 +44,7 @@
     "dependencies": {},
     "devDependencies": {
 {% if toolchain == "gcc" -%}
-      "@xpack-dev-tools/gcc": "14.2.0-1.1",
+      "@xpack-dev-tools/gcc": "13.3.0-1.1",
 {% elsif toolchain == "clang" -%}
       "@xpack-dev-tools/clang": "18.1.8-2.1",
 {% endif -%}
