@@ -106,22 +106,23 @@ have defaults.
 Installing @xpack/hello-world-template@0.6.1...
 Processing @xpack/hello-world-template@0.6.1...
 
-Creating the C++ project 'my-project'...
+Creating the C project 'my-project'...
 - buildGenerator=cmake
 - toolchain=gcc
 
 File 'include/hello-world.h' copied.
-File 'src/hello-world.cpp' copied.
+File 'src/hello-world.c' copied.
 File 'libs/adder/include/add/add.h' copied.
 File 'libs/adder/src/add.c' copied.
-File 'meta/CMakeLists.txt' generated.
-File 'meta/toolchain-gcc.cmake' copied.
+Folder 'cmake' copied.
+File 'CMakeLists.txt' generated.
 File '.vscode/tasks.json' copied.
-File '.clang-format' copied.
+File '.vscode/settings.json' copied.
+File '.gitignore' copied.
+File '.npmignore' copied.
 File 'README.md' generated.
 File 'LICENSE' generated.
 File 'package.json' generated.
-%
 ```
 
 ### Satisfy dependencies
