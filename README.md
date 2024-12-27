@@ -18,7 +18,7 @@ and is also available from npmjs.com as
 This project generates multiple variants of the classical application
 that prints the _Hello World_ message on standard output.
 
-Both C and C++ are supported, with **CMake** and **meson** as build system
+Both C and C++ are supported, with **CMake** and **Meson** as build system
 generators; it is also possible to create projects that use the legacy
 autotools & make, but only as a configuration demonstrator, for real
 projects the configuration needs further tweaks.
