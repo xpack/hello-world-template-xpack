@@ -24,7 +24,9 @@ import { fileURLToPath } from 'url'
 // https://www.npmjs.com/package/shelljs
 import shx from 'shelljs'
 
-import { properties } from '../lib/template.js'
+import { Logger } from '@xpack/logger'
+
+import { XpmInitTemplate } from '../lib/template.js'
 
 // ----------------------------------------------------------------------------
 
@@ -55,6 +57,14 @@ class Test {
   run (complexity) {
     this.complexity = complexity
 
+    const xpmInitTemplate = new XpmInitTemplate({
+      context: {
+        log: new Logger({ level: 'info' }),
+        config: {}
+      }
+    })
+    const properties = xpmInitTemplate.propertiesDefinitions
+
     // shx.echo(`$ xpm --version`)
     // shx.exec('xpm --version')
 
@@ -73,8 +83,9 @@ class Test {
       for (const buildGenerator of
         Object.keys(properties.buildGenerator.items)) {
         for (const language of Object.keys(properties.language.items)) {
-          for (const toolchain of Object.keys(properties.toolchain.items)) {
-            if (toolchain === 'system' && os.platform() === 'win32') {
+          for (const [toolchain, value] of
+            Object.entries(properties.toolchain.items)) {
+            if (!xpmInitTemplate.isPlatformSupported(value.platforms)) {
               continue
             }
             exitCode = this.runOne({
@@ -94,8 +105,9 @@ class Test {
       for (const buildGenerator of
         Object.keys(properties.buildGenerator.items)) {
         for (const language of Object.keys(properties.language.items)) {
-          for (const toolchain of Object.keys(properties.toolchain.items)) {
-            if (toolchain === 'system' && os.platform() === 'win32') {
+          for (const [toolchain, value] of
+            Object.entries(properties.toolchain.items)) {
+            if (!xpmInitTemplate.isPlatformSupported(value.platforms)) {
               continue
             }
             exitCode = this.runOne({
@@ -118,10 +130,13 @@ class Test {
         // buildGenerator: 'autotools',
         language: 'cpp',
         // language: 'c',
-        toolchain: 'gcc'
-        // toolchain: 'clang'
+        // toolchain: 'gcc'
+        toolchain: 'clang'
         // toolchain: 'system'
       })
+      if (exitCode !== 0) {
+        return exitCode
+      }
     }
 
     const durationString = this.formatDuration(Date.now() - this.startTime)
