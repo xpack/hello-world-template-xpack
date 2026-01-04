@@ -118,7 +118,7 @@ An example of such a file is:
 This file is automatically created and updated by the xPack extension, so
 the user should not be very concerned about it.
 
-However, only modern tools (like CMake and meson) can generate this file.
+However, only modern tools (like CMake and Meson) can generate this file.
 
 If the project uses other tools, like autotools & make, the
 `c_cpp_properties.json` file must be edited and specific details (like

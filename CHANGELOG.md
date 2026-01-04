@@ -6,8 +6,29 @@ Please check
 [GitHub](https://github.com/xpack/hello-world-template-xpack/issues/)
 and close existing issues and pull requests.
 
+## 2026-01-05 
+
+* d1b38c3 template.ts update
+
+## 2026-01-03
+
+* e56842c package*.json update
+* 256d35e xpack.exclude build
+* eb408dd update to xpm-lib
+* e023e82 package-liquid.json:bump deps
+
+## 2024-12-27
+
+* 8b18780 READMEs: capitalize Meson
+
+## 2024-12-26
+
+* cf61649 README update
+
 ## 2024-11-10
 
+* 127a6bb 0.6.1 published
+* 2024-11-10 * c3a0981 0.6.1
 * c3a0981 0.6.1
 * 40c3275 autotools updates
 * 7b816ce cmake & meson updates

@@ -33,6 +33,9 @@
   "makefile.configureOnOpen": false,
   "npm.exclude": [
     "**/build/**",
-    "**/xpacks/**"
+    "**/xpacks/**",
+  ],
+  "xpack.exclude": [
+    "**/build/**"
   ]
 }
