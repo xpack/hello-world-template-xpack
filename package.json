@@ -5,6 +5,7 @@
   "main": "./index.js",
   "type": "module",
   "scripts": {
+    "prettier": "prettier src tests --write --config config/.prettierrc.json --ignore-path config/.prettierignore",
     "fix": "standard --fix",
     "test-clean": "del-cli build",
     "test": "node ./test/test.js",
@@ -72,10 +73,12 @@
   ],
   "devDependencies": {
     "del-cli": "^6.0.0",
+    "prettier": "^3.8.1",
     "shelljs": "^0.8.5",
     "standard": "^17.1.2",
     "xpm": "^0.22.6"
   },
   "xpack": {
-    "minimumXpmRequired": "0.22.4"
-  }}
+    "minimumXpmRequired": "0.22.7"
+  }
+}
