@@ -1,0 +1,58 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Run xpm",
+            "runtimeExecutable": "xpm",
+            "cwd": "${workspaceFolder}",
+            "args": []
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "tests/test.js",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/tests/test.js",
+            "outFiles": [
+                "${workspaceFolder}/**/*.js"
+            ],
+            "console": "integratedTerminal",
+            "stopOnEntry": true
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "xpm init --template",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "runtimeExecutable": "xpm",
+            "args": [
+                "init",
+                "--template",
+                "${workspaceFolder}",
+                "--name",
+                "001",
+                "--property",
+                "buildGenerator=cmake",
+                "--property",
+                "language=c",
+                "--property",
+                "toolchain=clang"
+            ],
+            "cwd": "${workspaceFolder}/build/001-cmake-c-clang",
+            "outFiles": [
+                "${workspaceFolder}/**/*.js"
+            ],
+            "console": "integratedTerminal",
+            "stopOnEntry": true
+        }
+    ]
+}
