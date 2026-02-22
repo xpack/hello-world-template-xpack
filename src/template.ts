@@ -182,6 +182,7 @@ export class XpmInitTemplate extends xpmLib.InitTemplateBase {
     const log = this.log
     const context = this.context
     const config = context.config
+    const moduleFolderPath = this.__dirname
 
     const substitutionsVariables = this.substitutionsVariables
     assert(substitutionsVariables, 'Substitutions variables not initialised')
@@ -210,7 +211,7 @@ export class XpmInitTemplate extends xpmLib.InitTemplateBase {
 
     // Add package (for name & version)
     const packageJsonPath: string = path.resolve(
-      path.dirname(this.__dirname),
+      moduleFolderPath,
       'package.json'
     )
     const packageJsonContent: Buffer = await fs.readFile(packageJsonPath)
