@@ -65,7 +65,7 @@ Check GitHub issues and pull requests:
 CHANGELOG.md
 LICENSE
 README.md
-assets/...
+templates/...
 index.js
 lib/template.js
 package.json
