@@ -10,10 +10,10 @@
 
 # https://mesonbuild.com/Reference-manual.html#project
 project('hello-world',
-{% if language == 'cpp' -%}
+{% if matrix.language == 'cpp' -%}
   ['c', 'cpp'],
   default_options: ['c_std=c11', 'cpp_std=c++20'],
-{% elsif language == 'c' -%}
+{% elsif matrix.language == 'c' -%}
   ['c'],
   default_options: ['c_std=c11'],
 {% endif -%}
@@ -25,7 +25,7 @@ project('hello-world',
 
 # https://mesonbuild.com/Builtin-options.html#compiler-options
 # c_std: none, c89, c99, c11, c17, c18, c2x, gnu89, gnu99, gnu11, gnu17, gnu18, gnu2x
-{% if language == 'cpp' -%}
+{% if matrix.language == 'cpp' -%}
 #
 # cpp_std: none, c++98, c++03, c++11, c++14, c++17, c++20
 # c++2a, c++1z, gnu++03, gnu++11, gnu++14, gnu++17, gnu++1z,
@@ -115,7 +115,7 @@ endif
 
 c_compiler_options = compiler_definition + common_options
 
-{% if language == 'cpp' -%}
+{% if matrix.language == 'cpp' -%}
 cpp_compiler_options=compiler_definition + common_options
 
 {% endif -%}
@@ -164,7 +164,7 @@ application = executable(meson.project_name(),
   dependencies: [adderLibraryDependency],
   link_with: [adderLibrary],
   c_args: c_compiler_options,
-{% if language == 'cpp' -%}
+{% if matrix.language == 'cpp' -%}
   cpp_args: cpp_compiler_options,
 {% endif -%}
   link_args: linker_options

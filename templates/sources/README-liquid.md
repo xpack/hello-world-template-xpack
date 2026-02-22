@@ -15,13 +15,13 @@ project template, using the following command:
 
 ```sh
 cd <project>
-xpm init --template {{ package.name }}/{{ package.version }}{% for property in properties %} --property {{ property[0] }}={{ property[1]}}{% endfor %}
+xpm init --template {{ package.name }}/@{{ package.version }}{% for value in matrix %} --property {{ value[0] }}={{ value[1] }}{% endfor %}
 ```
 
 ## `xpm install`
 
 As usual with **npm** and **xpm** projects, to facilitate running the tests
-on Continuous Integration environments there is a way to automate
+on Continuous Integration environments there is a covenient way to automate
 installing the required tools, like build tools, defined as `devDependencies`.
 
 This mechanism is also useful during normal development, so it is
@@ -90,8 +90,8 @@ xpm run test-all
 
 ## IntelliSense
 
-The project is VS Code friendly, and when using the VS Code xPack
-Managed Build Tools extension the `.vscode/c_cpp_properties.json` file
+The project is VS Code friendly, and when using the **VS Code xPack
+Managed Build Tools extension** the `.vscode/c_cpp_properties.json` file
 is managed automatically.
 
 The best way to configure IntelliSense is to use a
@@ -160,5 +160,5 @@ An example of such a file is:
 ## License
 
 The original content is released under the
-[MIT License](https://opensource.org/licenses/MIT), with all rights reserved to
-[Liviu Ionescu](https://github.com/ilg-ul/).
+[MIT License](https://opensource.org/licenses/mit), with all rights reserved to
+[Liviu Ionescu](https://github.com/ilg-ul).

@@ -5,17 +5,17 @@
 # to the project must be prefixed with "../../"
 
 RM := rm -rf
-{% if toolchain == 'gcc' -%}
+{% if matrix.toolchain == 'gcc' -%}
 CC := gcc
 CXX := g++
-{% elsif toolchain == 'clang' -%}
+{% elsif matrix.toolchain == 'clang' -%}
 CC := clang
 CXX := clang++
 {% endif %}
-{% if language == 'c' -%}
+{% if matrix.language == 'c' -%}
 LD := $(CC)
 # LD := $(CXX)
-{% elsif language == 'cpp' -%}
+{% elsif matrix.language == 'cpp' -%}
 # LD := $(CC)
 LD := $(CXX)
 {% endif %}
