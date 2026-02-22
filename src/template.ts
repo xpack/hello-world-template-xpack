@@ -23,11 +23,12 @@
 
 // ----------------------------------------------------------------------------
 
-import * as fs from 'fs/promises'
-import * as path from 'path'
+import assert from 'node:assert'
+import * as fs from 'node:fs/promises'
+import * as path from 'node:path'
 
-import * as util from 'util'
-import { fileURLToPath } from 'url'
+import * as util from 'node:util'
+import { fileURLToPath } from 'node:url'
 
 // https://www.npmjs.com/package/git-config-path
 import gitConfigPath from 'git-config-path'
@@ -35,7 +36,6 @@ import gitConfigPath from 'git-config-path'
 import parseGitConfig from 'parse-git-config'
 
 import * as xpmLib from '@xpack/xpm-lib'
-import assert from 'node:assert'
 
 // ----------------------------------------------------------------------------
 

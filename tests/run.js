@@ -11,15 +11,13 @@
  */
 
 'use strict'
-/* eslint valid-jsdoc: "error" */
-/* eslint max-len: [ "error", 80, { "ignoreUrls": true } ] */
 
 // ----------------------------------------------------------------------------
 
-import fs from 'fs'
-import os from 'os'
-import path from 'path'
-import { fileURLToPath } from 'url'
+import fs from 'node:fs'
+import os from 'node:os'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 
 // https://www.npmjs.com/package/shelljs
 import shx from 'shelljs'
@@ -74,6 +72,7 @@ class Test {
 
     // Uninstall possibly existing global package, to ensure the
     // test uses the current folder content.
+    // eslint-disable-next-line max-len
     const uninstall = `xpm uninstall ${this.packageName} --global --ignore-errors`
     shx.echo(`$ ${uninstall}`)
     shx.exec(uninstall)
@@ -205,7 +204,7 @@ class Test {
     shx.echo(`$ ${command}`)
     try {
       shx.exec(command)
-    } catch (err) {
+    } catch {
       shx.echo()
       return 1
     }
@@ -216,7 +215,7 @@ class Test {
       shx.echo(`$ ${command}`)
       try {
         shx.exec(command)
-      } catch (err) {
+      } catch {
         shx.echo()
         return 1
       }
@@ -227,7 +226,7 @@ class Test {
     shx.echo(`$ ${command}`)
     try {
       shx.exec(command)
-    } catch (err) {
+    } catch {
       shx.echo()
       return 1
     }

@@ -15,11 +15,11 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "tests/test.js",
+            "name": "tests/run.js",
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}/tests/test.js",
+            "program": "${workspaceFolder}/tests/run.js",
             "outFiles": [
                 "${workspaceFolder}/dist/*.js"
             ],
