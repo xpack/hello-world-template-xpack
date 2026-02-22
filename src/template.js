@@ -60,12 +60,12 @@ const __dirname = path.dirname(__filename)
 export class XpmInitTemplate extends xpmLib.InitTemplateBase {
   // --------------------------------------------------------------------------
 
-  constructor({ context }) {
-    debugger
+  constructor({ context, policies }) {
     super({
       context,
-      templatesPath: path.resolve(__dirname, '..', 'assets', 'sources'),
+      templatesPath: path.resolve(__dirname, '..', 'templates', 'sources'),
       __dirname,
+      policies,
       propertiesDefinitions: {
         language: {
           label: 'Programming language',
@@ -113,18 +113,17 @@ export class XpmInitTemplate extends xpmLib.InitTemplateBase {
   }
 
   async generate() {
-    const log = this._log
-    const context = this._context
+    const log = this.log
+    const context = this.context
     const config = context.config
 
-    const substitutionsVariables = this._substitutionsVariables
+    const substitutionsVariables = this.substitutionsVariables
 
     const gitConfigPath = getGitConfigPath('global')
     const gitConfig = parseGitConfig.sync({ path: gitConfigPath }) || {}
     if (!gitConfig.user) {
       gitConfig.user = {}
     }
-    debugger
     log.trace(util.inspect(gitConfig))
 
     substitutionsVariables.author = {
@@ -132,7 +131,7 @@ export class XpmInitTemplate extends xpmLib.InitTemplateBase {
       email: gitConfig.user.email ? gitConfig.user.email : 'my@eMail.com',
       url:
         gitConfig.user.email === 'ilg@livius.net'
-          ? 'https://github.com/ilg-ul/'
+          ? 'https://github.com/ilg-ul'
           : 'https://my-url',
     }
 
@@ -148,16 +147,17 @@ export class XpmInitTemplate extends xpmLib.InitTemplateBase {
     const packageJson = JSON.parse(packageJsonContent.toString())
     substitutionsVariables.package = packageJson
 
-    substitutionsVariables.fileExtension = substitutionsVariables.language
+    const matrix = substitutionsVariables.matrix
+    substitutionsVariables.fileExtension = matrix.language
 
-    const lang = substitutionsVariables.language === 'cpp' ? 'C++' : 'C'
+    const lang = matrix.language === 'cpp' ? 'C++' : 'C'
     log.info(
       `Creating the ${lang} project ` +
         `'${substitutionsVariables.projectName}'...`
     )
 
     if (!this._isInteractive) {
-      Object.entries(this._propertiesDefinitions).forEach(([key, val]) => {
+      Object.entries(this.propertiesDefinitions).forEach(([key, val]) => {
         if (!val.isMandatory) {
           log.info(`- ${key}=${substitutionsVariables[key]}`)
         }
@@ -194,7 +194,7 @@ export class XpmInitTemplate extends xpmLib.InitTemplateBase {
       destinationFilePath: 'libs/adder/src/add.c',
     })
 
-    if (substitutionsVariables.buildGenerator === 'cmake') {
+    if (matrix.buildGenerator === 'cmake') {
       await this.render({
         sourceFilePath: 'cmake/toolchains/clang-liquid.cmake',
         destinationFilePath: 'cmake/toolchains/clang.cmake',
@@ -207,7 +207,7 @@ export class XpmInitTemplate extends xpmLib.InitTemplateBase {
         sourceFilePath: 'CMakeLists-liquid.txt',
         destinationFilePath: 'CMakeLists.txt',
       })
-    } else if (substitutionsVariables.buildGenerator === 'meson') {
+    } else if (matrix.buildGenerator === 'meson') {
       await this.render({
         sourceFilePath: 'meson-liquid.build',
         destinationFilePath: 'meson.build',
@@ -224,7 +224,7 @@ export class XpmInitTemplate extends xpmLib.InitTemplateBase {
         sourceFilePath: 'libs/adder/meson-liquid.build',
         destinationFilePath: 'libs/adder/meson.build',
       })
-    } else if (substitutionsVariables.buildGenerator === 'autotools') {
+    } else if (matrix.buildGenerator === 'autotools') {
       await this.copyFile({
         sourceFileRelativePath: 'autotools/configure',
         destinationFilePath: 'autotools/configure',
