@@ -55,7 +55,7 @@ class Test {
     this.count = 1
   }
 
-  run(complexity) {
+  run(complexity = '') {
     this.complexity = complexity
 
     const xpmInitTemplate = new XpmInitTemplate({
@@ -67,7 +67,7 @@ class Test {
         },
       },
     })
-    const properties = xpmInitTemplate._propertiesDefinitions
+    const properties = xpmInitTemplate.propertiesDefinitions
 
     // shx.echo(`$ xpm --version`)
     // shx.exec('xpm --version')
@@ -90,7 +90,10 @@ class Test {
           for (const [toolchain, value] of Object.entries(
             properties.toolchain.items
           )) {
-            if (!xpmInitTemplate.isPlatformSupported(value.platforms)) {
+            if (
+              xpmLib.isObject(value) &&
+              !xpmInitTemplate.isPlatformSupported(value.platforms)
+            ) {
               continue
             }
             exitCode = this.runOne({
@@ -153,15 +156,15 @@ class Test {
     shx.echo(`Completed in ${durationString}.`)
   }
 
-  runOne(properties) {
+  runOne(matrix) {
     // https://www.npmjs.com/package/shelljs
 
     shx.set('-e') // Exit upon error
 
     const count = ('0000' + this.count).slice(-3)
     const name =
-      `${count}-${properties.buildGenerator}-` +
-      `${properties.language}-${properties.toolchain}`
+      `${count}-${matrix.buildGenerator}-` +
+      `${matrix.language}-${matrix.toolchain}`
 
     shx.echo()
     shx.echo(`Testing '${name}'...`)
@@ -185,7 +188,7 @@ class Test {
     const projectFolderPath = path.dirname(__dirname)
 
     let command = `xpm init --template "${projectFolderPath}" --name ${count}`
-    for (const [key, value] of Object.entries(properties)) {
+    for (const [key, value] of Object.entries(matrix)) {
       command += ` --property ${key}=${value}`
     }
     if (this.complexity === 'develop') {
