@@ -23,6 +23,6 @@
  * ```
  */
 
-export { XpmInitTemplate } from './src/template.js'
+export * from './src/template.js'
 
 // ----------------------------------------------------------------------------
