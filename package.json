@@ -44,7 +44,7 @@
   "author": {
     "name": "Liviu Ionescu",
     "email": "ilg@livius.net",
-    "url": "https://github.com/ilg-ul/"
+    "url": "https://github.com/ilg-ul"
   },
   "license": "MIT",
   "config": {},
@@ -54,7 +54,7 @@
   "dependencies": {
     "@ilg/cli-start-options": "^0.6.6",
     "@xpack/logger": "^6.0.0",
-    "@xpack/xpm-lib": "^4.0.0",
+    "@xpack/xpm-lib": "^5.0.0",
     "cp-file": "^10.0.0",
     "git-config-path": "^2.0.0",
     "liquidjs": "^10.18.0",
@@ -76,9 +76,9 @@
     "prettier": "^3.8.1",
     "shelljs": "^0.10.0",
     "standard": "^17.1.2",
-    "xpm": "^0.22.7"
+    "xpm": "^0.23.1"
   },
   "xpack": {
-    "minimumXpmRequired": "0.22.7"
+    "minimumXpmRequired": "0.23.0"
   }
 }
