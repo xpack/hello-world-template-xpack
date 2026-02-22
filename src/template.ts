@@ -187,11 +187,10 @@ export class XpmInitTemplate extends xpmLib.InitTemplateBase {
     const substitutionsVariables = this.substitutionsVariables
     assert(substitutionsVariables, 'Substitutions variables not initialised')
 
-    const gitConfigPathValue: string | null = gitConfigPath('global')
-    const gitConfigResult = gitConfigPathValue
-      ? parseGitConfig.sync({ path: gitConfigPathValue })
-      : null
-    const gitConfig: GitConfig = (gitConfigResult ?? {}) as GitConfig
+    const configPath = gitConfigPath('global')
+    const gitConfig: GitConfig = (
+      configPath ? parseGitConfig.sync({ path: configPath }) : {}
+    ) as GitConfig
     gitConfig.user ??= {}
     log.trace(util.inspect(gitConfig))
 
@@ -214,11 +213,11 @@ export class XpmInitTemplate extends xpmLib.InitTemplateBase {
       moduleFolderPath,
       'package.json'
     )
-    const packageJsonContent: Buffer = await fs.readFile(packageJsonPath)
-    const packageJson: xpmLib.JsonNpmPackage = JSON.parse(
-      packageJsonContent.toString()
+    const jsonContent: Buffer = await fs.readFile(packageJsonPath)
+    const jsonPackage: xpmLib.JsonNpmPackage = JSON.parse(
+      jsonContent.toString()
     ) as xpmLib.JsonNpmPackage
-    substitutionsVariables.package = packageJson
+    substitutionsVariables.package = jsonPackage
 
     const matrix = substitutionsVariables.matrix as unknown as Matrix
     const fileExtension: string = matrix.language
@@ -240,7 +239,6 @@ export class XpmInitTemplate extends xpmLib.InitTemplateBase {
     }
 
     log.debug(`from='${this.templatesPath}'`)
-    console.log(`from='${this.templatesPath}'`)
     log.trace(util.inspect(substitutionsVariables))
 
     // ------------------------------------------------------------------------
