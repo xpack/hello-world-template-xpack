@@ -3,11 +3,11 @@
 
 /*
  * This file is part of the xPack project (http://xpack.github.io).
- * Copyright (c) 2021 Liviu Ionescu. All rights reserved.
+ * Copyright (c) 2021-2026 Liviu Ionescu. All rights reserved.
  *
  * This Software is provided under the terms of the MIT License.
  * If a copy of the license was not distributed with this file, it can
- * be obtained from https://opensource.org/licenses/MIT/.
+ * be obtained from https://opensource.org/licenses/mit.
  */
 
 'use strict'
@@ -25,8 +25,9 @@ import { fileURLToPath } from 'url'
 import shx from 'shelljs'
 
 import { Logger } from '@xpack/logger'
+import * as xpmLib from '@xpack/xpm-lib'
 
-import { XpmInitTemplate } from '../lib/template.js'
+import { XpmInitTemplate } from '../src/template.js'
 
 // ----------------------------------------------------------------------------
 
@@ -37,13 +38,13 @@ const __dirname = path.dirname(__filename)
 const enableXpmLink = false
 
 class Test {
-  static start () {
+  static start() {
     // Instantiate a new test.
     const test = new Test()
     process.exitCode = test.run(process.argv.length > 2 ? process.argv[2] : '')
   }
 
-  constructor () {
+  constructor() {
     const packageJsonPath = path.resolve(__dirname, '..', 'package.json')
     const packageJsonContent = fs.readFileSync(packageJsonPath)
     const packageJson = JSON.parse(packageJsonContent.toString())
@@ -54,24 +55,26 @@ class Test {
     this.count = 1
   }
 
-  run (complexity) {
+  run(complexity) {
     this.complexity = complexity
 
     const xpmInitTemplate = new XpmInitTemplate({
       context: {
         log: new Logger({ level: 'info' }),
-        config: {}
-      }
+        config: {
+          projectName: this.packageName,
+          properties: {},
+        },
+      },
     })
-    const properties = xpmInitTemplate.propertiesDefinitions
+    const properties = xpmInitTemplate._propertiesDefinitions
 
     // shx.echo(`$ xpm --version`)
     // shx.exec('xpm --version')
 
     // Uninstall possibly existing global package, to ensure the
     // test uses the current folder content.
-    const uninstall =
-      `xpm uninstall ${this.packageName} --global --ignore-errors`
+    const uninstall = `xpm uninstall ${this.packageName} --global --ignore-errors`
     shx.echo(`$ ${uninstall}`)
     shx.exec(uninstall)
 
@@ -80,18 +83,20 @@ class Test {
     this.startTime = Date.now()
     if (complexity === 'all') {
       shx.echo('Testing thoroughly...')
-      for (const buildGenerator of
-        Object.keys(properties.buildGenerator.items)) {
+      for (const buildGenerator of Object.keys(
+        properties.buildGenerator.items
+      )) {
         for (const language of Object.keys(properties.language.items)) {
-          for (const [toolchain, value] of
-            Object.entries(properties.toolchain.items)) {
+          for (const [toolchain, value] of Object.entries(
+            properties.toolchain.items
+          )) {
             if (!xpmInitTemplate.isPlatformSupported(value.platforms)) {
               continue
             }
             exitCode = this.runOne({
               buildGenerator,
               language,
-              toolchain
+              toolchain,
             })
             if (exitCode !== 0) {
               return exitCode
@@ -102,18 +107,23 @@ class Test {
       }
     } else if (complexity === 'ci' || complexity === '') {
       shx.echo('Testing a selection of cases...')
-      for (const buildGenerator of
-        Object.keys(properties.buildGenerator.items)) {
+      for (const buildGenerator of Object.keys(
+        properties.buildGenerator.items
+      )) {
         for (const language of Object.keys(properties.language.items)) {
-          for (const [toolchain, value] of
-            Object.entries(properties.toolchain.items)) {
-            if (!xpmInitTemplate.isPlatformSupported(value.platforms)) {
+          for (const [toolchain, value] of Object.entries(
+            properties.toolchain.items
+          )) {
+            if (
+              xpmLib.isObject(value) &&
+              !xpmInitTemplate.isPlatformSupported(value.platforms)
+            ) {
               continue
             }
             exitCode = this.runOne({
               buildGenerator,
               language,
-              toolchain
+              toolchain,
             })
             if (exitCode !== 0) {
               return exitCode
@@ -131,7 +141,7 @@ class Test {
         language: 'cpp',
         // language: 'c',
         // toolchain: 'gcc'
-        toolchain: 'clang'
+        toolchain: 'clang',
         // toolchain: 'system'
       })
       if (exitCode !== 0) {
@@ -143,13 +153,14 @@ class Test {
     shx.echo(`Completed in ${durationString}.`)
   }
 
-  runOne (properties) {
+  runOne(properties) {
     // https://www.npmjs.com/package/shelljs
 
     shx.set('-e') // Exit upon error
 
     const count = ('0000' + this.count).slice(-3)
-    const name = `${count}-${properties.buildGenerator}-` +
+    const name =
+      `${count}-${properties.buildGenerator}-` +
       `${properties.language}-${properties.toolchain}`
 
     shx.echo()
@@ -230,7 +241,7 @@ class Test {
    * @param {number} n Duration in milliseconds.
    * @returns {string} Value in ms or sec.
    */
-  formatDuration (n) {
+  formatDuration(n) {
     if (n < 1000) {
       return `${n} ms`
     }

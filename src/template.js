@@ -1,10 +1,10 @@
 /*
  * This file is part of the xPack project (http://xpack.github.io).
- * Copyright (c) 2021 Liviu Ionescu. All rights reserved.
+ * Copyright (c) 2021-2026 Liviu Ionescu. All rights reserved.
  *
  * This Software is provided under the terms of the MIT License.
  * If a copy of the license was not distributed with this file, it can
- * be obtained from https://opensource.org/licenses/MIT/.
+ * be obtained from https://opensource.org/licenses/mit.
  */
 
 'use strict'
@@ -30,15 +30,12 @@ import path from 'path'
 import util from 'util'
 import { fileURLToPath } from 'url'
 
-// https://www.npmjs.com/package/make-dir
-import makeDir from 'make-dir'
-
 // https://www.npmjs.com/package/git-config-path
 import getGitConfigPath from 'git-config-path'
 // https://www.npmjs.com/package/parse-git-config
 import parseGitConfig from 'parse-git-config'
 
-import { XpmInitTemplateBase } from '@xpack/xpm-lib'
+import * as xpmLib from '@xpack/xpm-lib'
 
 // ----------------------------------------------------------------------------
 
@@ -60,10 +57,11 @@ const __dirname = path.dirname(__filename)
 
 // ============================================================================
 
-export class XpmInitTemplate extends XpmInitTemplateBase {
+export class XpmInitTemplate extends xpmLib.InitTemplateBase {
   // --------------------------------------------------------------------------
 
-  constructor ({ context }) {
+  constructor({ context }) {
+    debugger
     super({
       context,
       templatesPath: path.resolve(__dirname, '..', 'assets', 'sources'),
@@ -75,10 +73,10 @@ export class XpmInitTemplate extends XpmInitTemplateBase {
           type: 'select',
           items: {
             c: 'C for the application files',
-            cpp: 'C++ for the application files'
+            cpp: 'C++ for the application files',
           },
           default: 'cpp',
-          isMandatory: true
+          isMandatory: true,
         },
         buildGenerator: {
           label: 'Build System',
@@ -87,9 +85,9 @@ export class XpmInitTemplate extends XpmInitTemplateBase {
           items: {
             cmake: 'The CMake build system',
             meson: 'The Meson build system',
-            autotools: 'Autotools configure & GNU make (legacy)'
+            autotools: 'Autotools configure & GNU make (legacy)',
           },
-          default: 'cmake'
+          default: 'cmake',
         },
         toolchain: {
           label: 'Toolchain',
@@ -99,34 +97,34 @@ export class XpmInitTemplate extends XpmInitTemplateBase {
             gcc: {
               // There is no gcc on macOS.
               platforms: ['linux', 'win32'],
-              message: 'The xPack GNU Compiler Collection (GCC) toolchain'
+              message: 'The xPack GNU Compiler Collection (GCC) toolchain',
             },
             clang: 'The xPack LLVM clang toolchain',
             system: {
               // There is no system toolchain on Windows.
               platforms: ['linux', 'darwin'],
-              message: 'The system toolchain'
-            }
+              message: 'The system toolchain',
+            },
           },
-          default: 'clang'
-        }
-      }
+          default: 'clang',
+        },
+      },
     })
   }
 
-  async generate (isInteractive) {
-    const log = this.log
-    const context = this.context
+  async generate() {
+    const log = this._log
+    const context = this._context
     const config = context.config
 
-    const substitutionsVariables = this.substitutionsVariables
+    const substitutionsVariables = this._substitutionsVariables
 
     const gitConfigPath = getGitConfigPath('global')
     const gitConfig = parseGitConfig.sync({ path: gitConfigPath }) || {}
     if (!gitConfig.user) {
       gitConfig.user = {}
     }
-
+    debugger
     log.trace(util.inspect(gitConfig))
 
     substitutionsVariables.author = {
@@ -135,7 +133,7 @@ export class XpmInitTemplate extends XpmInitTemplateBase {
       url:
         gitConfig.user.email === 'ilg@livius.net'
           ? 'https://github.com/ilg-ul/'
-          : 'https://my-url'
+          : 'https://my-url',
     }
 
     substitutionsVariables.githubId =
@@ -152,18 +150,18 @@ export class XpmInitTemplate extends XpmInitTemplateBase {
 
     substitutionsVariables.fileExtension = substitutionsVariables.language
 
-    const lang = (substitutionsVariables.language === 'cpp') ? 'C++' : 'C'
-    log.info(`Creating the ${lang} project ` +
-      `'${substitutionsVariables.projectName}'...`)
+    const lang = substitutionsVariables.language === 'cpp' ? 'C++' : 'C'
+    log.info(
+      `Creating the ${lang} project ` +
+        `'${substitutionsVariables.projectName}'...`
+    )
 
-    if (!isInteractive) {
-      Object.entries(this.propertiesDefinitions).forEach(
-        ([key, val]) => {
-          if (!val.isMandatory) {
-            log.info(`- ${key}=${substitutionsVariables[key]}`)
-          }
+    if (!this._isInteractive) {
+      Object.entries(this._propertiesDefinitions).forEach(([key, val]) => {
+        if (!val.isMandatory) {
+          log.info(`- ${key}=${substitutionsVariables[key]}`)
         }
-      )
+      })
       log.info()
     }
 
@@ -176,46 +174,113 @@ export class XpmInitTemplate extends XpmInitTemplateBase {
 
     const fileExtension = substitutionsVariables.fileExtension
 
-    await makeDir(config.cwd)
+    await fs.mkdir(config.cwd, { recursive: true })
 
-    await this.copyFile('include/hello-world.h')
-    await this.copyFile(`src/hello-world.${fileExtension}`)
+    await this.render({
+      sourceFilePath: 'include/hello-world-liquid.h',
+      destinationFilePath: 'include/hello-world.h',
+    })
+    await this.render({
+      sourceFilePath: `src/hello-world-liquid.${fileExtension}`,
+      destinationFilePath: `src/hello-world.${fileExtension}`,
+    })
 
-    await this.copyFile('libs/adder/include/add/add.h')
-    await this.copyFile('libs/adder/src/add.c')
+    await this.render({
+      sourceFilePath: 'libs/adder/include/add/add-liquid.h',
+      destinationFilePath: 'libs/adder/include/add/add.h',
+    })
+    await this.render({
+      sourceFilePath: 'libs/adder/src/add-liquid.c',
+      destinationFilePath: 'libs/adder/src/add.c',
+    })
 
     if (substitutionsVariables.buildGenerator === 'cmake') {
-      await this.copyFolder('cmake')
-      await this.render('CMakeLists-liquid.txt', 'CMakeLists.txt')
+      await this.render({
+        sourceFilePath: 'cmake/toolchains/clang-liquid.cmake',
+        destinationFilePath: 'cmake/toolchains/clang.cmake',
+      })
+      await this.render({
+        sourceFilePath: 'cmake/toolchains/gcc-liquid.cmake',
+        destinationFilePath: 'cmake/toolchains/gcc.cmake',
+      })
+      await this.render({
+        sourceFilePath: 'CMakeLists-liquid.txt',
+        destinationFilePath: 'CMakeLists.txt',
+      })
     } else if (substitutionsVariables.buildGenerator === 'meson') {
-      await this.render('meson-liquid.build', 'meson.build')
-      await this.copyFolder('meson')
-      await this.copyFile('libs/meson.build')
-      await this.render('libs/adder/meson-liquid.build',
-        'libs/adder/meson.build')
+      await this.render({
+        sourceFilePath: 'meson-liquid.build',
+        destinationFilePath: 'meson.build',
+      })
+      await this.copyFolder({
+        sourceFolderRelativePath: 'meson',
+        destinationFolderPath: 'meson',
+      })
+      await this.render({
+        sourceFilePath: 'libs/meson-liquid.build',
+        destinationFilePath: 'libs/meson.build',
+      })
+      await this.render({
+        sourceFilePath: 'libs/adder/meson-liquid.build',
+        destinationFilePath: 'libs/adder/meson.build',
+      })
     } else if (substitutionsVariables.buildGenerator === 'autotools') {
-      await this.copyFile('autotools/configure')
-      await this.copyFile('autotools/make-template/libs/adder/src/folder.mk')
-      await this.render('autotools/make-template/src/folder-liquid.mk',
-        'autotools/make-template/src/folder.mk')
-      await this.render('autotools/make-template/makefile-liquid',
-        'autotools/make-template/makefile')
-      await this.copyFile('a.vscode/c_cpp_properties-autotools.json',
-        '.vscode/c_cpp_properties.json')
+      await this.copyFile({
+        sourceFileRelativePath: 'autotools/configure',
+        destinationFilePath: 'autotools/configure',
+      })
+      await this.copyFile({
+        sourceFileRelativePath:
+          'autotools/make-template/libs/adder/src/folder.mk',
+        destinationFilePath: 'autotools/make-template/libs/adder/src/folder.mk',
+      })
+      await this.render({
+        sourceFilePath: 'autotools/make-template/src/folder-liquid.mk',
+        destinationFilePath: 'autotools/make-template/src/folder.mk',
+      })
+      await this.render({
+        sourceFilePath: 'autotools/make-template/makefile-liquid',
+        destinationFilePath: 'autotools/make-template/makefile',
+      })
+      await this.copyFile({
+        sourceFileRelativePath: 'a.vscode/c_cpp_properties-autotools.json',
+        destinationFilePath: '.vscode/c_cpp_properties.json',
+      })
     }
 
-    await this.copyFile('a.vscode/tasks.json', '.vscode/tasks.json')
-    await this.copyFile('a.vscode/settings.json', '.vscode/settings.json')
+    await this.copyFile({
+      sourceFileRelativePath: 'a.vscode/tasks.json',
+      destinationFilePath: '.vscode/tasks.json',
+    })
+    await this.copyFile({
+      sourceFileRelativePath: 'a.vscode/settings.json',
+      destinationFilePath: '.vscode/settings.json',
+    })
     // The source name must not interfere with npm.
-    await this.copyFile('a.gitignore', '.gitignore')
-    await this.copyFile('a.npmignore', '.npmignore')
+    await this.copyFile({
+      sourceFileRelativePath: 'a.gitignore',
+      destinationFilePath: '.gitignore',
+    })
+    await this.copyFile({
+      sourceFileRelativePath: 'a.npmignore',
+      destinationFilePath: '.npmignore',
+    })
 
-    await this.render('README-liquid.md', 'README.md')
-    await this.render('LICENSE.liquid', 'LICENSE')
+    await this.render({
+      sourceFilePath: 'README-liquid.md',
+      destinationFilePath: 'README.md',
+    })
+    await this.render({
+      sourceFilePath: 'LICENSE-liquid',
+      destinationFilePath: 'LICENSE',
+    })
 
     // Make this the last one, so if something goes wrong it will be
     // easier to retry.
-    await this.render('package-liquid.json', 'package.json')
+    await this.render({
+      sourceFilePath: 'package-liquid.json',
+      destinationFilePath: 'package.json',
+    })
   }
 }
 
