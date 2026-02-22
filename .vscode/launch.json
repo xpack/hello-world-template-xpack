@@ -21,7 +21,7 @@
             ],
             "program": "${workspaceFolder}/tests/test.js",
             "outFiles": [
-                "${workspaceFolder}/**/*.js"
+                "${workspaceFolder}/dist/*.js"
             ],
             "console": "integratedTerminal",
             "stopOnEntry": true
@@ -31,7 +31,8 @@
             "request": "launch",
             "name": "xpm init --template",
             "skipFiles": [
-                "<node_internals>/**"
+                "<node_internals>/**",
+                "**/async-hook-domain/**"
             ],
             "runtimeExecutable": "xpm",
             "args": [
@@ -45,11 +46,12 @@
                 "--property",
                 "language=c",
                 "--property",
-                "toolchain=clang"
+                "toolchain=clang",
+                "-dd"
             ],
             "cwd": "${workspaceFolder}/build/001-cmake-c-clang",
             "outFiles": [
-                "${workspaceFolder}/**/*.js"
+                "${workspaceFolder}/dist/*.js"
             ],
             "console": "integratedTerminal",
             "stopOnEntry": true

@@ -27,7 +27,7 @@ import shx from 'shelljs'
 import { Logger } from '@xpack/logger'
 import * as xpmLib from '@xpack/xpm-lib'
 
-import { XpmInitTemplate } from '../src/template.js'
+import { XpmInitTemplate } from '../dist/index.js'
 
 // ----------------------------------------------------------------------------
 

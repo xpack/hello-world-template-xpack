@@ -7,22 +7,16 @@
  * be obtained from https://opensource.org/licenses/mit.
  */
 
-'use strict'
+// ----------------------------------------------------------------------------
 
 /**
  * This is the module entry point, the file that is processed when
- * `require('<module>')` is called.
+ * the module is imported.
  *
- * For this to work, it must be linked from `package.json` as
- * `"main": "./index.js",`, which is, BTW, the default behaviour.
- *
- * To import classes from this module into Node.js applications, use:
- *
- * ```javascript
- * import { XpmInitTemplate } from '<module>'
- * ```
+ * It re-exports all exports from `template.js`, which is the main
+ * module file.
  */
 
-export * from './src/template.js'
+export * from './template.js'
 
 // ----------------------------------------------------------------------------
