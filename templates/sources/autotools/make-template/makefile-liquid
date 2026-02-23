@@ -30,7 +30,10 @@ endif
 PROJECT_NAME := hello-world
 
 CPPFLAGS := -I"../../include" -I"../../libs/adder/include"
-COMMON_FLAGS := -g3 -Wall -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -flto
+COMMON_FLAGS := -g3 -Wall -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections 
+
+# On Linux, clang also requires `-fuse-ld=lld`.
+COMMON_FLAGS += -flto
 
 ifeq ($(CC),gcc)
 # Required, otherwise system shared libraries are used.
@@ -54,8 +57,10 @@ ifeq ($(uname_s), Darwin)
   # macOS always uses the Apple linker, regarless of the compiler.
   LDFLAGS += -Wl,-dead_strip
 else ifeq ($(uname_s), Linux)
-  # macOS always uses the Apple linker, regarless of the compiler.
   LDFLAGS += -Wl,-gc-sections
+  ifeq ($(CC),clang)
+    LDFLAGS += -fuse-ld=lld
+  endif
 else
   # TODO: eventually add support for Microsoft cl
   LDFLAGS += -Wl,-gc-sections -static

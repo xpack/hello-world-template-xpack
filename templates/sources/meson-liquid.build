@@ -146,6 +146,10 @@ elif build_machine.system() == 'linux'
     linker_options += [
       '-Wl,--gc-sections',
     ]
+  elif compiler.get_id().contains('clang')
+    linker_options += [
+      '-fuse-ld=lld',
+    ]
   endif
 endif
 
