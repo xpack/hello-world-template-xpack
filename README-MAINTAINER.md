@@ -102,9 +102,9 @@ with combinations of properties.
 To run them, use:
 
 ```sh
-cd hello-world-template-xpack.git
+cd "${HOME}/Work/xpack/hello-world-template-xpack.git"
 npm install
-npm run test-all
+npm run test
 ```
 
 ## Continuous Integration

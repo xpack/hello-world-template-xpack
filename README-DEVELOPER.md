@@ -11,17 +11,26 @@ The project is hosted on GitHub:
 To clone it:
 
 ```sh
-cd ${HOME}/Work
+rm -rf "${HOME}/Work/xpack/hello-world-template-xpack.git" && \
+mkdir -p "${HOME}/Work/xpack" && \
 git clone https://github.com/xpack/hello-world-template-xpack.git \
-  hello-world-template-xpack.git
+  "${HOME}/Work/xpack/hello-world-template-xpack.git"
 ```
 
 To clone the development branch:
 
 ```sh
+rm -rf "${HOME}/Work/xpack/hello-world-template-xpack.git" && \
+mkdir -p "${HOME}/Work/xpack" && \
 git clone --branch xpack-development \
   https://github.com/xpack/hello-world-template-xpack.git \
-  hello-world-template-xpack.git
+  "${HOME}/Work/xpack/hello-world-template-xpack.git"
+```
+
+If update an existing repository:
+
+```sh
+git -C "${HOME}/Work/xpack/hello-world-template-xpack.git" pull
 ```
 
 ## Prerequisites
@@ -36,18 +45,19 @@ running tests).
 
 To be accepted as a template by `xpm init`, a project must:
 
-- be an xPack (have a `package.json` with an `xpack` property
+- be an xPack (have a `package.json` with an `xpack` property)
 - have a property called `main` in `package.json`, pointing to a JavaScript
-  file that can be consumed by `require()`
-- the main file must export a class called `XpmInitTemplate`
-- an instances of this class must have a `run()` method.
+  file that can be consumed by `import`
+- the main file must export a class derived from `xpmLib.InitTemplateBase`, for
+  exaple `XpmInitTemplate`
 
 The template receives via the `context`:
 
 - a log object `log`
-- the new project `config.name`, either given explicitly via
+- the new project `config.projectName`, either given explicitly via
   `--name` or inferred from the folder name
-- a map of `config.properties`, given explicitly via `--property name=value`
+- a (posibly empty) `config.properties` object, with the command line
+  options given explicitly via `--property name=value`
 
 ## Branches
 
@@ -71,7 +81,7 @@ uninstall the xPack, to be sure that the latest version is used.
 To perform the tests, run the usual npm sequence:
 
 ```sh
-cd hello-world-template-xpack.git
+cd "${HOME}/Work/xpack/hello-world-template-xpack.git"
 npm install
 npm run test
 ```
@@ -83,15 +93,15 @@ npm run test
 ## Continuous Integration
 
 All available tests are also performed on GitHub Actions, as the
-[CI on Push](https://github.com/xpack/hello-world-template-xpack/actions/workflows/ci.yml)
+[CI on Push](https://github.com/xpack/hello-world-template-xpack/actions/workflows/test-ci.yml)
 workflow.
 
 ## Standard compliance
 
 The module uses ECMAScript 6 class definitions.
 
-As style, it uses the [JavaScript Standard Style](https://standardjs.com/),
-automatically checked at each commit via Travis CI.
+As style, it uses the [typescript-eslint](https://typescript-eslint.io/packages/typescript-eslint/),
+automatically checked at each commit via GitHub Actions.
 
 Known and accepted exceptions:
 
@@ -102,23 +112,15 @@ To manually fix compliance with the style guide (where possible):
 ```console
 % npm run fix
 
-> @xpack/hello-world-template@0.1.0 fix
-> standard --fix
-
+> @xpack/hello-world-template@0.7.0 fix
+> eslint --config config/eslint.config.js --fix src tests
+...
 ```
 
 ## Documentation metadata
 
-The documentation metadata follows the [JSdoc](http://usejsdoc.org) tags.
+The documentation metadata follows the [TSDoc](https://tsdoc.org) tags.
 
-To enforce checking at file level, add the following comments right after
-the `use strict`:
-
-```js
-'use strict'
-/* eslint valid-jsdoc: "error" */
-/* eslint max-len: [ "error", 80, { "ignoreUrls": true } ] */
-```
-
-Note: be sure C style comments are used, C++ styles are not parsed by
+> [!IMPORTANT]
+> Be sure C style comments are used, C++ styles are not parsed by
 [ESLint](http://eslint.org).
