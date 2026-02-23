@@ -1,43 +1,37 @@
 {
+  "editor.detectIndentation": false,
+  "editor.insertSpaces": true,
+  "editor.tabSize": 2,
+  "editor.formatOnSave": true,
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "files.associations": {
+    "*.json": "jsonc"
+  },
+  "cSpell.language": "en-GB",
+  "cSpell.ignoreWords": [],
+  "prettier.configPath": "config/.prettierrc.json",
+  "prettier.ignorePath": "config/.prettierignore",
   "markdownlint.config": {
     "MD041": false
   },
-  "cSpell.ignoreWords": [
-    "DDEBUG",
-    "DNDEBUG",
-    "Ionescu",
-    "Liviu",
-    "autotools",
-    "ccmake",
-    "cmake",
-    "cpack",
-    "ctest",
-    "fdata",
-    "ffunction",
-    "flto",
-    "fmessage",
-    "fsigned",
-    "gcov",
-    "gfortran",
-    "liquidjs",
-    "mkdir",
-    "npmignore",
-    "npmjs",
-    "postversion",
-    "readline",
-    "xpack",
-    "xpacks"
-  ],
   "cmake.ignoreCMakeListsMissing": true,
   "cmake.configureOnOpen": false,
   "makefile.configureOnOpen": false,
   "npm.exclude": [
-    "**/build/**",
     "**/xpacks/**",
+    "**/build/**",
+    "**/tests/**",
+    "**/tmp/**"
   ],
   "xpack.exclude": [
-    "**/build/**"
-  ],
-  "prettier.configPath": "config/.prettierrc.json",
-  "prettier.ignorePath": "config/.prettierignore"
+    "**/xpacks/**",
+    "**/build/**",
+    "**/tests/**",
+    "**/tmp/**"
+  ]
 }

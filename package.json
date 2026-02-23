@@ -18,7 +18,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/xpack/hello-world-template-xpack.git"
+    "url": "git+https://github.com/xpack/hello-world-template-xpack.git"
   },
   "keywords": [
     "xpack",
@@ -34,7 +34,7 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/xpack/hello-world-template-xpack/issues/"
+    "url": "https://github.com/xpack/hello-world-template-xpack/issues"
   },
   "homepage": "https://github.com/xpack/hello-world-template-xpack/",
   "dependencies": {
@@ -100,8 +100,8 @@
     "test-ci": "node ./tests/run.js ci",
     "test-all": "node ./tests/run.js all",
     "test-develop": "node ./tests/run.js develop",
-    "clean": "del-cli --force dist build",
-    "deep-clean": "del-cli build node_modules package-lock.json",
+    "clean": "del-cli --force dist build .tap",
+    "deep-clean": "npm run clean && del-cli --force node_modules package-lock.json",
     "npm-audit": "npm audit fix --force",
     "dumpconf": "env | sort | uniq",
     "show-versions": "echo $(which node) $(node --version) && echo $(which npm) $(npm --version)",
@@ -127,9 +127,9 @@
       "macos-15",
       "windows-2025"
     ],
-    "testCoverage": "true",
     "useEslint": "true",
-    "usePrettier": "true"
+    "usePrettier": "true",
+    "useCustomTests": "true"
   },
   "engines": {
     "node": ">=20.0"

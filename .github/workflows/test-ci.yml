@@ -1,74 +1,94 @@
-# https://help.github.com/en/actions
-# https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions
-# https://github.com/actions
+# -----------------------------------------------------------------------------
+# DO NOT EDIT!
+# Automatically generated from npm-packages-helper/templates/*.
+#
+# This file is part of the xPack project (http://xpack.github.io).
+# Copyright (c) 2021-2026 Liviu Ionescu. All rights reserved.
+#
+# Permission to use, copy, modify, and/or distribute this software
+# for any purpose is hereby granted, under the terms of the MIT license.
+#
+# If a copy of the license was not distributed with this file, it can
+# be obtained from https://opensource.org/licenses/mit.
+#
+# -----------------------------------------------------------------------------
 
-# https://github.com/micro-os-plus/hello-world-qemu-template-xpack/actions/workflows/ci.yml
+# https://help.github.com/en/actions
+# https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions
+
+# https://github.com/actions
+# https://github.com/actions/checkout
+# https://github.com/actions/setup-node
+
+# -----------------------------------------------------------------------------
+
+# https://github.com/xpack/hello-world-template-xpack/
+# https://github.com/xpack/hello-world-template-xpack/actions/workflows/test-ci.yml
 name: CI on Push
 
 on:
   push:
-    # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#onpushpull_requestpull_request_targetpathspaths-ignore
-    paths-ignore:
-      - ".vscode/**"
-      - "LICENSE"
-      - "**.md"
-      - ".clang-format"
-      - ".gitignore"
-      - ".npmignore"
-      - ".github/workflows/test-all.yml"
-      - ".github/FUNDING.yml"
-      - "tests/scripts/**"
-      - "README.md"
-      - "README-MAINTAINER.md"
-      - "README-DEVELOPER.md"
-    # This should disable running the workflow on tags, according to the
-    # on.<push|pull_request>.<branches|tags> GitHub Actions docs.
-    # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#onpushbranchestagsbranches-ignoretags-ignore
     branches:
-      - "*"
+      - 'xpack'
+      - 'xpack-development'
+    tags-ignore:
+      - '**'
+    paths-ignore:
+      - 'docs/**'
+      - 'website/**'
+      - 'LICENSE'
+      - '**.md'
+      - '.gitignore'
+      - '.npmignore'
+      - '.clang-format'
+      - '.vscode/**'
+      - '.github/FUNDING.yml'
+      - '.github/workflows/publish-github-pages*.yml'
+      - '.github/workflows/trigger-publish-github-pages*.yml'
+      - 'README*.md''
+
+# Allow one concurrent run.
+concurrency:
+  group: 'test'
+  cancel-in-progress: true
 
 jobs:
   ci-test:
-    name: "CI hello-world-template tests"
-
-    runs-on: ${{ matrix.os }}
+    name: 'CI hello-world-template-xpack test'
 
     strategy:
       matrix:
-        # https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners
-        # os: [ ubuntu-24.04, macos-13, macos-14, windows-2022 ]
-        os:
-          [
-            "ubuntu-24.04",
-            "ubuntu-24.04-arm",
-            "macos-15-intel",
-            "macos-15",
-            "windows-2025",
-          ]
-        node-version: [20, 22]
+        # https://github.com/actions/setup-node
+        node-version: [ 20, 22, 24 ]
+        # https://github.com/actions/runner-images
+        os: [ 'ubuntu-24.04', 'ubuntu-24.04-arm', 'macos-15-intel', 'macos-15', 'windows-2025' ]
+
+    runs-on: ${{matrix.os}}
 
     steps:
-      - name: Checkout
-        # https://github.com/actions/checkout
-        uses: actions/checkout@v6.0.1
-        with:
-          fetch-depth: 3
+    - name: Checkout
+      # https://github.com/actions/checkout
+      uses: actions/checkout@v6.0.2
+      with:
+        fetch-depth: 1
 
-      - name: Setup Node.js ${{ matrix.node-version }} on ${{ matrix.os }}
-        # https://github.com/actions/setup-node
-        uses: actions/setup-node@v6.2.0
-        with:
-          node-version: ${{ matrix.node-version }}
+    - name: Setup Node.js ${{matrix.node-version}} on ${{matrix.os}}
+      # https://github.com/actions/setup-node
+      uses: actions/setup-node@v6.2.0
+      with:
+        node-version: ${{matrix.node-version}}
+        cache: 'npm'
 
-      - name: Show environment
-        run: |
-          uname -a
-          node --version
-          npm --version
-          env
+    - name: Show node & npm versions, environment
+      run: |
+        node --version
+        npm --version
+        env | sort
 
-      - name: Satisfy project dependencies
-        run: npm install
+    - name: Install dependencies
+      run: npm ci
 
-      - name: Run test-ci
-        run: npm run test-ci
+    - name: Run test
+      run: npm run test-ci
+      env:
+        CI: true
