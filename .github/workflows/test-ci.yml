@@ -45,7 +45,7 @@ on:
       - '.github/FUNDING.yml'
       - '.github/workflows/publish-github-pages*.yml'
       - '.github/workflows/trigger-publish-github-pages*.yml'
-      - 'README*.md''
+      - 'README*.md'
 
 # Allow one concurrent run.
 concurrency:
