@@ -66,6 +66,20 @@ export class XpmInitTemplate extends xpmLib.InitTemplateBase {
         const moduleFolderPath = this.__dirname;
         const substitutionsVariables = this.substitutionsVariables;
         assert(substitutionsVariables, 'Substitutions variables not initialised');
+        const matrix = substitutionsVariables.matrix;
+        const fileExtension = matrix.language;
+        substitutionsVariables.fileExtension = fileExtension;
+        const lang = matrix.language === 'cpp' ? 'C++' : 'C';
+        log.info(`Creating the ${lang} project ` +
+            `'${substitutionsVariables.projectName}'...`);
+        if (!this.isInteractive) {
+            Object.entries(this.propertiesDefinitions).forEach(([key, val]) => {
+                if (!val.isMandatory) {
+                    log.info(`- ${key}=${String(substitutionsVariables[key])}`);
+                }
+            });
+            log.info();
+        }
         const configPath = gitConfigPath('global');
         const gitConfig = (configPath ? parseGitConfig.sync({ path: configPath }) : {});
         gitConfig.user ??= {};
@@ -84,20 +98,6 @@ export class XpmInitTemplate extends xpmLib.InitTemplateBase {
         const jsonContent = await fs.readFile(packageJsonPath);
         const jsonPackage = JSON.parse(jsonContent.toString());
         substitutionsVariables.package = jsonPackage;
-        const matrix = substitutionsVariables.matrix;
-        const fileExtension = matrix.language;
-        substitutionsVariables.fileExtension = fileExtension;
-        const lang = matrix.language === 'cpp' ? 'C++' : 'C';
-        log.info(`Creating the ${lang} project ` +
-            `'${substitutionsVariables.projectName}'...`);
-        if (!this.isInteractive) {
-            Object.entries(this.propertiesDefinitions).forEach(([key, val]) => {
-                if (!val.isMandatory) {
-                    log.info(`- ${key}=${String(substitutionsVariables[key])}`);
-                }
-            });
-            log.info();
-        }
         log.debug(`from='${this.templatesPath}'`);
         log.trace(util.inspect(substitutionsVariables));
         await fs.mkdir(config.cwd, { recursive: true });

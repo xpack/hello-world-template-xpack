@@ -36,10 +36,10 @@ const __dirname = path.dirname(__filename)
 const enableXpmLink = false
 
 class Test {
-  static start() {
+  static start(argv) {
     // Instantiate a new test.
     const test = new Test()
-    process.exitCode = test.run(process.argv.length > 2 ? process.argv[2] : '')
+    return test.run(argv.length > 2 ? argv[2] : '')
   }
 
   constructor() {
@@ -72,14 +72,15 @@ class Test {
 
     // Uninstall possibly existing global package, to ensure the
     // test uses the current folder content.
-    // eslint-disable-next-line max-len
-    const uninstall = `xpm uninstall ${this.packageName} --global --ignore-errors`
+    const uninstall =
+      `xpm uninstall ${this.packageName}` + ' --global --ignore-errors'
     shx.echo(`$ ${uninstall}`)
     shx.exec(uninstall)
 
     let exitCode = 0
 
     this.startTime = Date.now()
+
     if (complexity === 'all') {
       shx.echo('Testing thoroughly...')
       for (const buildGenerator of Object.keys(
@@ -251,6 +252,6 @@ class Test {
   }
 }
 
-Test.start()
+process.exitCode = Test.start(process.argv)
 
 // ----------------------------------------------------------------------------

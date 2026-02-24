@@ -7,8 +7,6 @@
  * be obtained from https://opensource.org/licenses/mit.
  */
 
-/* eslint max-len: [ "error", 80, { "ignoreUrls": true } ] */
-
 // ----------------------------------------------------------------------------
 
 /**
@@ -187,6 +185,28 @@ export class XpmInitTemplate extends xpmLib.InitTemplateBase {
     const substitutionsVariables = this.substitutionsVariables
     assert(substitutionsVariables, 'Substitutions variables not initialised')
 
+    const matrix = substitutionsVariables.matrix as unknown as Matrix
+    const fileExtension: string = matrix.language
+    substitutionsVariables.fileExtension = fileExtension
+
+    const lang: string = matrix.language === 'cpp' ? 'C++' : 'C'
+    log.info(
+      `Creating the ${lang} project ` +
+        `'${substitutionsVariables.projectName as string}'...`
+    )
+
+    if (!this.isInteractive) {
+      Object.entries(this.propertiesDefinitions).forEach(([key, val]) => {
+        if (!val.isMandatory) {
+          log.info(`- ${key}=${String(substitutionsVariables[key])}`)
+        }
+      })
+      log.info()
+    }
+
+    // ------------------------------------------------------------------------
+    // Load the Git configuration to populate author information.
+
     const configPath = gitConfigPath('global')
     const gitConfig: GitConfig = (
       configPath ? parseGitConfig.sync({ path: configPath }) : {}
@@ -218,25 +238,6 @@ export class XpmInitTemplate extends xpmLib.InitTemplateBase {
       jsonContent.toString()
     ) as xpmLib.JsonNpmPackage
     substitutionsVariables.package = jsonPackage
-
-    const matrix = substitutionsVariables.matrix as unknown as Matrix
-    const fileExtension: string = matrix.language
-    substitutionsVariables.fileExtension = fileExtension
-
-    const lang: string = matrix.language === 'cpp' ? 'C++' : 'C'
-    log.info(
-      `Creating the ${lang} project ` +
-        `'${substitutionsVariables.projectName as string}'...`
-    )
-
-    if (!this.isInteractive) {
-      Object.entries(this.propertiesDefinitions).forEach(([key, val]) => {
-        if (!val.isMandatory) {
-          log.info(`- ${key}=${String(substitutionsVariables[key])}`)
-        }
-      })
-      log.info()
-    }
 
     log.debug(`from='${this.templatesPath}'`)
     log.trace(util.inspect(substitutionsVariables))
