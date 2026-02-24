@@ -229,13 +229,10 @@ export class XpmInitTemplate extends xpmLib.InitTemplateBase {
     substitutionsVariables.githubId = githubId
 
     // Add package (for name & version)
-    const packageJsonPath: string = path.resolve(
-      moduleFolderPath,
-      'package.json'
-    )
-    const jsonContent: Buffer = await fs.readFile(packageJsonPath)
+    const jsonFilePath: string = path.resolve(moduleFolderPath, 'package.json')
+    const jsonFileContent: Buffer = await fs.readFile(jsonFilePath)
     const jsonPackage: xpmLib.JsonNpmPackage = JSON.parse(
-      jsonContent.toString()
+      jsonFileContent.toString()
     ) as xpmLib.JsonNpmPackage
     substitutionsVariables.package = jsonPackage
 
