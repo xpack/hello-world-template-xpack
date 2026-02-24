@@ -2,10 +2,6 @@
   "name": "@my-scope/{{ projectName }}",
   "version": "0.1.0",
   "description": "A source code Hello World application",
-  "main": "",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/{{ githubId }}/{{ projectName }}.git"
@@ -35,9 +31,6 @@
   "engines": {
     "node": ">=20.0"
   },
-  "dependencies": {},
-  "bundledDependencies": [],
-  "devDependencies": {},
   "xpack": {
     "minimumXpmRequired": "0.22.7",
     "dependencies": {},
