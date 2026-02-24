@@ -1,12 +1,11 @@
 [![npm (scoped)](https://img.shields.io/npm/v/@xpack/hello-world-template)](https://www.npmjs.com/package/@xpack/hello-world-template)
 [![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/xpack/hello-world-template-xpack)](https://github.com/xpack/hello-world-template-xpack)
 [![license](https://img.shields.io/github/license/xpack/hello-world-template-xpack)](https://github.com/xpack/hello-world-template-xpack/blob/xpack/LICENSE)
-[![CI on Push](https://github.com/xpack/hello-world-template-xpack/actions/workflows/ci.yml/badge.svg)](https://github.com/xpack/hello-world-template-xpack/actions/workflows/ci.yml)
+[![CI on Push](https://github.com/xpack/hello-world-template-xpack/actions/workflows/test-ci.yml/badge.svg)](https://github.com/xpack/hello-world-template-xpack/actions/workflows/test-ci.yml)
 
 # An xpm template to generate Hello World projects
 
-Generate simple _Hello World_
-projects to demonstrate the xPack Build framework.
+Generate simple _Hello World_ projects to demonstrate the xPack Build framework.
 
 The project is hosted on GitHub as
 [xpack/hello-world-template-xpack](https://github.com/xpack/hello-world-template-xpack),
@@ -18,16 +17,16 @@ and is also available from npmjs.com as
 This project generates multiple variants of the classical application
 that prints the _Hello World_ message on standard output.
 
-Both C and C++ are supported, with **CMake** and **Meson** as build system
+Both C and C++ are supported, with **CMake** and **Meson** as build-system
 generators; it is also possible to create projects that use the legacy
-autotools & make, but only as a configuration demonstrator, for real
-projects the configuration needs further tweaks.
+Autotools and Make, but only as a configuration demonstrator. For real
+projects, the configuration requires further adjustments.
 
 The `hello-world-template` project is part of
 [The xPack Project](https://github.com/xpack).
 
-It can be invoked in a terminal, but the main intended use was
-to be integrated into the **VS Code xPack Build extension**, to
+It can be invoked in a terminal, but the main intended use is
+to be integrated into the **VS Code xPack Build extension** to
 generate new projects.
 
 ## Prerequisites
@@ -51,20 +50,16 @@ npm install --global xpm@latest
 ### Template instantiation via `xpm init`
 
 Instantiating the template can be done via the `xpm init --template` command,
-pointing to this xPack.
+pointing to this xpm package.
 
-This command must be invoked in an empty folder, where the project
-will be generated.
+This command must be invoked in an empty folder where the project will be generated.
 
-There are two modes, interactive and non interactive (from a script).
+There are two modes: interactive and non-interactive (for use in scripts).
 
 #### Interactive mode
 
-Starting the tool without any command line options will select the
-interactive mode and the user can manually enter each choice.
-
-Starting the tool without defining the programming language will select the
-interactive mode and the user can manually enter each choice.
+Starting the tool without any command-line options will select the
+interactive mode, allowing the user to manually enter each choice.
 
 ```console
 % mkdir -p my-project && cd my-project
@@ -95,9 +90,8 @@ File 'package.json' generated.
 #### Scriptable mode
 
 When used in non-interactive environments, it is possible to pass
-all required data on the
-command line. The only mandatory property is `language`, all other
-have defaults.
+all required data on the command line. The only mandatory property is
+`language`; all others have defaults.
 
 ```console
 % mkdir -p my-project && cd my-project
@@ -125,10 +119,10 @@ File 'LICENSE' generated.
 File 'package.json' generated.
 ```
 
-### Satisfy dependencies
+### Install dependencies
 
-The next step is to install all packages required, either source packages or
-binary tools.
+The next step is to install all required packages, including source packages
+and binary tools.
 
 This is done by issuing the `xpm install` command in the project folder:
 
@@ -155,14 +149,13 @@ This is done by issuing the `xpm install` command in the project folder:
 'xpacks/.bin/gcov-dump' -> '../xpack-dev-tools-gcc/.content/bin/gcov-dump'
 'xpacks/.bin/gcov-tool' -> '../xpack-dev-tools-gcc/.content/bin/gcov-tool'
 'xpacks/.bin/gfortran' -> '../xpack-dev-tools-gcc/.content/bin/gfortran'
-%
 ```
 
 ### Build and test
 
-The generated project includes dependencies to all build tools, except
-the toolchain, which must be available in a system location, such that
-the build system generator can find it.
+The generated project includes dependencies for all build tools, except
+the toolchain, which must be available in a system location so that
+the build-system generator can locate it.
 
 ```console
 % cd my-project
@@ -280,37 +273,38 @@ Hello World!
 (in release mode)
 (no asserts)
 Check adder lib: 41 + 1 = 42
-%
 ```
 
 ### Toolchain
 
-By default, the generated projects use the **xPack GNU Compiler Collection**,
-which is a cross-platform GCC.
+By default, the generated projects use **xPack LLVM clang**.
+For GNU/Linux and Windows, the **xPack GNU Compiler Collection**
+is also available.
 
-It is also possible to use the compiler available in the system.
+It is also possible to use the system compiler.
 
 ### Windows specifics
 
-On Windows the projects generated by the template were tested with:
+On Windows, the projects generated by the template were tested with:
 
-- the **xPack GNU Compiler Collection** 8.5.0-1.1
+- the **xPack LLVM clang**
+- the **xPack GNU Compiler Collection**
 - the **Microsoft C/C++ compiler**, installed from the
-[Build Tools for Visual Studio 2019](https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2019),
+  [Build Tools for Visual Studio 2019](https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2019),
 - GCC, installed with [Chocolatey](https://chocolatey.org), on GitHub Actions
 
 ## Known problems
 
 - On Windows, the VS Code IntelliSense logic does not properly identify
   the toolchain when installed via npm/xpm ([#28](https://github.com/xpack/vscode-xpack-extension-ts/issues/28)); the workaround is to make the
-  invocations use explicit program extensions like `gcc.cmd`. The CMake
-  scripts were patched to do so; the meson and make scripts will be
-  patched at a later date; for now they need to be
-  patched manually after the project is generated.
+  invocations use explicit program extensions such as `gcc.cmd`. The CMake
+  scripts have been patched accordingly; the Meson and Make scripts will be
+  patched at a later date. For now, they require manual patching after the
+  project is generated.
 
-## Maintainer & developer info
+## Maintainer and developer info
 
-This page is addressed to those who plan to use the template directly.
+This page is addressed to those who plan to use the template.
 
 For maintainer and developer info, please see the
 [README-MAINTAINER](README-MAINTAINER.md) and
@@ -319,5 +313,5 @@ For maintainer and developer info, please see the
 ## License
 
 The original content is released under the
-[MIT License](https://opensource.org/licenses/MIT), with all rights reserved to
+[MIT License](https://opensource.org/licenses/mit), with all rights reserved to
 [Liviu Ionescu](https://github.com/ilg-ul).

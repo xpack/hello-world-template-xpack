@@ -27,7 +27,7 @@ git clone --branch xpack-development \
   "${HOME}/Work/xpack/hello-world-template-xpack.git"
 ```
 
-If update an existing repository:
+To update an existing repository:
 
 ```sh
 git -C "${HOME}/Work/xpack/hello-world-template-xpack.git" pull
@@ -40,7 +40,7 @@ A recent [xpm](https://xpack.github.io/xpm/), which is a portable
 
 ## Basic info
 
-The package is both an xPack (used by `xpm`) and a Node.js module (for
+The package is both an xpm package and a Node.js module (for
 running tests).
 
 To be accepted as a template by `xpm init`, a project must:
@@ -49,14 +49,14 @@ To be accepted as a template by `xpm init`, a project must:
 - have a property called `main` in `package.json`, pointing to a JavaScript
   file that can be consumed by `import`
 - the main file must export a class derived from `xpmLib.InitTemplateBase`, for
-  exaple `XpmInitTemplate`
+  example `XpmInitTemplate`
 
 The template receives via the `context`:
 
 - a log object `log`
 - the new project `config.projectName`, either given explicitly via
   `--name` or inferred from the folder name
-- a (posibly empty) `config.properties` object, with the command line
+- a (possibly empty) `config.properties` object, with the command-line
   options given explicitly via `--property name=value`
 
 ## Branches
@@ -74,9 +74,9 @@ into `xpack`.
 
 ## Testing
 
-Normally the tests should consume the template via `xpm init`, but
-this goes through the global repo in the home folder, and requires to
-uninstall the xPack, to be sure that the latest version is used.
+Normally, the tests should consume the template via `xpm init`, but
+this goes through the global repository in the home folder and requires the
+xPack to be uninstalled to ensure that the latest version is used.
 
 To perform the tests, run the usual npm sequence:
 
@@ -84,6 +84,12 @@ To perform the tests, run the usual npm sequence:
 cd "${HOME}/Work/xpack/hello-world-template-xpack.git"
 npm install
 npm run test
+```
+
+To run the full set of tests:
+
+```sh
+npm run test-all
 ```
 
 ## Coverage tests
@@ -96,12 +102,9 @@ All available tests are also performed on GitHub Actions, as the
 [CI on Push](https://github.com/xpack/hello-world-template-xpack/actions/workflows/test-ci.yml)
 workflow.
 
-## Standard compliance
+## TypeScript style compliance
 
-The module uses ECMAScript 6 class definitions.
-
-As style, it uses the [typescript-eslint](https://typescript-eslint.io/packages/typescript-eslint/),
-automatically checked at each commit via GitHub Actions.
+For style compliance, it uses [typescript-eslint](https://typescript-eslint.io/packages/typescript-eslint/).
 
 Known and accepted exceptions:
 
@@ -119,8 +122,8 @@ To manually fix compliance with the style guide (where possible):
 
 ## Documentation metadata
 
-The documentation metadata follows the [TSDoc](https://tsdoc.org) tags.
+The documentation metadata uses the [TSDoc](https://tsdoc.org) tags.
 
 > [!IMPORTANT]
-> Be sure C style comments are used, C++ styles are not parsed by
-[ESLint](http://eslint.org).
+> Ensure that C-style comments are used, since C++-style comments are not
+> parsed by [ESLint](http://eslint.org).
