@@ -228,12 +228,14 @@ export class XpmInitTemplate extends xpmLib.InitTemplateBase {
       gitConfig.user.email === 'ilg@livius.net' ? 'ilg-ul' : 'my-github-id'
     substitutionsVariables.githubId = githubId
 
-    // Add package (for name & version)
-    const jsonFilePath: string = path.resolve(moduleFolderPath, 'package.json')
-    const jsonFileContent: Buffer = await fs.readFile(jsonFilePath)
-    const jsonPackage: xpmLib.JsonNpmPackage = JSON.parse(
-      jsonFileContent.toString()
-    ) as xpmLib.JsonNpmPackage
+    // ------------------------------------------------------------------------
+    // Add content of package.json (for name & version).
+
+    const xpmPackage = new xpmLib.Package({
+      packageFolderPath: moduleFolderPath,
+      log: log,
+    })
+    const jsonPackage = await xpmPackage.readPackageDotJson({ withThrow: true })
     substitutionsVariables.package = jsonPackage
 
     log.debug(`from='${this.templatesPath}'`)
