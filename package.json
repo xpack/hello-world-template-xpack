@@ -44,7 +44,6 @@
     "cp-file": "^10.0.0",
     "git-config-path": "^2.0.0",
     "liquidjs": "^10.18.0",
-    "make-dir": "^5.1.0",
     "parse-git-config": "^3.0.0"
   },
   "bundleDependencies": [
@@ -54,7 +53,6 @@
     "cp-file",
     "git-config-path",
     "liquidjs",
-    "make-dir",
     "parse-git-config"
   ],
   "devDependencies": {
