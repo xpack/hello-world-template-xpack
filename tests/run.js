@@ -43,11 +43,11 @@ class Test {
   }
 
   constructor() {
-    const packageJsonPath = path.resolve(__dirname, '..', 'package.json')
-    const packageJsonContent = fs.readFileSync(packageJsonPath)
-    const packageJson = JSON.parse(packageJsonContent.toString())
+    const jsonFilePath = path.resolve(__dirname, '..', 'package.json')
+    const jsonFileContent = fs.readFileSync(jsonFilePath)
+    const jsonPackage = JSON.parse(jsonFileContent.toString())
 
-    this.packageName = packageJson.name
+    this.packageName = jsonPackage.name
     this.tmpFolderName = this.packageName.split('/')[1]
 
     this.count = 1
